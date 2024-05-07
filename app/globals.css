@@ -17,11 +17,32 @@ body {
   background: #eee;
 }
 
+@layer base {
+  h1 {
+    @apply text-[34px] font-bold;
+  }
+  h2 {
+    @apply text-3xl font-bold;
+  }
+  h3 {
+    @apply text-2xl font-medium;
+  }
+  h4 {
+    @apply text-xl font-medium;
+  }
+  h5 {
+    @apply text-lg font-light;
+  }
+  p {
+    @apply text-sm font-light;
+  }
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
   .btn {
-    @apply bg-purple-700 text-slate-200 hover:bg-purple-600 py-2 px-4 rounded-md;
+    @apply bg-purple-700 text-slate-200 hover:bg-purple-600 py-2 px-4 rounded-lg w-max;
   }
 }
