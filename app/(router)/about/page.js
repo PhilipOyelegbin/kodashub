@@ -8,7 +8,7 @@ function AboutPage() {
       <div className="w-full md:w-1/2 rounded-br-full px-5 lg:px-20 text-slate-200 bg-purple-700">
         <h1>About Us</h1>
       </div>
-      <section className="grid grid-cols-1 gap-5 items-center lg:grid-cols-2 py-10 px-5 lg:px-20">
+      <section className="grid grid-cols-1 gap-5 items-center text-slate-700 lg:grid-cols-2 py-10 px-5 lg:px-20">
         <div className="">
           <Image src="/course_banner.jpg" className="object-cover w-full h-full" width={300} height={400} alt="college-students" />
         </div>

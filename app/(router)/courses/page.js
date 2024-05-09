@@ -1,6 +1,7 @@
 import { Courses } from "@/app/utils/data"
 import Button from "../_components/Button"
 import CourseCard from "../_components/CourseCard"
+import { FaSearch } from "react-icons/fa"
 
 function CoursePage() {
   return (
@@ -11,9 +12,12 @@ function CoursePage() {
 
       {/* card container */}
       <section className="py-10 px-5 lg:px-20 text-slate-700">
-        <div className="flex justify-between items-center">
-          <h3>Course <span className="text-purple-700">Library</span></h3>
-          <select className="w-max px-3 py-2 rounded-md bg-purple-700 text-slate-200">
+        <div className="flex flex-wrap gap-5 justify-between items-center">
+          <div className="mx-auto sm:mx-0 flex items-center gap-3 shrink bg-white p-2 rounded-md text-slate-700">
+            <FaSearch className="h-6 w-6"/>
+            <input className="outline-none" type="search" name="course"/>
+          </div>
+          <select className="mx-auto sm:mx-0 w-max px-3 py-2 rounded-md bg-purple-700 text-slate-200">
             <option>All</option>
             <option>Web</option>
             <option>CLoud</option>

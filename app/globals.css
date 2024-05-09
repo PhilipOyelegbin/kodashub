@@ -48,4 +48,7 @@ body {
   .cover-image {
     @apply w-full;
   }
+  .form-input {
+    @apply p-2 rounded-md border;
+  }
 }
