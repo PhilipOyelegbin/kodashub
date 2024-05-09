@@ -20,8 +20,8 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ctop courses */}
-      <section className="py-10 px-5 lg:px-20">
+      {/* top courses */}
+      <section className="py-10 px-5 lg:px-20 text-slate-700">
         <div className="flex justify-between items-center">
           <h3>Trending <span className="text-purple-700">Skills</span></h3>
           <Button url="/courses" label="View More"/>
@@ -79,17 +79,17 @@ export default function Home() {
       </section>
 
       {/* testimonials */}
-      <section className="py-10 px-5 lg:px-20">
+      <section className="py-10 px-5 lg:px-20 text-slate-700">
         <h3 className="text-center">Our Client Words of Mouth</h3>
         <div className="flex flex-wrap justify-center mt-4 gap-5">
           {Testimonials.map((list, index) =>
-            <div key={index} className="flex gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300 p-3">
+            <figure key={index} className="flex gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300 p-3">
               <Image src={list.cover_image} className="rounded-full aspect-square" width={100} height={100} alt="avatar"/>
-              <div>
+              <figcaption>
                 <h4>{list.name}</h4>
                 <p>{list.summary}</p>
-              </div>
-            </div>
+              </figcaption>
+            </figure>
           )}
         </div>
       </section>

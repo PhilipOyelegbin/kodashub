@@ -22,7 +22,7 @@ export default function Navbar() {
     <nav className='flex items-center justify-between py-2 px-5 lg:px-20 shadow-md relative'>
         <Image src="/logo.png" width={80} height={60} alt="logo" />
 
-        <FaAlignJustify className='md:hidden cursor-pointer h-6 w-6' onClick={() => setToggleMenu(!toggleMenu)}/>
+        <FaAlignJustify className='md:hidden cursor-pointer h-6 w-6 text-purple-700' onClick={() => setToggleMenu(!toggleMenu)}/>
 
         <ul className={`${toggleMenu ? 'right-0' : '-right-full'} fixed z-20 bg-[#eee] md:bg-transparent md:static top-20 p-5 flex flex-col md:flex-row items-start gap-3 w-full md:items-center md:w-auto ease-in-out duration-300`}>
             {menu.map(item => (
