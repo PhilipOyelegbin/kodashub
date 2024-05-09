@@ -19,41 +19,41 @@ function AboutPage() {
 
       {/* instructors */}
       <section className="py-10 px-5 lg:px-20 text-slate-700">
-        <h3 className="text-center">Seasoned Instructors</h3>
+        <h3 className="text-center">Our Seasoned Instructors</h3>
         <div className="flex flex-wrap justify-center mt-4 gap-5">
           <figure className="flex flex-col gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300">
-            <Image src="/woman-avatar.png" className="rounded-t-md w-full" width={100} height={100} alt="avatar"/>
+            <Image src="/philip.png" className="rounded-t-md w-full h-[250px]" width={100} height={100} alt="avatar"/>
             <figcaption className="p-3">
-              <h4>Mary James</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero, eaque enim eligendi dolore velit libero error perspiciatis autem obcaecati quo eveniet soluta ad.</p>
-              <div className="flex gap-4 justify-end text-2xl">
-                <Link href="https://linkedin.com/in/"><FaLinkedinIn/></Link>
-                <Link href="https://linkedin.com/in/"><FaTwitter/></Link>
-                <Link href="mailto: xample@mail.com"><FaEnvelope/></Link>
+              <h4>Philip Oyelegbin</h4>
+              <p>I am a Frontend Developer, and Cloud Engineer with a background in customer support and front-end development. I have proven skills in customer service, technical support, JavaScript, HTML5, CSS, React.js, cloud services, and Infrastructure as Code (IaC). I am experienced with Google Cloud Platform (GCP), Terraform, and Ansible.</p>
+              <div className="flex gap-4 justify-end text-2xl mt-2">
+                <Link href="https://linkedin.com/in/philipoyelegbin"><FaLinkedinIn/></Link>
+                <Link href="https://mobile.twitter.com/OyelegbinPhilip"><FaTwitter/></Link>
+                <Link href="mailto: philipoyelegbin@gmail.com"><FaEnvelope/></Link>
               </div>
             </figcaption>
           </figure>
           <figure className="flex flex-col gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300">
-            <Image src="/woman-avatar.png" className="rounded-t-md w-full" width={100} height={100} alt="avatar"/>
+            <Image src="/woman-avatar.png" className="rounded-t-md w-full h-[250px]" width={100} height={100} alt="avatar"/>
             <figcaption className="p-3">
-              <h4>Mary James</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero, eaque enim eligendi dolore velit libero error perspiciatis autem obcaecati quo eveniet soluta ad.</p>
-              <div className="flex gap-4 justify-end text-2xl">
-                <Link href="https://linkedin.com/in/"><FaLinkedinIn/></Link>
-                <Link href="https://linkedin.com/in/"><FaTwitter/></Link>
-                <Link href="mailto: xample@mail.com"><FaEnvelope/></Link>
+              <h4>Peter Oyelegbin</h4>
+              <p>I am a skilled Backend Engineer with a perfectionist personality based in Lagos. He has more than 2 years hands-on experience building functional and secure Apps/APIs. He currently volunteers as a Backend Engineer at See9ja remotely where he develops a scalable, fast, and secure server-side application and collaborate with other developers to build a fully functional web app.</p>
+              <div className="flex gap-4 justify-end text-2xl mt-2">
+                <Link href="https://linkedin.com/in/peteroyelegbin"><FaLinkedinIn/></Link>
+                <Link href="https://twitter.com/PeterOyelegbin"><FaTwitter/></Link>
+                <Link href="mailto: peteroyelegbin@gmail.com"><FaEnvelope/></Link>
               </div>
             </figcaption>
           </figure>
           <figure className="flex flex-col gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300">
-            <Image src="/woman-avatar.png" className="rounded-t-md w-full" width={100} height={100} alt="avatar"/>
+            <Image src="/woman-avatar.png" className="rounded-t-md w-full h-[250px]" width={100} height={100} alt="avatar"/>
             <figcaption className="p-3">
               <h4>Mary James</h4>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero, eaque enim eligendi dolore velit libero error perspiciatis autem obcaecati quo eveniet soluta ad.</p>
-              <div className="flex gap-4 justify-end text-2xl">
-                <Link href="https://linkedin.com/in/"><FaLinkedinIn/></Link>
-                <Link href="https://linkedin.com/in/"><FaTwitter/></Link>
-                <Link href="mailto: xample@mail.com"><FaEnvelope/></Link>
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero.</p>
+              <div className="flex gap-4 justify-end text-2xl mt-2">
+                <Link href="https://linkedin.com/in/philipoyelegbin"><FaLinkedinIn/></Link>
+                <Link href="https://mobile.twitter.com/OyelegbinPhilip"><FaTwitter/></Link>
+                <Link href="mailto: philipoyelegbin@gmail.com"><FaEnvelope/></Link>
               </div>
             </figcaption>
           </figure>

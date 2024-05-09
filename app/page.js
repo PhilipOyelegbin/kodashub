@@ -12,7 +12,7 @@ export default function Home() {
       <header className="flex items-center justify-between h-svh px-5 lg:px-20 bg-slate-700 bg-[url('/hero_bg.png')] bg-blend-overlay bg-center bg-cover bg-no-repeat">
         <div className="flex flex-col items-center gap-3 text-center text-slate-200 lg:items-start lg:w-1/2 lg:text-left">
           <h1>Learn New Skills Online With <span className="text-purple-700">Top Instructors</span></h1>
-          <p>Take your skills to the next level with personalized guidance and support from a seasoned instructor. Whether you're seeking to upskill, reskill, or explore new interests, my online courses and expert mentorship will help you achieve your goals.</p>
+          <p>Take your skills to the next level with personalized guidance and support from a seasoned instructor. Whether you are seeking to upskill, reskill, or explore new interests, my online courses and expert mentorship will help you achieve your goals.</p>
           <Button url="/courses" label="Get Started"/>
         </div>
         <div className="hidden lg:flex justify-center w-1/2 h-full">
@@ -80,7 +80,7 @@ export default function Home() {
 
       {/* testimonials */}
       <section className="py-10 px-5 lg:px-20 text-slate-700">
-        <h3 className="text-center">Our Client Words of Mouth</h3>
+        <h3 className="text-center">Words of Mouth</h3>
         <div className="flex flex-wrap justify-center mt-4 gap-5">
           {Testimonials.map((list, index) =>
             <figure key={index} className="flex gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300 p-3">
