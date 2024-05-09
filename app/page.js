@@ -12,7 +12,7 @@ export default function Home() {
       <header className="flex items-center justify-between h-svh px-5 lg:px-20 bg-slate-700 bg-[url('/hero_bg.png')] bg-blend-overlay bg-center bg-cover bg-no-repeat">
         <div className="flex flex-col items-center gap-3 text-center text-slate-200 lg:items-start lg:w-1/2 lg:text-left">
           <h1>Learn New Skills Online With <span className="text-purple-700">Top Instructors</span></h1>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero, eaque enim eligendi dolore velit libero error perspiciatis autem obcaecati quo eveniet soluta ad.</p>
+          <p>Take your skills to the next level with personalized guidance and support from a seasoned instructor. Whether you're seeking to upskill, reskill, or explore new interests, my online courses and expert mentorship will help you achieve your goals.</p>
           <Button url="/courses" label="Get Started"/>
         </div>
         <div className="hidden lg:flex justify-center w-1/2 h-full">
