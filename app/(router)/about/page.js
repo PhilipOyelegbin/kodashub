@@ -13,7 +13,21 @@ function AboutPage() {
           <Image src="/course_banner.jpg" className="object-cover w-full h-full" width={300} height={400} alt="college-students" />
         </div>
         <div>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero, eaque enim eligendi dolore velit libero error perspiciatis autem obcaecati quo eveniet soluta ad. Nemo aspernatur voluptatibus perferendis repellat neque aperiam ipsum nulla aut, dolore quod ut voluptate dolorem ab distinctio pariatur vitae exercitationem id repellendus facere, suscipit molestias delectus qui illo? Blanditiis et illum itaque consequuntur commodi voluptate cupiditate, a eum iure odio perferendis libero hic cum quas placeat vitae?</p>
+          <p>We believe that learning should be accessible, engaging, and effective.
+
+Our team of experts in diverse technical career came together with a shared vision: to empower people with the needed skills for tomorrows job. With us you only need to purchase a course and an instructor will be assigned to you in relation to the course you purchased. Knowing what was missing from traditional learning platforms, we set out to create something better.
+
+Our mission is to empower brilliant minds like you with the needed skills to start your technical career. We strive to:
+- Make learning accessible to everyone, everywhere
+- Provide high-quality, engaging, and relevant courses.
+- Continuously improve and innovate our services.
+
+*Our Values*
+- *Accessibility*: We believe that learning should be available to all, regardless of location, device, or ability.
+- *Engaging*: We stay at the forefront of technology and pedagogy to bring you the best learning experience.
+- *Quality*: We are committed to delivering high-quality content and services that meet the highest standards.
+
+Are you an individual looking to upskill? Look no further, discover our courses, and start achieving your goals today!</p>
         </div>
       </section>
 
