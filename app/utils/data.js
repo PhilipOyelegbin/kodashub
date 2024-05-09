@@ -86,17 +86,17 @@ export const Courses = [
 export const Testimonials = [
     {
         name: "Natasha Morris", 
-        summary: "KodasHub have great instructors who knows their onions at there disposal.", 
+        summary: "KodasHub have great instructors who knows their onions at their disposal.", 
         cover_image: "/woman-avatar.png"
     },
     {
         name: "Natasha Morris", 
-        summary: "KodasHub have great instructors who knows their onions at there disposal.", 
+        summary: "KodasHub have great instructors who knows their onions at their disposal.", 
         cover_image: "/woman-avatar.png"
     },
     {
         name: "Natasha Morris", 
-        summary: "KodasHub have great instructors who knows their onions at there disposal.", 
+        summary: "KodasHub have great instructors who knows their onions at their disposal.", 
         cover_image: "/woman-avatar.png"
     },
 ]
