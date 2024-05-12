@@ -18,15 +18,15 @@ function ContactPage() {
             <div>
                 <h3>We are a click away!!!</h3>
                 <div className='mt-4'>
-                    <Link href="mailto: hq@kh.com" className='flex items-center gap-3 pb-3 border-b'>
+                    <Link href="" className='flex items-center gap-3 pb-3 border-b'>
                         <FaEnvelopeOpen className='w-6 h-6 text-sky-500'/>
                         <p>hq@kh.com</p>
                     </Link>
-                    <Link href="https://" className='flex items-center gap-3 pb-3 border-b'>
+                    <Link href="" className='flex items-center gap-3 pb-3 border-b'>
                         <FaWhatsapp className='w-6 h-6 text-lime-500'/>
                         <p>+2348XXXXXXXXX</p>
                     </Link>
-                    <Link href="https://" className='flex items-center gap-3 pb-3 border-b'>
+                    <Link href="" className='flex items-center gap-3 pb-3 border-b'>
                         <FaTwitter className='w-6 h-6 text-blue-500'/>
                         <p>@kh_hq</p>
                     </Link>
