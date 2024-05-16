@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import { FaEnvelopeOpen, FaTwitter, FaWhatsapp } from 'react-icons/fa'
 
 function ContactPage() {
@@ -12,7 +11,7 @@ function ContactPage() {
             <form className='flex flex-col gap-5 w-full max-w-[550px] shadow-md shadow-slate-700 p-5 rounded-md'>
                 <input type="text" className='form-input' placeholder='Enter your full name'/>
                 <input type="email" className='form-input' placeholder='Enter your email address'/>
-                <textarea name="message" className='form-input resize-y' cols={30} rows={5} placeholder="Enter your email address" ></textarea>
+                <textarea name="message" className='form-input resize-y' cols={30} rows={5} placeholder="Enter your email address"></textarea>
                 <button className='btn'>Send</button>
             </form>
             <div>

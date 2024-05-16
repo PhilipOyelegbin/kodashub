@@ -1,11 +1,22 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import Button from "./(router)/_components/Button";
 import CourseCard from "./(router)/_components/CourseCard";
-import { Courses, Testimonials } from "./utils/data";
+import { Testimonials } from "./utils/data";
 import { FaCube } from "react-icons/fa";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [course, setCourse] = useState()
+  
+  useEffect(() => {
+    fetch('http://localhost:3000/api/course')
+      .then(resp => resp.json())
+      .then(data => setCourse(data))
+      .catch(error => console.log(error));
+  }, [])
+
   return (
     <article>
       {/* hero */}
@@ -29,12 +40,12 @@ export default function Home() {
 
         {/* card container */}
         <div className="flex flex-wrap justify-center items-center gap-5 mt-4">
-          {Courses.filter(item => item.favourite === true).map((course, index) => 
-            <CourseCard key={index} cover_image={course.cover_image} w={280} h={100}>
+          {course?.filter(item => item.favourite === true).map(course => 
+            <CourseCard key={course.id} cover_image={course.cover_image || "/course_banner.jpg"} w={280} h={100}>
               <h4 className="line-clamp-1">{course.title}</h4>
               <p className="line-clamp-3">{course.description}</p>
               <div className="flex justify-between items-center">
-                <Button url={course.url} label="Read more"/>
+                <Button url={course.url || "/"} label="Read more"/>
                 <span className="text-red-500 animate-bounce">{course.price}</span>
               </div>
             </CourseCard>

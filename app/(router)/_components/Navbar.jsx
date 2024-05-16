@@ -26,10 +26,11 @@ export default function Navbar() {
 
         <ul className={`${toggleMenu ? 'right-0' : '-right-full'} fixed z-20 bg-[#eee] md:bg-transparent md:static top-20 p-5 flex flex-col md:flex-row items-start gap-3 w-full md:items-center md:w-auto ease-in-out duration-300`}>
             {menu.map(item => (
-                <Link key={item.url} href={item.url} className={`${path === item.url && "bg-purple-700 text-white"} flex gap-3 items-center py-2 px-3 text-[18px] text-slate-700 cursor-pointer hover:bg-purple-700 hover:text-slate-200 ease-in-out duration-300 rounded-md`} onClick={() => setToggleMenu(!toggleMenu)}>
+                <Link key={item.url} href={item.url} className={`${path === item.url && "bg-purple-500 text-white"} flex gap-3 items-center py-2 px-3 text-[18px] text-slate-700 cursor-pointer hover:bg-purple-500 hover:text-slate-200 ease-in-out duration-300 rounded-md`} onClick={() => setToggleMenu(!toggleMenu)}>
                     {item.label}
                 </Link>
             ))}
+            <Link href="/register" onClick={() => setToggleMenu(!toggleMenu)} className='btn'>Register</Link>
         </ul>
     </nav>
   )
