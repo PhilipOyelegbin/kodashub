@@ -1,14 +1,14 @@
 import Hero from "./_components/Hero";
 import Features from "./_components/Features";
 import Testimonials from "./_components/Testimonials";
-import Pricing from "./_components/Pricing";
+import Services from "./_components/Services";
 
 export default function Home() {
   return (
     <article>
       <Hero />
       <Features />
-      <Pricing />
+      <Services />
       <Testimonials />
     </article>
   );

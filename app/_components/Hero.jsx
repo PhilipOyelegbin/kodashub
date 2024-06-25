@@ -14,7 +14,10 @@ function Hero() {
           computing, web development, and data analytics to drive innovation,
           efficiency, and growth.
         </p>
-        <Button url='/' label='Get In Touch' />
+        <Button
+          url='mailto: contact@philipoyelegbin.com.ng'
+          label='Get In Touch'
+        />
       </div>
       <div className='hidden lg:flex justify-center w-1/2 h-full'>
         <Image

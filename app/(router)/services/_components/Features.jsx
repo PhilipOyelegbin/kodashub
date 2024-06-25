@@ -4,7 +4,7 @@ import { FaCube } from "react-icons/fa";
 function Features() {
   return (
     <section className='py-10 px-5 lg:px-20'>
-      <h3 className='text-center'>Empowering Education with Our Features</h3>
+      <h3 className='text-center'>Enhancing Efficiency and Scalability</h3>
       <p className='text-center mt-2'>
         Discover the key features that make{" "}
         <span className='text-purple-500 font-bold'>KodasHub</span> stand out

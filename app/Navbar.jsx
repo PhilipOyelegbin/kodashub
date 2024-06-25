@@ -35,20 +35,13 @@ export default function Navbar() {
             key={item.url}
             href={item.url}
             className={`${
-              path === item.url && "text-purple-500"
-            } flex gap-3 items-center py-2 px-3 text-[18px] text-slate-700 cursor-pointer hover:text-purple-500 ease-in-out duration-300 rounded-md`}
+              path === item.url ? "text-purple-500" : "text-slate-700"
+            } flex gap-3 items-center py-2 px-3 text-[18px] cursor-pointer hover:text-purple-500 ease-in-out duration-300 rounded-md`}
             onClick={() => setToggleMenu(!toggleMenu)}
           >
             {item.label}
           </Link>
         ))}
-        <Link
-          href='/register'
-          onClick={() => setToggleMenu(!toggleMenu)}
-          className='btn'
-        >
-          Register
-        </Link>
         <FaTimes
           className='mx-auto md:hidden cursor-pointer h-6 w-6 text-purple-700'
           onClick={() => setToggleMenu(!toggleMenu)}
