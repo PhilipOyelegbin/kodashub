@@ -16,7 +16,7 @@ function Features() {
             borderRadius: "116px 0px",
           }}
         >
-          <FaCube className='w-6 h-6' />
+          <FaCube className='w-16 h-16 text-purple-500' />
           <div>
             <h4>Cost Optimization</h4>
             <p>Engage students with interactive content and activities</p>
@@ -28,7 +28,7 @@ function Features() {
             borderRadius: "116px 0px",
           }}
         >
-          <FaCube className='w-6 h-6' />
+          <FaCube className='w-16 h-16 text-purple-500' />
           <div>
             <h4>Enhanced Security</h4>
             <p>Monitor student progress and performance in real-time</p>
@@ -40,7 +40,7 @@ function Features() {
             borderRadius: "116px 0px",
           }}
         >
-          <FaCube className='w-6 h-6' />
+          <FaCube className='w-16 h-16 text-purple-500' />
           <div>
             <h4>Streamlined Operations</h4>
             <p>Facilitate collaboration among students and teachers</p>
@@ -52,7 +52,7 @@ function Features() {
             borderRadius: "116px 0px",
           }}
         >
-          <FaCube className='w-6 h-6' />
+          <FaCube className='w-16 h-16 text-purple-500' />
           <div>
             <h4>Performance and Reliability</h4>
             <p>Access learning materials on-the-go with mobile support</p>
@@ -64,7 +64,7 @@ function Features() {
             borderRadius: "116px 0px",
           }}
         >
-          <FaCube className='w-6 h-6' />
+          <FaCube className='w-16 h-16 text-purple-500' />
           <div>
             <h4>Scalability and Flexibility</h4>
             <p>Access learning materials on-the-go with mobile support</p>
@@ -76,7 +76,7 @@ function Features() {
             borderRadius: "116px 0px",
           }}
         >
-          <FaCube className='w-6 h-6' />
+          <FaCube className='w-16 h-16 text-purple-500' />
           <div>
             <h4>Monitoring and Support</h4>
             <p>Access learning materials on-the-go with mobile support</p>

@@ -9,7 +9,7 @@ function Testimonials() {
         {TestimonialData.map((list, index) => (
           <figure
             key={index}
-            className='flex gap-2 max-w-[350px] rounded-md hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-300 p-3'
+            className='flex gap-2 max-w-[350px] rounded-xl hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-200 p-3'
           >
             <Image
               src={list.cover_image}

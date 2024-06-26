@@ -27,13 +27,28 @@ export default function Footer() {
           </ul>
         </div>
         <div className='flex gap-5 items-center text-2xl'>
-          <Link href='/' target='_blank' rel='noopener noreferrer'>
+          <Link
+            href='/'
+            target='_blank'
+            className='hover:text-purple-700'
+            rel='noopener noreferrer'
+          >
             <FaLinkedin />
           </Link>
-          <Link href='/' target='_blank' rel='noopener noreferrer'>
+          <Link
+            href='/'
+            target='_blank'
+            className='hover:text-purple-700'
+            rel='noopener noreferrer'
+          >
             <FaFacebook />
           </Link>
-          <Link href='/' target='_blank' rel='noopener noreferrer'>
+          <Link
+            href='/'
+            target='_blank'
+            className='hover:text-purple-700'
+            rel='noopener noreferrer'
+          >
             <FaTwitter />
           </Link>
         </div>
