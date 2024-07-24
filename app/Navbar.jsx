@@ -42,6 +42,9 @@ export default function Navbar() {
             {item.label}
           </Link>
         ))}
+        <Link href='/login' className='btn'>
+          Login
+        </Link>
         <FaTimes
           className='mx-auto md:hidden cursor-pointer h-6 w-6 text-purple-700'
           onClick={() => setToggleMenu(!toggleMenu)}
