@@ -1,13 +1,11 @@
-import Link from "next/link";
+import { Domains } from "./_components/Domains";
+import { Hostings } from "./_components/Hostings";
 
 const Dashboard = () => {
   return (
     <article>
-      <Link href='/' target='_parent'>
-        Home
-      </Link>
-      <h1>Dashboard</h1>
-      <p>Welcome to the Dashboard!</p>
+      <Hostings />
+      <Domains />
     </article>
   );
 };

@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const LoginForm = () => {
+  const route = useRouter();
   const [user, setUser] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
@@ -11,6 +13,7 @@ export const LoginForm = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
+    route.replace("/user");
   };
 
   return (

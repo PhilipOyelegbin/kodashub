@@ -1,8 +1,10 @@
+import { Global } from "./Global";
+
 export default function DashboardLayout({ children }) {
   return (
     <html lang='en'>
       <body>
-        <main>{children}</main>
+        <Global children={children} />
       </body>
     </html>
   );
