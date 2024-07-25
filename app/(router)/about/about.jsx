@@ -1,7 +1,7 @@
 import WhoWeAre from "./_components/WhoWeAre";
 import Teams from "./_components/Teams";
 
-function AboutPage() {
+function About() {
   return (
     <article>
       <div className='w-full md:w-1/2 rounded-br-full px-5 lg:px-20 text-slate-200 bg-purple-700'>
@@ -13,4 +13,4 @@ function AboutPage() {
   );
 }
 
-export default AboutPage;
+export default About;

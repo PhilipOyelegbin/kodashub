@@ -13,7 +13,7 @@ function Testimonials() {
           >
             <Image
               src={list.cover_image}
-              className='rounded-full aspect-square'
+              className='rounded-full w-[80px] aspect-square'
               width={100}
               height={100}
               alt='avatar'
