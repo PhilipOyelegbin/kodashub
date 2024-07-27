@@ -4,7 +4,7 @@ export default function DashboardLayout({ children }) {
   return (
     <html lang='en'>
       <body>
-        <Global children={children} />
+        <Global>{children}</Global>
       </body>
     </html>
   );
