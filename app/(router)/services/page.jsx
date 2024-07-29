@@ -1,6 +1,7 @@
 import Services from "./_components/Services";
 import HostPricing from "./_components/HostPricing";
 import WebPricing from "./_components/WebPricing";
+import { FAQ } from "./_components/FAQ";
 
 function Service() {
   return (
@@ -11,6 +12,7 @@ function Service() {
       <Services />
       <WebPricing />
       <HostPricing />
+      <FAQ />
     </article>
   );
 }

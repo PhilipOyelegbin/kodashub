@@ -98,17 +98,20 @@ export const Testimonials = [
     summary:
       "KodasHub have great instructors who knows their onions at their disposal.",
     cover_image: "/male.jpg",
+    rating: 5,
   },
   {
     name: "Sparklewise",
     summary:
       "KodasHub have great instructors who knows their onions at their disposal.",
     cover_image: "/female.jpg",
+    rating: 5,
   },
   {
     name: "WAO",
     summary:
       "KodasHub have great instructors who knows their onions at their disposal.",
     cover_image: "/male.jpg",
+    rating: 5,
   },
 ];

@@ -11,7 +11,7 @@ export const Global = ({ children }) => {
 
   return (
     <div className='relative flex gap-1 items-start'>
-      <Sidebar toggle={toggle} />
+      <Sidebar toggle={toggle} handleToggle={handleToggle} />
       <div className='w-full'>
         <Header handleToggle={handleToggle} />
         <main className='h-screen p-5'>{children}</main>

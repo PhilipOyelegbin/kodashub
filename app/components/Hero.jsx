@@ -11,9 +11,8 @@ function Hero() {
           Solutions
         </h1>
         <h5 className='mb-5'>
-          Your go-to web hosting provider offering reliable, secure, and
-          affordable hosting solutions. Whether you’re launching a personal blog
-          or a business website.
+          Experience unparalleled web hosting and development services tailored
+          to your needs. Join us and elevate your online presence.
         </h5>
         <Button url='/register' label='Get Started' />
       </div>

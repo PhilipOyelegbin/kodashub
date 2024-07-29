@@ -2,9 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBackward } from "react-icons/fa";
+import { FaBackward, FaTimes } from "react-icons/fa";
 
-export const Sidebar = ({ toggle }) => {
+export const Sidebar = ({ toggle, handleToggle }) => {
   const path = usePathname();
   const sideLinks = [
     { url: "/user", title: "Dashboard" },
@@ -16,10 +16,16 @@ export const Sidebar = ({ toggle }) => {
   return (
     <aside
       className={`${
-        toggle ? "left-0 static" : "-left-full fixed"
-      } p-5 h-screen shadow-md duration-300 ease-linear`}
+        toggle ? "left-0 absolute md:static" : "-left-full fixed"
+      } p-5 h-screen shadow-md duration-300 ease-linear bg-white`}
     >
       <div className='text-center mb-5'>
+        <div className='w-full flex justify-end mb-5 text-2xl right-5 md:hidden'>
+          <FaTimes
+            className='cursor-pointer text-purple-500'
+            onClick={handleToggle}
+          />
+        </div>
         <Image
           src='/male.jpg'
           className='w-20 border-2 border-purple-500 aspect-square rounded-full'
