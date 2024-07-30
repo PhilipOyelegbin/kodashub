@@ -14,7 +14,9 @@ export const Global = ({ children }) => {
       <Sidebar toggle={toggle} handleToggle={handleToggle} />
       <div className='w-full'>
         <Header handleToggle={handleToggle} />
-        <main className='h-screen p-5'>{children}</main>
+        <main className='h-screen p-5 overflow-x-scroll scroll-m-0'>
+          {children}
+        </main>
       </div>
     </div>
   );
