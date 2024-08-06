@@ -1,7 +1,9 @@
+import { Hostings } from "../user/_components/Hostings";
+
 const Hosting = () => {
   return (
     <article>
-      <h1>Hosting</h1>
+      <Hostings />
     </article>
   );
 };

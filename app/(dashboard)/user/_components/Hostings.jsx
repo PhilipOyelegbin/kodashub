@@ -41,7 +41,9 @@ export const Hostings = () => {
             <p>{list.plan}</p>
             <p>{list.domain}</p>
             <p>{list.expiration}</p>
-            <p className='px-5 py-2 border rounded-2xl w-fit'>{list.status}</p>
+            <p className='px-5 py-2 border rounded-2xl w-fit bg-lime-500 text-white'>
+              {list.status}
+            </p>
           </Link>
         ))}
       </div>

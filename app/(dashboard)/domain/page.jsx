@@ -1,7 +1,9 @@
+import { Domains } from "../user/_components/Domains";
+
 const Domain = () => {
   return (
     <article>
-      <h1>Domain</h1>
+      <Domains />
     </article>
   );
 };

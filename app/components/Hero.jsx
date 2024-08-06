@@ -1,5 +1,11 @@
-import Image from "next/image";
 import Button from "./Button";
+import {
+  FaDrupal,
+  FaJoomla,
+  FaMagento,
+  FaOpencart,
+  FaWordpress,
+} from "react-icons/fa";
 
 function Hero() {
   return (
@@ -14,7 +20,14 @@ function Hero() {
           Experience unparalleled web hosting and development services tailored
           to your needs. Join us and elevate your online presence.
         </h5>
-        <Button url='/register' label='Get Started' />
+        <Button url='/services' label='Get Started' />
+        <div className='mt-10 grid grid-cols-5 gap-10 text-3xl md:text-6xl'>
+          <FaWordpress />
+          <FaDrupal />
+          <FaJoomla />
+          <FaMagento />
+          <FaOpencart />
+        </div>
       </div>
     </header>
   );

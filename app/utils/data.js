@@ -96,22 +96,122 @@ export const Testimonials = [
   {
     name: "Lomolink",
     summary:
-      "KodasHub have great instructors who knows their onions at their disposal.",
+      "KodasHub transformed our website with their exceptional development team. Highly recommend!",
     cover_image: "/male.jpg",
     rating: 5,
   },
   {
     name: "Sparklewise",
     summary:
-      "KodasHub have great instructors who knows their onions at their disposal.",
+      "Outstanding service and support. KodasHub is the best choice for web hosting.",
     cover_image: "/female.jpg",
     rating: 5,
   },
   {
     name: "WAO",
     summary:
-      "KodasHub have great instructors who knows their onions at their disposal.",
+      "Professional and reliable. Our website's performance has improved significantly.",
     cover_image: "/male.jpg",
     rating: 5,
+  },
+];
+
+export const DesignPlans = [
+  {
+    name: "Basic Plan",
+    price: "N500,000",
+    description:
+      "Perfect for small scale businesses like blogging and service rendering.",
+    features: [
+      "Domain Purchase",
+      "Web Design & Development",
+      "Free SSL",
+      "Free Consultation",
+      "Bronze Hosting Plan",
+    ],
+  },
+  {
+    name: "Pro Plan",
+    price: "N1,000,000",
+    description: "Designed for medium scale businesses like Ecommerce.",
+    features: [
+      "Domain Purchase",
+      "Web Design & Development",
+      "Free SSL",
+      "Free Consultation",
+      "Silver Hosting Plan",
+    ],
+  },
+  {
+    name: "Executive Plan",
+    price: "N1,700,000",
+    description:
+      "Tailored for large scale businesses like B2B services and SaSS Projects.",
+    features: [
+      "Domain Purchase",
+      "Web Design & Development",
+      "Free SSL",
+      "Free Consultation",
+      "Gold Hosting Plan",
+    ],
+  },
+];
+
+export const HostingPlans = [
+  {
+    name: "Plastic Plan",
+    price: "N1,000",
+    description: "Perfect for portfolio or landing page website",
+    features: [
+      "1/1 Domain and Subdomain",
+      "5GB Storage",
+      "30GB Bandwith",
+      "Free SSL",
+      "5 Email Accounts",
+      "1GB Email Quota",
+      "99.9% Uptime Guarantee",
+    ],
+  },
+  {
+    name: "Bronze Plan",
+    price: "N5,000",
+    description: "Designated for small and medium scale business",
+    features: [
+      "2/2 Domain and Subdomain",
+      "10GB Storage",
+      "30GB Bandwith",
+      "Free SSL",
+      "12 Email Accounts",
+      "4GB Email Quota",
+      "99.9% Uptime Guarantee",
+    ],
+  },
+  {
+    name: "Silver Plan",
+    price: "N10,000",
+    description: "Designed for fast growing organizations",
+    features: [
+      "4/4 Domain and Subdomain",
+      "18GB Storage",
+      "50GB Bandwith",
+      "Free SSL",
+      "20 Email Accounts",
+      "10GB Email Quota",
+      "99.9% Uptime Guarantee",
+    ],
+  },
+  {
+    name: "Gold Plan",
+    price: "N20,000",
+    description: "Tailored for large businesslike Ecommerce store",
+    features: [
+      "7/7 Domain and Subdomain",
+      "30GB Storage",
+      "100GB Bandwith",
+      "Free SSL",
+      "Unlimited Email Accounts",
+      "Unlimited Email Quota",
+      "99.9% Uptime Guarantee",
+    ],
   },
 ];

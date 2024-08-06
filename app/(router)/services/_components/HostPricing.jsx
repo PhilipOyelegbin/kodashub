@@ -1,72 +1,65 @@
-import { FaCube } from "react-icons/fa";
+"use client";
+import { HostingPlans } from "@/app/utils/data";
+import { FaCheckCircle } from "react-icons/fa";
+import { HostingModal } from "./Modal";
 
 function HostPricing() {
+  const handleOrder = (name, price) => {
+    const recipient = "contact@philipoyelegbin.com.ng";
+    const subject = "KodasHub: New Hosting Order Placed";
+    const message = `
+    Hello,
+
+    You recently placed an order for ${name} of the price ${price}.
+
+    Kindly make payment to the account details below to complete your order. Once done respond to this mail with the proof of payment.
+
+    - Account Name: KH_HQ
+    - Account Number: 24039080598509595
+    - Bank Name: Zenith Bank
+
+    We hope to hear from you soon.
+    
+    Kindly regards,
+
+    KodasHub Billing Team.
+    `;
+    const data = { recipient, subject, message };
+    fetch("/api/mailer", { method: "POST", body: JSON.stringify(data) })
+      .then((resp) => console.log(resp.json()))
+      .catch((err) => console.log(err));
+  };
+
   return (
     <section className='py-10 px-5 lg:px-20'>
-      <h3 className='text-center'>
-        Choose Your Ideal Pricing Plan for Effective Host Server
-      </h3>
+      <h3 className='text-center'>Choose Your Web Hosting Plan</h3>
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-center mt-4 gap-5'>
-        <div className='flex flex-col gap-2 rounded-xl border border-purple-500 p-5 hover:bg-purple-500 hover:text-slate-200 duration-300 ease-linear'>
-          <div className='border-b-2 border-slate-300 pb-3'>
-            <h4>Plastic Plan</h4>
-            <h4 className='py-3'>₦1,000/month</h4>
-            <p>Perfect for portfolio or landing page website</p>
+        {HostingPlans.map((item) => (
+          <div
+            className='flex flex-col gap-2 rounded-xl border border-purple-200 p-5 hover:bg-purple-500 hover:text-slate-200 duration-300 ease-linear relative'
+            key={item.name}
+          >
+            <div className='h-32 border-b-2 border-slate-300 pb-3'>
+              <h4>{item.name}</h4>
+              <h4 className='py-3'>{item.price}/mo</h4>
+              <p>{item.description}</p>
+            </div>
+            <ul className='space-y-3 list-inside list-disc font-light'>
+              {item.features.map((list, index) => (
+                <li className='flex items-center gap-1' key={index}>
+                  <FaCheckCircle className='text-purple-900 text-xl' /> {list}
+                </li>
+              ))}
+            </ul>
+            <button
+              className='btn'
+              onClick={() => handleOrder(item.name, item.price)}
+            >
+              Purchase
+            </button>
+            <HostingModal />
           </div>
-          <ul className='list-inside list-disc font-light'>
-            <li>1/1 domain and subdomain</li>
-            <li>5 Gb Storage</li>
-            <li>30 Gb Bandwith</li>
-            <li>Free SSL</li>
-            <li>5 email accounts</li>
-            <li>1GB email quota</li>
-          </ul>
-        </div>
-        <div className='flex flex-col gap-2 rounded-xl border border-purple-500 p-5 hover:bg-purple-500 hover:text-slate-200 duration-300 ease-linear'>
-          <div className='border-b-2 border-slate-300 pb-3'>
-            <h4>Bronze Plan</h4>
-            <h4 className='py-3'>₦5,000/month</h4>
-            <p>Designated for small and medium scale business</p>
-          </div>
-          <ul className='list-inside list-disc font-light'>
-            <li>2/2 domain and subdomain</li>
-            <li>10 Gb Storage</li>
-            <li>30 Gb Bandwith</li>
-            <li>Free SSL</li>
-            <li>12 email accounts</li>
-            <li>4GB email quota</li>
-          </ul>
-        </div>
-        <div className='flex flex-col gap-2 rounded-xl border border-purple-500 p-5 hover:bg-purple-500 hover:text-slate-200 duration-300 ease-linear'>
-          <div className='border-b-2 border-slate-300 pb-3'>
-            <h4>Silver Plan</h4>
-            <h4 className='py-3'>₦10,000/month</h4>
-            <p>Designed for fast growing organizations</p>
-          </div>
-          <ul className='list-inside list-disc font-light'>
-            <li>4/4 domain and subdomain</li>
-            <li>18 Gb Storage</li>
-            <li>50 Gb Bandwith</li>
-            <li>Free SSL</li>
-            <li>20 email accounts</li>
-            <li>10GB email quota</li>
-          </ul>
-        </div>
-        <div className='flex flex-col gap-2 rounded-xl border border-purple-500 p-5 hover:bg-purple-500 hover:text-slate-200 duration-300 ease-linear'>
-          <div className='border-b-2 border-slate-300 pb-3'>
-            <h4>Gold Plan</h4>
-            <h4 className='py-3'>₦20,000/month</h4>
-            <p>Tailored for large businesslike Ecommerce store.</p>
-          </div>
-          <ul className='list-inside list-disc font-light'>
-            <li>7/7 domain and subdomain</li>
-            <li>30 Gb Storage</li>
-            <li>100 Gb Bandwith</li>
-            <li>Free SSL</li>
-            <li>unlimited email accounts</li>
-            <li>unlimited email quota</li>
-          </ul>
-        </div>
+        ))}
       </div>
     </section>
   );
