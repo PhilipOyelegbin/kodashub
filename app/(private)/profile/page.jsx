@@ -1,11 +1,11 @@
-import { Biography } from "./_components/Biography";
+import { UpdatePassword } from "./_components/UpdatePassword";
 import { User } from "./_components/User";
 
 const Profile = () => {
   return (
     <article>
       <User />
-      <Biography />
+      <UpdatePassword />
     </article>
   );
 };

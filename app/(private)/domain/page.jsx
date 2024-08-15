@@ -1,4 +1,4 @@
-import { Domains } from "../user/_components/Domains";
+import { Domains } from "../dashboard/_components/Domains";
 
 const Domain = () => {
   return (

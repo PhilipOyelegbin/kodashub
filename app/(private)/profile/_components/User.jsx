@@ -1,54 +1,68 @@
 "use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export const RegisterForm = () => {
-  const navigate = useRouter();
+export const User = () => {
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
     email: "",
     phone_number: "",
-    password: "",
+    profile: {
+      bio: "",
+      gender: "",
+    },
   });
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = async (e) => {
+  const handleUpdate = async (e) => {
     try {
       e.preventDefault();
-      const response = await fetch("/api/users", {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `/api/users/${sessionStorage.getItem("user")}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(user),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
-        setUser({
-          first_name: "",
-          last_name: "",
-          email: "",
-          phone_number: "",
-          password: "",
-        });
-        navigate.push("/login");
+        toast.success("Profile saves successfully");
       } else {
-        toast.error("An error occurred during registration.");
+        toast.error("An error occurred during update.");
       }
     } catch (error) {
-      toast.error("Registration failed!");
+      toast.error(error);
     }
   };
 
+  useLayoutEffect(() => {
+    fetch(`/api/users/${sessionStorage.getItem("user")}`)
+      .then((resp) => resp.json())
+      .then((result) =>
+        setUser({
+          first_name: result?.data?.first_name,
+          last_name: result?.data?.last_name,
+          email: result?.data?.email,
+          phone_number: result?.data?.phone_number,
+          profile: {
+            bio: result?.data?.profile?.bio,
+            gender: result?.data?.profile?.gender,
+          },
+        })
+      )
+      .catch((error) => toast.error(error));
+  }, []);
+
   return (
-    <form onSubmit={handleRegister} className='auth-form'>
+    <form onSubmit={handleUpdate} className='auth-form'>
       <h3>Get Started with us!</h3>
       <div className='form-group'>
         <label htmlFor='first_name'>First name</label>
@@ -60,7 +74,6 @@ export const RegisterForm = () => {
           value={user.first_name}
           onChange={handleChange}
           placeholder='Ada'
-          required
         />
       </div>
       <div className='form-group'>
@@ -73,7 +86,6 @@ export const RegisterForm = () => {
           value={user.last_name}
           onChange={handleChange}
           placeholder='Pamilerin'
-          required
         />
       </div>
       <div className='form-group'>
@@ -85,8 +97,8 @@ export const RegisterForm = () => {
           className='p-2 rounded-md border w-full'
           value={user.email}
           onChange={handleChange}
+          readOnly
           placeholder='adapam@gmail.com'
-          required
         />
       </div>
       <div className='form-group'>
@@ -99,32 +111,34 @@ export const RegisterForm = () => {
           value={user.phone_number}
           onChange={handleChange}
           placeholder='+2348123456789'
-          required
         />
       </div>
       <div className='form-group'>
-        <label htmlFor='password'>Password</label>
+        <label htmlFor='bio'>Biography</label>
         <input
-          type='password'
-          name='password'
-          id='password'
+          type='text'
+          name='bio'
+          id='bio'
           className='p-2 rounded-md border w-full'
-          value={user.password}
+          value={user.profile.bio}
           onChange={handleChange}
-          placeholder='XXXXXXXXXX'
-          required
+          placeholder='Write your short biography here...'
         />
       </div>
-      <div className='flex gap-2 my-5'>
-        <input type='checkbox' name='terms' id='terms' required />
-        <label htmlFor='terms'>
-          Accept our{" "}
-          <Link href='/' className='text-purple-500'>
-            Terms of service
-          </Link>
-        </label>
+      <div className='form-group'>
+        <label htmlFor='gender'>Gender</label>
+        <input
+          type='text'
+          name='gender'
+          id='gender'
+          className='p-2 rounded-md border w-full'
+          value={user.profile.gender}
+          onChange={handleChange}
+          placeholder='Female'
+        />
       </div>
-      <button className='btn'>Sign Up</button>
+
+      <button className='btn'>Save</button>
       <ToastContainer
         position='top-right'
         autoClose={2000}

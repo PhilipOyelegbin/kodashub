@@ -2,9 +2,14 @@
 import { useState } from "react";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
+import { useSession } from "next-auth/react";
 
 export const Global = ({ children }) => {
   const [toggle, setToggle] = useState(false);
+  const { data: session } = useSession();
+
+  sessionStorage.setItem("user", session?.user?.email);
+
   const handleToggle = () => {
     setToggle(!toggle);
   };

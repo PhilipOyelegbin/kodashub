@@ -1,4 +1,5 @@
 "use client";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -7,11 +8,17 @@ import { FaBackward, FaTimes } from "react-icons/fa";
 export const Sidebar = ({ toggle, handleToggle }) => {
   const path = usePathname();
   const sideLinks = [
-    { url: "/user", title: "Dashboard" },
+    { url: "/dashboard", title: "Dashboard" },
     { url: "/hosting", title: "Hosting" },
     { url: "/domain", title: "Domain" },
     { url: "/billing", title: "Billing" },
+    { url: "/profile", title: "Profile" },
   ];
+
+  const handleSignOut = async () => {
+    await signOut({ redirect: true, callbackUrl: "/" });
+    sessionStorage.clear();
+  };
 
   return (
     <aside
@@ -33,7 +40,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
           height={100}
           alt='profile image'
         />
-        <h5>Full name</h5>
+        <h5 className='text-wrap w-full'>{sessionStorage.getItem("user")}</h5>
       </div>
 
       <hr />
@@ -52,7 +59,10 @@ export const Sidebar = ({ toggle, handleToggle }) => {
             {list.title}
           </Link>
         ))}
-        <p className='flex items-center gap-1 border-b border-red-500 w-fit cursor-pointer text-red-500 hover:text-red-300 hover:border-red-300 duration-300 ease-linear'>
+        <p
+          className='flex items-center gap-1 border-b border-red-500 w-fit cursor-pointer text-red-500 hover:text-red-300 hover:border-red-300 duration-300 ease-linear'
+          onClick={handleSignOut}
+        >
           <FaBackward />
           Logout
         </p>

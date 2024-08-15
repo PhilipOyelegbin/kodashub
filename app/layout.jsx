@@ -2,6 +2,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { AuthProvider } from "./utils/AuthProvider";
+import { getServerSession } from "next-auth";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["300", "500", "700"] });
 
@@ -52,13 +54,17 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await getServerSession();
+
   return (
     <html lang='en'>
       <body className={poppins.className}>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <AuthProvider session={session}>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { Hostings } from "../user/_components/Hostings";
+import { Hostings } from "../dashboard/_components/Hostings";
 
 const Hosting = () => {
   return (

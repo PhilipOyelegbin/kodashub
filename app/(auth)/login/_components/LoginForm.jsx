@@ -1,23 +1,48 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const LoginForm = () => {
   const route = useRouter();
+  const session = useSession();
   const [user, setUser] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    route.replace("/user");
+  const handleLogin = async (e) => {
+    try {
+      e.preventDefault();
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: user.email,
+        password: user.password,
+      });
+
+      if (res?.error) {
+        toast.error("Invalid details!");
+      } else if (res?.url) {
+        route.replace("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error during sign-in:", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    }
   };
 
+  useLayoutEffect(() => {
+    if (session?.status === "authenticated") {
+      route.replace("/dashboard");
+    }
+  }, [session, route]);
+
   return (
-    <form action='' onSubmit={handleLogin} className='auth-form'>
+    <form onSubmit={handleLogin} className='auth-form'>
       <h3>Welcome back!</h3>
       <div className='form-group'>
         <label htmlFor='email'>Email</label>
@@ -51,6 +76,13 @@ export const LoginForm = () => {
           Forgot password?
         </Link>
       </div>
+      <ToastContainer
+        position='top-right'
+        autoClose={2000}
+        closeOnClick
+        pauseOnFocusLoss
+        pauseOnHover
+      />
     </form>
   );
 };
