@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { first_name, last_name, email, phone_number, password } =
+    const { first_name, last_name, email, phone_number, password, profile } =
       await req.json();
 
     const existingUser = await prisma.user.findFirst({
@@ -19,18 +19,27 @@ export async function POST(req) {
 
     const hashedPassword = await bcryptjs.hash(password, 12);
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         first_name,
         last_name,
         email,
         phone_number,
         password: hashedPassword,
+        profile: {
+          create: { bio: profile?.bio, gender: profile?.gender },
+        },
+      },
+      include: {
+        profile: true,
+        domains: true,
+        services: true,
+        invoices: true,
       },
     });
 
     return NextResponse.json(
-      { message: "Saved successfully" },
+      { message: "Saved successfully", user },
       { status: 200 }
     );
   } catch (error) {
@@ -40,7 +49,14 @@ export async function POST(req) {
 
 export async function GET() {
   try {
-    const result = await prisma.user.findMany();
+    const result = await prisma.user.findMany({
+      include: {
+        profile: true,
+        domains: true,
+        services: true,
+        invoices: true,
+      },
+    });
     return NextResponse.json(
       { message: "User fetched successfully", data: result },
       { status: 200 }

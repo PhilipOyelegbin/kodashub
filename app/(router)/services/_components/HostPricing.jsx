@@ -4,6 +4,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function HostPricing() {
   const session = useSession();

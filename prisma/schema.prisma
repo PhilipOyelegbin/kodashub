@@ -9,52 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
   directUrl = env("POSTGRES_URL_NON_POOLING")
-}
-
-model Invoice {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String   @db.VarChar(255)
-  price     String?
-  status    Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @unique @default(uuid())
-}
-
-model Domain {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String   @db.VarChar(255)
-  price     String?
-  status    Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @unique @default(uuid())
-}
-
-model Service {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String   @db.VarChar(255)
-  price     String?
-  status    Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  String   @unique @default(uuid())
-}
-
-model Profile {
-  id        String   @id @default(uuid())
-  bio       String?
-  gender    String?
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model User {
@@ -70,4 +27,47 @@ model User {
   profile      Profile?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  bio       String?
+  gender    String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id        String   @id @default(uuid())
+  content   String?  @db.VarChar(255)
+  price     String?
+  status    Boolean? @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Domain {
+  id        String   @id @default(uuid())
+  content   String?  @db.VarChar(255)
+  price     String?
+  status    Boolean? @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id        String   @id @default(uuid())
+  content   String?  @db.VarChar(255)
+  price     String?
+  status    Boolean? @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

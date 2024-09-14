@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 export async function PUT(req, params) {
   try {
     const { password, ...data } = await req.json();
-    console.log(data);
     const {
       params: { email },
     } = params;
@@ -19,7 +18,14 @@ export async function PUT(req, params) {
 
     const existingUser = await prisma.user.findUnique({
       where: { email },
+      include: {
+        profile: true,
+        domains: true,
+        services: true,
+        invoices: true,
+      },
     });
+
     if (!existingUser) {
       return NextResponse.json(
         { message: "User does not exist" },
@@ -38,12 +44,17 @@ export async function PUT(req, params) {
     } else {
       await prisma.user.update({
         where: { email },
-        data: data,
+        data: {
+          ...data,
+          profile: {
+            update: { ...data.profile },
+          },
+        },
       });
     }
 
     return NextResponse.json(
-      { message: "Saved successfully" },
+      { message: "Updated successfully" },
       { status: 200 }
     );
   } catch (error) {
@@ -64,7 +75,15 @@ export async function GET(req, params) {
       );
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        profile: true,
+        domains: true,
+        services: true,
+        invoices: true,
+      },
+    });
 
     if (!existingUser) {
       return NextResponse.json(
@@ -98,7 +117,15 @@ export async function DELETE(req, params) {
       );
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email } });
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        profile: true,
+        domains: true,
+        services: true,
+        invoices: true,
+      },
+    });
 
     if (!existingUser) {
       return NextResponse.json(
@@ -107,7 +134,18 @@ export async function DELETE(req, params) {
       );
     }
 
-    await prisma.user.delete({ where: { email } });
+    // delete the data of the user profile
+    const profile = await prisma.profile.delete({
+      where: { id: existingUser.profile.id },
+    });
+
+    // delete the data of other users relatinship conditionally
+    if (prisma.invoice) {
+      const invoice = await prisma.invoice.deleteMany();
+    }
+
+    // delete the user
+    const user = await prisma.user.delete({ where: { email } });
 
     return NextResponse.json(
       { message: "User deleted successfully" },
@@ -115,7 +153,7 @@ export async function DELETE(req, params) {
     );
   } catch (error) {
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Internal Server Error", error },
       { status: 500 }
     );
   }
