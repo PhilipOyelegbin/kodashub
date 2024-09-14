@@ -1,4 +1,3 @@
-import React from "react";
 import { FaCube } from "react-icons/fa";
 
 function Features() {

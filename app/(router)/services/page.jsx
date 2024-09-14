@@ -1,20 +1,20 @@
-import Features from "./_components/Features";
 import Services from "./_components/Services";
-import CloudPricing from "./_components/CloudPricing";
+import HostPricing from "./_components/HostPricing";
 import WebPricing from "./_components/WebPricing";
+import { FAQ } from "./_components/FAQ";
 
-function page() {
+function Service() {
   return (
     <article>
       <div className='w-full md:w-1/2 rounded-br-full px-5 lg:px-20 text-slate-200 bg-purple-700'>
         <h1>Services</h1>
       </div>
       <Services />
-      <Features />
       <WebPricing />
-      <CloudPricing />
+      <HostPricing />
+      <FAQ />
     </article>
   );
 }
 
-export default page;
+export default Service;

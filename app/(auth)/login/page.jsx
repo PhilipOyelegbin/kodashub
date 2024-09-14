@@ -1,14 +1,9 @@
-import Link from "next/link";
+import { LoginForm } from "./_components/LoginForm";
 
 const Login = () => {
   return (
-    <article>
-      <Link href='/' target='_parent'>
-        Go home
-      </Link>
-      <Link href='/register'>Register</Link>
-      <h1>Login</h1>
-      <p>Welcome to the Login form!</p>
+    <article className='bg-purple-100 h-screen flex justify-center items-center py-10 px-5 lg:px-20'>
+      <LoginForm />
     </article>
   );
 };

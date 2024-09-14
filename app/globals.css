@@ -33,4 +33,10 @@
   .form-input {
     @apply p-2 rounded-md border;
   }
+  .auth-form {
+    @apply bg-white md:w-2/3 lg:w-2/5 p-10 rounded-md;
+  }
+  .form-group {
+    @apply flex flex-col gap-2 my-2;
+  }
 }

@@ -1,32 +1,33 @@
-import Image from "next/image";
 import Button from "./Button";
+import {
+  FaDrupal,
+  FaJoomla,
+  FaMagento,
+  FaOpencart,
+  FaWordpress,
+} from "react-icons/fa";
 
 function Hero() {
   return (
-    <header className="flex items-center justify-between h-svh px-5 lg:px-20 bg-slate-700 bg-[url('/hero_bg.png')] bg-blend-overlay bg-center bg-cover bg-no-repeat">
-      <div className='flex flex-col items-center gap-3 text-center text-slate-200 lg:items-start lg:w-1/2 lg:text-left'>
+    <header className="flex items-center justify-center h-svh px-5 lg:px-20 bg-slate-900 bg-[url('/servers.jpg')] bg-blend-overlay bg-center bg-cover bg-no-repeat">
+      <div className='flex flex-col items-center gap-5 text-center text-slate-200 md:w-2/3 xl:w-2/5'>
         <h1>
-          Elevate Your Cloud Management for Enhanced{" "}
-          <span className='text-purple-700'>Efficiency</span>
+          <span className='text-purple-700'>Reliable</span> &{" "}
+          <span className='text-purple-700'>Affordable</span> Web Hosting
+          Solutions
         </h1>
-        <p>
-          Our mission is to help organizations harness the power of cloud
-          computing, web development, and data analytics to drive innovation,
-          efficiency, and growth.
-        </p>
-        <Button
-          url='mailto: contact@philipoyelegbin.com.ng'
-          label='Get In Touch'
-        />
-      </div>
-      <div className='hidden lg:flex justify-center w-1/2 h-full'>
-        <Image
-          src='/va.png'
-          className='object-fill w-full h-full'
-          width={300}
-          height={400}
-          alt='college-students'
-        />
+        <h5 className='mb-5'>
+          Experience unparalleled web hosting and development services tailored
+          to your needs. Join us and elevate your online presence.
+        </h5>
+        <Button url='/register' label='Get Started' />
+        <div className='mt-10 grid grid-cols-5 gap-10 text-3xl md:text-6xl'>
+          <FaWordpress />
+          <FaDrupal />
+          <FaJoomla />
+          <FaMagento />
+          <FaOpencart />
+        </div>
       </div>
     </header>
   );
