@@ -1,9 +1,0 @@
-[build]
-  functions = "functions"
-  command = "CI= npm run build"
-  publish = "out"
-  base = "app"
-
-[dev]
-  base = "app"
-  command = "next dev"
