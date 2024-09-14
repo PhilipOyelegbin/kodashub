@@ -2,8 +2,8 @@
   functions = "functions"
   command = "CI= npm run build"
   publish = "out"
-  base = "apps"
+  base = "app/web"
 
 [dev]
-  base = "apps"
+  base = "app/web"
   command = "next dev"
