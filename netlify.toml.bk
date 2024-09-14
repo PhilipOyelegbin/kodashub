@@ -1,8 +1,0 @@
-[build]
-  base = "/app"  # Adjust this path to your project structure
-  publish = "out"
-  command = "npm run build"
-
-[dev]
-  base = "/app"  # Adjust this path to your project structure
-  command = "next dev"
