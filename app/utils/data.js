@@ -160,7 +160,7 @@ export const DesignPlans = [
 export const HostingPlans = [
   {
     name: "Plastic Plan",
-    price: "N1,000",
+    price: "1,000",
     description: "Perfect for portfolio or landing page website",
     features: [
       "1/1 Domain and Subdomain",
@@ -174,7 +174,7 @@ export const HostingPlans = [
   },
   {
     name: "Bronze Plan",
-    price: "N5,000",
+    price: "5,000",
     description: "Designated for small and medium scale business",
     features: [
       "2/2 Domain and Subdomain",
@@ -188,7 +188,7 @@ export const HostingPlans = [
   },
   {
     name: "Silver Plan",
-    price: "N10,000",
+    price: "10,000",
     description: "Designed for fast growing organizations",
     features: [
       "4/4 Domain and Subdomain",
@@ -202,7 +202,7 @@ export const HostingPlans = [
   },
   {
     name: "Gold Plan",
-    price: "N20,000",
+    price: "20,000",
     description: "Tailored for large businesslike Ecommerce store",
     features: [
       "7/7 Domain and Subdomain",

@@ -9,9 +9,11 @@ export const Sidebar = ({ toggle, handleToggle }) => {
   const path = usePathname();
   const sideLinks = [
     { url: "/dashboard", title: "Dashboard" },
-    { url: "/hosting", title: "Hosting" },
-    { url: "/domain", title: "Domain" },
-    { url: "/billing", title: "Billing" },
+    { url: "/new_services", title: "Purchase Service" },
+    { url: "/hosting", title: "My Hosting" },
+    // { url: "/domain", title: "My Domain" },
+    { url: "/website", title: "My Website" },
+    { url: "/billing", title: "My Invoice" },
     { url: "/profile", title: "Profile" },
   ];
 
@@ -24,8 +26,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
     <aside
       className={`${
         toggle ? "left-0 absolute md:static" : "-left-full fixed"
-      } p-5 h-screen shadow-md duration-300 ease-linear bg-white`}
-    >
+      } p-5 h-screen shadow-md duration-300 ease-linear bg-white`}>
       <div className='text-center mb-5'>
         <div className='w-full flex justify-end mb-5 text-2xl right-5 md:hidden'>
           <FaTimes
@@ -54,15 +55,13 @@ export const Sidebar = ({ toggle, handleToggle }) => {
               path === list.url
                 ? "text-purple-500"
                 : "text-slate-700 duration-300 ease-linear hover:text-purple-400"
-            }
-          >
+            }>
             {list.title}
           </Link>
         ))}
         <p
           className='flex items-center gap-1 border-b border-red-500 w-fit cursor-pointer text-red-500 hover:text-red-300 hover:border-red-300 duration-300 ease-linear'
-          onClick={handleSignOut}
-        >
+          onClick={handleSignOut}>
           <FaBackward />
           Logout
         </p>

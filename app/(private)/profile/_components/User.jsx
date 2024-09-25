@@ -9,10 +9,6 @@ export const User = () => {
     last_name: "",
     email: "",
     phone_number: "",
-    profile: {
-      bio: "",
-      gender: "",
-    },
   });
 
   const handleChange = (e) => {
@@ -25,7 +21,7 @@ export const User = () => {
       const response = await fetch(
         `/api/users/${sessionStorage.getItem("user")}`,
         {
-          method: "PUT",
+          method: "PATCH",
           body: JSON.stringify(user),
           headers: {
             "Content-Type": "application/json",
@@ -111,30 +107,6 @@ export const User = () => {
           value={user.phone_number}
           onChange={handleChange}
           placeholder='+2348123456789'
-        />
-      </div>
-      <div className='form-group'>
-        <label htmlFor='bio'>Biography</label>
-        <input
-          type='text'
-          name='bio'
-          id='bio'
-          className='p-2 rounded-md border w-full'
-          value={user.profile.bio}
-          onChange={handleChange}
-          placeholder='Write your short biography here...'
-        />
-      </div>
-      <div className='form-group'>
-        <label htmlFor='gender'>Gender</label>
-        <input
-          type='text'
-          name='gender'
-          id='gender'
-          className='p-2 rounded-md border w-full'
-          value={user.profile.gender}
-          onChange={handleChange}
-          placeholder='Female'
         />
       </div>
 

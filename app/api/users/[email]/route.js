@@ -2,7 +2,7 @@ import { prisma } from "@/config/db";
 import bcryptjs from "bcryptjs";
 import { NextResponse } from "next/server";
 
-export async function PUT(req, params) {
+export async function PATCH(req, params) {
   try {
     const { password, ...data } = await req.json();
     const {
@@ -19,9 +19,8 @@ export async function PUT(req, params) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       include: {
-        profile: true,
-        domains: true,
-        services: true,
+        hosting: true,
+        development: true,
         invoices: true,
       },
     });
@@ -44,12 +43,7 @@ export async function PUT(req, params) {
     } else {
       await prisma.user.update({
         where: { email },
-        data: {
-          ...data,
-          profile: {
-            update: { ...data.profile },
-          },
-        },
+        data: { ...data },
       });
     }
 
@@ -78,9 +72,8 @@ export async function GET(req, params) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       include: {
-        profile: true,
-        domains: true,
-        services: true,
+        hosting: true,
+        development: true,
         invoices: true,
       },
     });
@@ -120,9 +113,8 @@ export async function DELETE(req, params) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       include: {
-        profile: true,
-        domains: true,
-        services: true,
+        hosting: true,
+        development: true,
         invoices: true,
       },
     });
@@ -134,14 +126,17 @@ export async function DELETE(req, params) {
       );
     }
 
-    // delete the data of the user profile
-    const profile = await prisma.profile.delete({
-      where: { id: existingUser.profile.id },
-    });
-
     // delete the data of other users relatinship conditionally
     if (prisma.invoice) {
       const invoice = await prisma.invoice.deleteMany();
+    }
+
+    if (prisma.hosting) {
+      const hosting = await prisma.hosting.deleteMany();
+    }
+
+    if (prisma.development) {
+      const development = await prisma.development.deleteMany();
     }
 
     // delete the user

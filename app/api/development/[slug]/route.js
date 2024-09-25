@@ -1,7 +1,7 @@
 import { prisma } from "@/config/db";
 import { NextResponse } from "next/server";
 
-// post an hosting for a user to the email provided
+// post a development service for a user to the email provided
 export async function POST(req, params) {
   try {
     const body = await req.json();
@@ -20,7 +20,7 @@ export async function POST(req, params) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       include: {
-        hosting: true,
+        development: true,
       },
     });
 
@@ -31,7 +31,7 @@ export async function POST(req, params) {
       );
     }
 
-    await prisma.hosting.create({
+    await prisma.development.create({
       data: {
         ...body,
         user: {
@@ -41,7 +41,7 @@ export async function POST(req, params) {
     });
 
     return NextResponse.json(
-      { message: "Hosting created successfully" },
+      { message: "Development service created successfully" },
       { status: 200 }
     );
   } catch (error) {
@@ -53,7 +53,7 @@ export async function GET(req, params) {
   const {
     params: { slug },
   } = params;
-  // get all hosting for the user with the email provided
+  // get all development service for the user with the email provided
   if (slug.includes("@")) {
     const email = slug;
     try {
@@ -67,7 +67,7 @@ export async function GET(req, params) {
       const existingUser = await prisma.user.findUnique({
         where: { email },
         include: {
-          hosting: true,
+          development: true,
         },
       });
 
@@ -80,8 +80,8 @@ export async function GET(req, params) {
 
       return NextResponse.json(
         {
-          message: "Hosting fetched successfully",
-          data: existingUser?.hosting,
+          message: "Development service fetched successfully",
+          data: existingUser?.development,
         },
         { status: 200 }
       );
@@ -92,7 +92,7 @@ export async function GET(req, params) {
       );
     }
   } else {
-    // get an hosting by id
+    // get an development service by id
     const id = slug;
     try {
       if (!id) {
@@ -102,19 +102,22 @@ export async function GET(req, params) {
         );
       }
 
-      const existingHosting = await prisma.hosting.findUnique({
+      const existingDevelopment = await prisma.development.findUnique({
         where: { id },
       });
 
-      if (!existingHosting) {
+      if (!existingDevelopment) {
         return NextResponse.json(
-          { message: "Hosting does not exist" },
+          { message: "Development service does not exist" },
           { status: 404 }
         );
       }
 
       return NextResponse.json(
-        { message: "Hosting fetched successfully", data: existingHosting },
+        {
+          message: "Development service fetched successfully",
+          data: existingDevelopment,
+        },
         { status: 200 }
       );
     } catch (error) {
@@ -126,7 +129,7 @@ export async function GET(req, params) {
   }
 }
 
-// delete an hosting by id
+// delete an development service by id
 export async function DELETE(req, params) {
   try {
     const {
@@ -141,19 +144,21 @@ export async function DELETE(req, params) {
       );
     }
 
-    const existingHosting = await prisma.hosting.findUnique({ where: { id } });
+    const existingDevelopment = await prisma.development.findUnique({
+      where: { id },
+    });
 
-    if (!existingHosting) {
+    if (!existingDevelopment) {
       return NextResponse.json(
-        { message: "Hosting does not exist" },
+        { message: "Development service does not exist" },
         { status: 404 }
       );
     }
 
-    await prisma.hosting.delete({ where: { id } });
+    await prisma.development.delete({ where: { id } });
 
     return NextResponse.json(
-      { message: "Hosting deleted successfully" },
+      { message: "Development service deleted successfully" },
       { status: 200 }
     );
   } catch (error) {

@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const result = await prisma.hosting.findMany();
+    const result = await prisma.development.findMany();
     return NextResponse.json(
-      { message: "Hosting services fetched successfully", data: result },
+      { message: "Development services fetched successfully", data: result },
       { status: 200 }
     );
   } catch (error) {
