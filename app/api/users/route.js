@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { first_name, last_name, email, phone_number, password, profile } =
+    const { first_name, last_name, email, phone_number, password } =
       await req.json();
 
     const existingUser = await prisma.user.findFirst({

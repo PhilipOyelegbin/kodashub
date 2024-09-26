@@ -26,7 +26,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
     <aside
       className={`${
         toggle ? "left-0 absolute md:static" : "-left-full fixed"
-      } p-5 h-screen shadow-md duration-300 ease-linear bg-white`}>
+      } p-5 h-screen shadow-md duration-300 ease-linear bg-white z-30`}>
       <div className='text-center mb-5'>
         <div className='w-full flex justify-end mb-5 text-2xl right-5 md:hidden'>
           <FaTimes
@@ -51,6 +51,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
           <Link
             key={i}
             href={list.url}
+            onClick={handleToggle}
             className={
               path === list.url
                 ? "text-purple-500"

@@ -52,6 +52,7 @@ export async function PATCH(req, params) {
       { status: 200 }
     );
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ message: "Error", error }, { status: 500 });
   }
 }

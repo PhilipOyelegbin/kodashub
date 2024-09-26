@@ -1,3 +1,4 @@
+import { Skeleton } from "@/app/components/Skeleton";
 import Link from "next/link";
 
 export const Hostings = () => {
@@ -35,50 +36,26 @@ export const Hostings = () => {
   return (
     <section className='text-center py-10'>
       <h3>My Hosting Services</h3>
-      <table class='text-left min-w-full divide-y divide-gray-200 my-5'>
-        <thead class='bg-purple-200'>
-          <tr>
-            <th
-              scope='col'
-              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              ID
-            </th>
-            <th
-              scope='col'
-              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Plan
-            </th>
-            <th
-              scope='col'
-              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Domain
-            </th>
-            <th
-              scope='col'
-              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Status
-            </th>
-            <th
-              scope='col'
-              class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Expiration
-            </th>
-          </tr>
-        </thead>
-        <tbody class='bg-white divide-y divide-gray-200'>
-          {host?.map((item) => (
-            <tr key={item?.id}>
-              <td class='px-6 py-4 whitespace-nowrap'>{item?.id}</td>
-              <td class='px-6 py-4 whitespace-nowrap'>{item?.plan}</td>
-              <td class='px-6 py-4 whitespace-nowrap'>{item?.domain}</td>
-              <td class='px-6 py-4 text-center whitespace-nowrap border rounded-2xl w-fit bg-lime-500 text-white'>
-                {item?.status}
-              </td>
-              <td class='px-6 py-4 whitespace-nowrap'>{item?.expiration}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      {host?.length <= 0 && <p>No hosting service found</p>}
+
+      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mt-3'>
+        {!host
+          ? Array(6)
+              .fill(0)
+              .map((d, index) => <Skeleton key={index} />)
+          : host?.map((item) => (
+              <div
+                className='flex flex-col gap-1 w-full p-4 bg-slate-200 shadow-md rounded-md cursor-pointer hover:bg-purple-200 duration-300 ease-in-out'
+                key={item.id}>
+                <span>ID: {item.id}</span>
+                <span>Plan: {item.plan}</span>
+                <span>Domain: {item.domain}</span>
+                <span>Status: {item.status}</span>
+                <span>Exp: {item.expiration}</span>
+              </div>
+            ))}
+      </section>
     </section>
   );
 };

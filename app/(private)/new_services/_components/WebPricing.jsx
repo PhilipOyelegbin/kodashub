@@ -14,27 +14,23 @@ function WebPricing() {
     if (session?.status === "authenticated") {
       const user = sessionStorage.getItem("user");
       const recipient = [user, "contact@philipoyelegbin.com.ng"];
-      const subject = "KodasHub: New Hosting Order Placed";
+      const subject = "KodasHub: New Web Design Order Placed";
       const message = `
       Hello,
   
-      You recently placed an order for ${name} of the price ${price}.
+      Thank you for your interest in our services.
+
+      We would like to confirm that you recently placed an order for ∗∗${name}∗∗ at the price of ∗∗₦${price}**. To proceed with the payment, please log in to your account and navigate to the billing section. You can complete the payment by clicking on the generated invoice.
+
+      If you have any questions or require assistance, please don't hesitate to reach out.
+
+      Best regards,
   
-      Kindly make payment to the account details below to complete your order. Once done respond to this mail with the proof of payment.
-  
-      - Account Name: KH_HQ
-      - Account Number: 24039080598509595
-      - Bank Name: Zenith Bank
-  
-      We hope to hear from you soon.
-      
-      Kindly regards,
-  
-      KodasHub Billing Team.
+      KodasHub.
       `;
       try {
         const invoice = {
-          content: name,
+          name,
           price,
         };
         await fetch(`/api/invoices/${user}`, {
@@ -50,7 +46,7 @@ function WebPricing() {
           method: "POST",
           body: JSON.stringify(data),
         });
-        toast.success("Mail sent to user.");
+        toast.success("Invoice generated.");
         route.push("/billing");
       } catch (error) {
         toast.error(error);
@@ -70,7 +66,7 @@ function WebPricing() {
             key={item.name}>
             <div className='h-32 border-b-2 border-slate-300 pb-3'>
               <h4>{item.name}</h4>
-              <h4 className='py-3'>{item.price}</h4>
+              <h4 className='py-3'>₦{item.price}</h4>
               <p>{item.description}</p>
             </div>
             <ul className='space-y-3 list-inside list-disc font-light'>

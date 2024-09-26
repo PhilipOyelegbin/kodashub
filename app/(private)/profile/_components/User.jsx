@@ -48,10 +48,6 @@ export const User = () => {
           last_name: result?.data?.last_name,
           email: result?.data?.email,
           phone_number: result?.data?.phone_number,
-          profile: {
-            bio: result?.data?.profile?.bio,
-            gender: result?.data?.profile?.gender,
-          },
         })
       )
       .catch((error) => toast.error(error));

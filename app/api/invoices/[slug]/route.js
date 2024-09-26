@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // post an invoice for a user to the email provided
 export async function POST(req, params) {
   try {
-    const body = await req.json();
+    const { name, price } = await req.json();
     const {
       params: { slug },
     } = params;
@@ -33,9 +33,10 @@ export async function POST(req, params) {
 
     await prisma.invoice.create({
       data: {
-        ...body,
+        name,
+        price,
         user: {
-          connect: { id: existingUser.id },
+          connect: { id: existingUser?.id },
         },
       },
     });
