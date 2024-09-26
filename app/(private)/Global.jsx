@@ -8,7 +8,7 @@ export const Global = ({ children }) => {
   const [toggle, setToggle] = useState(false);
   const { data: session } = useSession();
 
-  sessionStorage.setItem("user", session?.user?.email);
+  sessionStorage?.setItem("user", session?.user?.email);
 
   const handleToggle = () => {
     setToggle(!toggle);

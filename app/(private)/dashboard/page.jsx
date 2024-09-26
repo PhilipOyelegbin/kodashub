@@ -1,13 +1,13 @@
-import { Domains } from "./_components/Domains";
 import { Hostings } from "./_components/Hostings";
-import { Invoices } from "./_components/Invoices";
+import { MyInvoices } from "./_components/MyInvoices";
+import { Websites } from "./_components/Websites";
 
 const Dashboard = () => {
   return (
     <article>
       <Hostings />
-      <Domains />
-      <Invoices />
+      <Websites />
+      <MyInvoices />
     </article>
   );
 };

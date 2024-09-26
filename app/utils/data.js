@@ -119,7 +119,7 @@ export const Testimonials = [
 export const DesignPlans = [
   {
     name: "Basic Plan",
-    price: "N500,000",
+    price: "500000",
     description:
       "Perfect for small scale businesses like blogging and service rendering.",
     features: [
@@ -132,7 +132,7 @@ export const DesignPlans = [
   },
   {
     name: "Pro Plan",
-    price: "N1,000,000",
+    price: "1000000",
     description: "Designed for medium scale businesses like Ecommerce.",
     features: [
       "Domain Purchase",
@@ -144,7 +144,7 @@ export const DesignPlans = [
   },
   {
     name: "Executive Plan",
-    price: "N1,700,000",
+    price: "1700000",
     description:
       "Tailored for large scale businesses like B2B services and SaSS Projects.",
     features: [
@@ -160,7 +160,7 @@ export const DesignPlans = [
 export const HostingPlans = [
   {
     name: "Plastic Plan",
-    price: "N1,000",
+    price: "1000",
     description: "Perfect for portfolio or landing page website",
     features: [
       "1/1 Domain and Subdomain",
@@ -174,7 +174,7 @@ export const HostingPlans = [
   },
   {
     name: "Bronze Plan",
-    price: "N5,000",
+    price: "5000",
     description: "Designated for small and medium scale business",
     features: [
       "2/2 Domain and Subdomain",
@@ -188,7 +188,7 @@ export const HostingPlans = [
   },
   {
     name: "Silver Plan",
-    price: "N10,000",
+    price: "10000",
     description: "Designed for fast growing organizations",
     features: [
       "4/4 Domain and Subdomain",
@@ -202,7 +202,7 @@ export const HostingPlans = [
   },
   {
     name: "Gold Plan",
-    price: "N20,000",
+    price: "20000",
     description: "Tailored for large businesslike Ecommerce store",
     features: [
       "7/7 Domain and Subdomain",

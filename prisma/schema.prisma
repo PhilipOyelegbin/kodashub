@@ -15,59 +15,57 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  email        String    @unique
+  id           String        @id @default(uuid())
+  email        String        @unique
   first_name   String
   last_name    String
   phone_number String
   password     String
   invoices     Invoice[]
-  domains      Domain[]
-  services     Service[]
-  profile      Profile?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-}
+  hosting      Hosting[]
+  development  Development[]
+  role         Role          @default(USER)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 
-model Profile {
-  id        String   @id @default(uuid())
-  bio       String?
-  gender    String?
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("users")
 }
 
 model Invoice {
   id        String   @id @default(uuid())
-  content   String?  @db.VarChar(255)
-  price     String?
-  status    Boolean? @default(false)
+  name      String   @db.VarChar(255)
+  price     String
+  status    Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Domain {
+model Hosting {
   id        String   @id @default(uuid())
-  content   String?  @db.VarChar(255)
-  price     String?
-  status    Boolean? @default(false)
+  name      String   @db.VarChar(255)
+  price     String
+  url       String?
+  status    Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Service {
+model Development {
   id        String   @id @default(uuid())
-  content   String?  @db.VarChar(255)
-  price     String?
-  status    Boolean? @default(false)
+  name      String   @db.VarChar(255)
+  price     String
+  status    Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum Role {
+  USER
+  ADMIN
 }

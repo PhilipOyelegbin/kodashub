@@ -1,7 +1,7 @@
 import { prisma } from "@/config/db";
 import { NextResponse } from "next/server";
 
-// post an invoice for a user to the email provided
+// post an hosting for a user to the email provided
 export async function POST(req, params) {
   try {
     const body = await req.json();
@@ -20,7 +20,7 @@ export async function POST(req, params) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       include: {
-        invoices: true,
+        hosting: true,
       },
     });
 
@@ -31,7 +31,7 @@ export async function POST(req, params) {
       );
     }
 
-    await prisma.invoice.create({
+    await prisma.hosting.create({
       data: {
         ...body,
         user: {
@@ -41,7 +41,7 @@ export async function POST(req, params) {
     });
 
     return NextResponse.json(
-      { message: "Invoice created successfully" },
+      { message: "Hosting created successfully" },
       { status: 200 }
     );
   } catch (error) {
@@ -53,7 +53,7 @@ export async function GET(req, params) {
   const {
     params: { slug },
   } = params;
-  // get all invoice for the user with the email provided
+  // get all hosting for the user with the email provided
   if (slug.includes("@")) {
     const email = slug;
     try {
@@ -67,7 +67,7 @@ export async function GET(req, params) {
       const existingUser = await prisma.user.findUnique({
         where: { email },
         include: {
-          invoices: true,
+          hosting: true,
         },
       });
 
@@ -80,8 +80,8 @@ export async function GET(req, params) {
 
       return NextResponse.json(
         {
-          message: "Invoice fetched successfully",
-          data: existingUser?.invoices,
+          message: "Hosting fetched successfully",
+          data: existingUser?.hosting,
         },
         { status: 200 }
       );
@@ -92,7 +92,7 @@ export async function GET(req, params) {
       );
     }
   } else {
-    // get an invoice by id
+    // get an hosting by id
     const id = slug;
     try {
       if (!id) {
@@ -102,19 +102,19 @@ export async function GET(req, params) {
         );
       }
 
-      const existingInvoice = await prisma.invoice.findUnique({
+      const existingHosting = await prisma.hosting.findUnique({
         where: { id },
       });
 
-      if (!existingInvoice) {
+      if (!existingHosting) {
         return NextResponse.json(
-          { message: "Invoice does not exist" },
+          { message: "Hosting does not exist" },
           { status: 404 }
         );
       }
 
       return NextResponse.json(
-        { message: "Invoice fetched successfully", data: existingInvoice },
+        { message: "Hosting fetched successfully", data: existingHosting },
         { status: 200 }
       );
     } catch (error) {
@@ -126,7 +126,7 @@ export async function GET(req, params) {
   }
 }
 
-// delete an invoice by id
+// delete an hosting by id
 export async function DELETE(req, params) {
   try {
     const {
@@ -141,19 +141,19 @@ export async function DELETE(req, params) {
       );
     }
 
-    const existingInvoice = await prisma.invoice.findUnique({ where: { id } });
+    const existingHosting = await prisma.hosting.findUnique({ where: { id } });
 
-    if (!existingInvoice) {
+    if (!existingHosting) {
       return NextResponse.json(
-        { message: "Invoice does not exist" },
+        { message: "Hosting does not exist" },
         { status: 404 }
       );
     }
 
-    await prisma.invoice.delete({ where: { id } });
+    await prisma.hosting.delete({ where: { id } });
 
     return NextResponse.json(
-      { message: "Invoice deleted successfully" },
+      { message: "Hosting deleted successfully" },
       { status: 200 }
     );
   } catch (error) {

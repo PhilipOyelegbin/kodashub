@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req) {
   try {
-    const { first_name, last_name, email, phone_number, password, profile } =
+    const { first_name, last_name, email, phone_number, password } =
       await req.json();
 
     const existingUser = await prisma.user.findFirst({
@@ -26,14 +26,10 @@ export async function POST(req) {
         email,
         phone_number,
         password: hashedPassword,
-        profile: {
-          create: { bio: profile?.bio, gender: profile?.gender },
-        },
       },
       include: {
-        profile: true,
-        domains: true,
-        services: true,
+        hosting: true,
+        development: true,
         invoices: true,
       },
     });
@@ -51,9 +47,8 @@ export async function GET() {
   try {
     const result = await prisma.user.findMany({
       include: {
-        profile: true,
-        domains: true,
-        services: true,
+        hosting: true,
+        development: true,
         invoices: true,
       },
     });

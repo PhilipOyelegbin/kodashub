@@ -1,10 +1,10 @@
 import { prisma } from "@/config/db";
 import { NextResponse } from "next/server";
 
-// post an invoice for a user to the email provided
+// post a development service for a user to the email provided
 export async function POST(req, params) {
   try {
-    const { name, price } = await req.json();
+    const body = await req.json();
     const {
       params: { slug },
     } = params;
@@ -20,7 +20,7 @@ export async function POST(req, params) {
     const existingUser = await prisma.user.findUnique({
       where: { email },
       include: {
-        invoices: true,
+        development: true,
       },
     });
 
@@ -31,18 +31,17 @@ export async function POST(req, params) {
       );
     }
 
-    await prisma.invoice.create({
+    await prisma.development.create({
       data: {
-        name,
-        price,
+        ...body,
         user: {
-          connect: { id: existingUser?.id },
+          connect: { id: existingUser.id },
         },
       },
     });
 
     return NextResponse.json(
-      { message: "Invoice created successfully" },
+      { message: "Development service created successfully" },
       { status: 200 }
     );
   } catch (error) {
@@ -54,7 +53,7 @@ export async function GET(req, params) {
   const {
     params: { slug },
   } = params;
-  // get all invoice for the user with the email provided
+  // get all development service for the user with the email provided
   if (slug.includes("@")) {
     const email = slug;
     try {
@@ -68,7 +67,7 @@ export async function GET(req, params) {
       const existingUser = await prisma.user.findUnique({
         where: { email },
         include: {
-          invoices: true,
+          development: true,
         },
       });
 
@@ -81,8 +80,8 @@ export async function GET(req, params) {
 
       return NextResponse.json(
         {
-          message: "Invoice fetched successfully",
-          data: existingUser?.invoices,
+          message: "Development service fetched successfully",
+          data: existingUser?.development,
         },
         { status: 200 }
       );
@@ -93,7 +92,7 @@ export async function GET(req, params) {
       );
     }
   } else {
-    // get an invoice by id
+    // get an development service by id
     const id = slug;
     try {
       if (!id) {
@@ -103,19 +102,22 @@ export async function GET(req, params) {
         );
       }
 
-      const existingInvoice = await prisma.invoice.findUnique({
+      const existingDevelopment = await prisma.development.findUnique({
         where: { id },
       });
 
-      if (!existingInvoice) {
+      if (!existingDevelopment) {
         return NextResponse.json(
-          { message: "Invoice does not exist" },
+          { message: "Development service does not exist" },
           { status: 404 }
         );
       }
 
       return NextResponse.json(
-        { message: "Invoice fetched successfully", data: existingInvoice },
+        {
+          message: "Development service fetched successfully",
+          data: existingDevelopment,
+        },
         { status: 200 }
       );
     } catch (error) {
@@ -127,7 +129,7 @@ export async function GET(req, params) {
   }
 }
 
-// delete an invoice by id
+// delete an development service by id
 export async function DELETE(req, params) {
   try {
     const {
@@ -142,19 +144,21 @@ export async function DELETE(req, params) {
       );
     }
 
-    const existingInvoice = await prisma.invoice.findUnique({ where: { id } });
+    const existingDevelopment = await prisma.development.findUnique({
+      where: { id },
+    });
 
-    if (!existingInvoice) {
+    if (!existingDevelopment) {
       return NextResponse.json(
-        { message: "Invoice does not exist" },
+        { message: "Development service does not exist" },
         { status: 404 }
       );
     }
 
-    await prisma.invoice.delete({ where: { id } });
+    await prisma.development.delete({ where: { id } });
 
     return NextResponse.json(
-      { message: "Invoice deleted successfully" },
+      { message: "Development service deleted successfully" },
       { status: 200 }
     );
   } catch (error) {
