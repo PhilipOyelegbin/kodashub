@@ -18,7 +18,7 @@ export const MyInvoices = () => {
         body: JSON.stringify(payment),
       })
         .then((response) => response.json())
-        .then((result) => navigate.push(result?.path))
+        .then((result) => navigate.replace(result?.path))
         .catch((err) => toast.error(err));
     } catch (error) {
       toast.error(error);

@@ -47,12 +47,12 @@ function WebPricing() {
           body: JSON.stringify(data),
         });
         toast.success("Invoice generated.");
-        route.push("/billing");
+        route.push("/dashboard/billing");
       } catch (error) {
         toast.error(error);
       }
     } else {
-      route.replace("/login");
+      route.replace("/auth/login");
     }
   };
 

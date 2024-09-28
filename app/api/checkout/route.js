@@ -26,7 +26,7 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.HOST_URI}/feedback`,
+      success_url: `${process.env.HOST_URI}/dashboard/feedback`,
       cancel_url: `${process.env.HOST_URI}`,
     });
 

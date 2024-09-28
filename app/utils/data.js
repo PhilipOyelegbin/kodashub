@@ -144,7 +144,7 @@ export const DesignPlans = [
   },
   {
     name: "Executive Plan",
-    price: "1700000",
+    price: "900000",
     description:
       "Tailored for large scale businesses like B2B services and SaSS Projects.",
     features: [
