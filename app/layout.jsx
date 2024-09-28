@@ -1,7 +1,5 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
 import { AuthProvider } from "./utils/AuthProvider";
 import { getServerSession } from "next-auth";
 
@@ -61,9 +59,7 @@ export default async function RootLayout({ children }) {
     <html lang='en'>
       <body className={poppins.className}>
         <AuthProvider session={session}>
-          <Navbar />
           <main>{children}</main>
-          <Footer />
         </AuthProvider>
       </body>
     </html>
