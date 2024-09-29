@@ -1,7 +1,7 @@
-import Services from "./_components/Services";
+import FAQ from "./_components/FAQ";
 import HostPricing from "./_components/HostPricing";
 import WebPricing from "./_components/WebPricing";
-import { FAQ } from "./_components/FAQ";
+import Services from "@/app/components/Services";
 
 function Service() {
   return (

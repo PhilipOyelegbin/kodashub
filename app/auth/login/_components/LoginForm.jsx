@@ -24,6 +24,7 @@ export const LoginForm = () => {
         password: user.password,
       });
 
+      console.log(res);
       if (res?.error) {
         toast.error("Invalid details!");
       } else if (res?.url) {

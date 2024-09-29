@@ -114,45 +114,59 @@ export const Testimonials = [
     cover_image: "/male.jpg",
     rating: 5,
   },
+  {
+    name: "Lomolink",
+    summary:
+      "I was blown away by the quality of service I received from this company. They truly exceeded my expectations!",
+    cover_image: "/male.jpg",
+    title: "CEO, ABC Corporation",
+  },
+  {
+    name: "Lomolink",
+    summary:
+      "I've worked with several companies in the past, but none have delivered the level of service and expertise that this company has.",
+    cover_image: "/male.jpg",
+    title: "Marketing Manager, DEF Inc.",
+  },
+  {
+    name: "Lomolink",
+    summary:
+      "I was impressed by the company's attention to detail and commitment to delivering high-quality results.",
+    cover_image: "/male.jpg",
+    title: "Founder, GHI Startups",
+  },
 ];
 
 export const DesignPlans = [
   {
-    name: "Basic Plan",
-    price: "500000",
+    name: "Startup plan",
+    price: 100,
     description:
       "Perfect for small scale businesses like blogging and service rendering.",
-    features: [
-      "Domain Purchase",
-      "Web Design & Development",
-      "Free SSL",
-      "Free Consultation",
-      "Bronze Hosting Plan",
-    ],
+    features: ["10GB Storage", "1 User Account", "Limited Support"],
   },
   {
-    name: "Pro Plan",
-    price: "1000000",
+    name: "Deluxe plan",
+    price: 500,
     description: "Designed for medium scale businesses like Ecommerce.",
     features: [
-      "Domain Purchase",
-      "Web Design & Development",
-      "Free SSL",
-      "Free Consultation",
-      "Silver Hosting Plan",
+      "50GB Storage",
+      "5 User Accounts",
+      "Priority Support",
+      "Advanced Analytics",
     ],
   },
   {
-    name: "Executive Plan",
-    price: "900000",
+    name: "Enterprise plan",
+    price: 1000,
     description:
       "Tailored for large scale businesses like B2B services and SaSS Projects.",
     features: [
-      "Domain Purchase",
-      "Web Design & Development",
-      "Free SSL",
-      "Free Consultation",
-      "Gold Hosting Plan",
+      "100GB Storage",
+      "10 User Accounts",
+      "Priority Support",
+      "Advanced Analytics",
+      "Custom Integration",
     ],
   },
 ];
@@ -160,7 +174,7 @@ export const DesignPlans = [
 export const HostingPlans = [
   {
     name: "Plastic Plan",
-    price: "1000",
+    price: 5,
     description: "Perfect for portfolio or landing page website",
     features: [
       "1/1 Domain and Subdomain",
@@ -174,7 +188,7 @@ export const HostingPlans = [
   },
   {
     name: "Bronze Plan",
-    price: "5000",
+    price: 15,
     description: "Designated for small and medium scale business",
     features: [
       "2/2 Domain and Subdomain",
@@ -188,7 +202,7 @@ export const HostingPlans = [
   },
   {
     name: "Silver Plan",
-    price: "10000",
+    price: 20,
     description: "Designed for fast growing organizations",
     features: [
       "4/4 Domain and Subdomain",
@@ -202,7 +216,7 @@ export const HostingPlans = [
   },
   {
     name: "Gold Plan",
-    price: "20000",
+    price: 50,
     description: "Tailored for large businesslike Ecommerce store",
     features: [
       "7/7 Domain and Subdomain",

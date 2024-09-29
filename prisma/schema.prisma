@@ -65,7 +65,27 @@ model Development {
   updatedAt DateTime @updatedAt
 }
 
+model Offerings {
+  id          String   @id @default(uuid())
+  plan        String?
+  description String?
+  amount      Int?
+  features    String[]
+  category    Category @default(UNCATEGORIZED)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("offerings")
+}
+
 enum Role {
   USER
   ADMIN
+}
+
+enum Category {
+  DOMAIN
+  HOSTING
+  DEVELOPMEMNT
+  UNCATEGORIZED
 }

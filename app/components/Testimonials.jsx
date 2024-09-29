@@ -1,36 +1,28 @@
 import Image from "next/image";
 import { Testimonials as TestimonialData } from "../utils/data";
-import { FaStar } from "react-icons/fa";
 
 function Testimonials() {
   return (
-    <section className='py-10 px-5 lg:px-20 text-slate-700'>
-      <h3 className='text-center'>Client Feedback and Reviews</h3>
-      <div className='flex flex-wrap justify-center mt-4 gap-5'>
-        {TestimonialData.map((list, index) => (
-          <figure
-            key={index}
-            className='flex gap-2 items-center max-w-[350px] rounded-xl hover:shadow-md ease-in-out duration-300 hover:shadow-purple-700 bg-slate-200 p-3'
-          >
+    <section className='py-10 px-5 lg:px-20'>
+      <h3 className='text-3xl text-center font-bold text-purple-600 mb-4'>
+        What Our Clients Say
+      </h3>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+        {TestimonialData.map((testimony, index) => (
+          <div className='bg-purple-100 p-4 rounded shadow-md' key={index}>
             <Image
-              src={list.cover_image}
-              className='rounded-full w-[80px] aspect-square'
-              width={100}
-              height={100}
-              alt='avatar'
+              src={testimony.cover_image}
+              width={300}
+              height={300}
+              alt={testimony.cover_image}
+              className='w-16 h-16 object-cover rounded-full mb-4'
             />
-            <figcaption>
-              <h4>{list.name}</h4>
-              <p>{list.summary}</p>
-              <span className='flex gap-2 mt-2 mx-auto w-fit text-purple-500'>
-                {Array(list.rating)
-                  .fill(0)
-                  .map((d, i) => (
-                    <FaStar key={i} />
-                  ))}
-              </span>
-            </figcaption>
-          </figure>
+            <p className='text-gray-700'>{testimony.summary}</p>
+            <h4 className='text-lg font-bold text-purple-600 mb-2'>
+              {testimony.name}
+            </h4>
+            <p className='text-gray-700'>CEO, ABC Corporation</p>
+          </div>
         ))}
       </div>
     </section>

@@ -1,73 +1,180 @@
 import Image from "next/image";
-import { FaCheckCircle, FaGlobe } from "react-icons/fa";
 
 function Services() {
   return (
-    <section className='py-10 px-5 lg:px-20'>
-      <h3 className='text-center'>Cost Effective Services We Offer</h3>
-      <div className='grid grid-cols-1 lg:grid-cols-2 justify-center mt-4 gap-5'>
-        <div className='flex flex-col md:flex-row gap-2 rounded-xl border border-purple-200 p-5'>
+    <section className='max-w-7xl w-full py-10 px-5 lg:px-20'>
+      <h3 className='text-3xl text-center font-bold text-purple-600 mb-4'>
+        Our Services
+      </h3>
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        <div className='bg-purple-100 p-4 rounded shadow-md'>
           <Image
             src='/web.jpg'
-            className='w-[300px] h-auto'
-            width={100}
-            height={100}
-            alt='banner'
+            width={300}
+            height={300}
+            alt='Web Design'
+            className='w-full h-64 object-cover mb-4'
           />
-          <div className='flex-1'>
-            <h4>Website Development</h4>
-            <p>
-              Our web hosting is great for static websites, database-driven
-              content management systems, and custom applications
-            </p>
-            <ul className='list-inside space-y-3 border-t-2 border-purple-200 mt-3 pt-3 items-center'>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> Domain
-                Name
-              </li>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> Hosting
-                Service
-              </li>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> Design and
-                Development
-              </li>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> Free SSL
-              </li>
-            </ul>
-          </div>
+          <h3 className='text-lg font-bold text-purple-600 mb-2'>
+            Web Design Services
+          </h3>
+          <p className='text-gray-700'>
+            We offer professional web design services to help you create a
+            stunning online presence. Our team of experts will work with you to
+            design a website that meets your needs and exceeds your
+            expectations.
+          </p>
+          <ul className='list-disc pl-4'>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-purple-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Custom website design
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-purple-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Responsive design for mobile and tablet devices
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-purple-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Easy-to-use content management system
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-purple-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Search engine optimization (SEO) techniques
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-purple-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Fast and reliable hosting options
+            </li>
+          </ul>
         </div>
-
-        <div className='flex flex-col md:flex-row gap-2 rounded-xl border border-purple-200 p-5'>
+        <div className='bg-blue-100 p-4 rounded shadow-md'>
           <Image
             src='/servers.jpg'
-            className='w-[300px] h-auto'
-            width={100}
-            height={100}
-            alt='banner'
+            width={300}
+            height={300}
+            alt='Hosting'
+            className='w-full h-64 object-cover mb-4'
           />
-          <div className='flex-1'>
-            <h4>Hosting Server</h4>
-            <p>
-              Our web hosting is great for static websites, database-driven
-              content management systems, and custom applications
-            </p>
-            <ul className='space-y-3 list-inside list-disc border-t-2 border-purple-200 mt-3 pt-3'>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> cPanel Web
-                Hosting
-              </li>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> Free SSL
-              </li>
-              <li className='flex items-center gap-1'>
-                <FaCheckCircle className='text-purple-900 text-xl' /> Server
-                Support
-              </li>
-            </ul>
-          </div>
+          <h3 className='text-lg font-bold text-blue-600 mb-2'>
+            Hosting Services
+          </h3>
+          <p className='text-gray-700'>
+            We offer reliable and secure hosting services to help you keep your
+            website online and running smoothly. Our hosting plans include fast
+            servers, ample storage, and expert support.
+          </p>
+          <ul className='list-disc pl-4'>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-indigo-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Fast and reliable servers
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-indigo-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Ample storage and bandwidth options
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-indigo-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Expert support and maintenance
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-indigo-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Secure and protected servers
+            </li>
+            <li className='flex items-center gap-5'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5 text-indigo-600'
+                viewBox='0 0 20 20'
+                fill='currentColor'>
+                <path
+                  fill-rule='evenodd'
+                  d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                  clip-rule='evenodd'></path>
+              </svg>
+              Easy-to-use control panel
+            </li>
+          </ul>
         </div>
       </div>
     </section>
