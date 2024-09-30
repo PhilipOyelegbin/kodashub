@@ -9,6 +9,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
   const path = usePathname();
   const sideLinks = [
     { url: "/admin/panel", title: "Panel" },
+    { url: "/admin/panel/services", title: "Services" },
     { url: "/admin/panel/users", title: "Users" },
     { url: "/admin/panel/hostings", title: "Hostings" },
     { url: "/admin/panel/websites", title: "Websites" },
@@ -39,7 +40,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
           height={100}
           alt='profile image'
         />
-        <h5 className='text-wrap w-full'>{sessionStorage?.getItem("user")}</h5>
+        <h5 className='text-wrap w-full'>Administrator</h5>
       </div>
 
       <hr />

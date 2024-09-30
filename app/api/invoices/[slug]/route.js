@@ -31,7 +31,7 @@ export async function POST(req, params) {
       );
     }
 
-    await prisma.invoice.create({
+    const createInvoice = await prisma.invoice.create({
       data: {
         name,
         price,
@@ -42,7 +42,7 @@ export async function POST(req, params) {
     });
 
     return NextResponse.json(
-      { message: "Invoice created successfully" },
+      { message: "Invoice created successfully", createInvoice },
       { status: 200 }
     );
   } catch (error) {

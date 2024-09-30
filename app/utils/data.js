@@ -1,4 +1,4 @@
-// data of all the courses
+// static data
 export const Courses = [
   {
     title: "Frontend: ReactJs",
@@ -134,98 +134,5 @@ export const Testimonials = [
       "I was impressed by the company's attention to detail and commitment to delivering high-quality results.",
     cover_image: "/male.jpg",
     title: "Founder, GHI Startups",
-  },
-];
-
-export const DesignPlans = [
-  {
-    name: "Startup plan",
-    price: 100,
-    description:
-      "Perfect for small scale businesses like blogging and service rendering.",
-    features: ["10GB Storage", "1 User Account", "Limited Support"],
-  },
-  {
-    name: "Deluxe plan",
-    price: 500,
-    description: "Designed for medium scale businesses like Ecommerce.",
-    features: [
-      "50GB Storage",
-      "5 User Accounts",
-      "Priority Support",
-      "Advanced Analytics",
-    ],
-  },
-  {
-    name: "Enterprise plan",
-    price: 1000,
-    description:
-      "Tailored for large scale businesses like B2B services and SaSS Projects.",
-    features: [
-      "100GB Storage",
-      "10 User Accounts",
-      "Priority Support",
-      "Advanced Analytics",
-      "Custom Integration",
-    ],
-  },
-];
-
-export const HostingPlans = [
-  {
-    name: "Plastic Plan",
-    price: 5,
-    description: "Perfect for portfolio or landing page website",
-    features: [
-      "1/1 Domain and Subdomain",
-      "5GB Storage",
-      "30GB Bandwith",
-      "Free SSL",
-      "5 Email Accounts",
-      "1GB Email Quota",
-      "99.9% Uptime Guarantee",
-    ],
-  },
-  {
-    name: "Bronze Plan",
-    price: 15,
-    description: "Designated for small and medium scale business",
-    features: [
-      "2/2 Domain and Subdomain",
-      "10GB Storage",
-      "30GB Bandwith",
-      "Free SSL",
-      "12 Email Accounts",
-      "4GB Email Quota",
-      "99.9% Uptime Guarantee",
-    ],
-  },
-  {
-    name: "Silver Plan",
-    price: 20,
-    description: "Designed for fast growing organizations",
-    features: [
-      "4/4 Domain and Subdomain",
-      "18GB Storage",
-      "50GB Bandwith",
-      "Free SSL",
-      "20 Email Accounts",
-      "10GB Email Quota",
-      "99.9% Uptime Guarantee",
-    ],
-  },
-  {
-    name: "Gold Plan",
-    price: 50,
-    description: "Tailored for large businesslike Ecommerce store",
-    features: [
-      "7/7 Domain and Subdomain",
-      "30GB Storage",
-      "100GB Bandwith",
-      "Free SSL",
-      "Unlimited Email Accounts",
-      "Unlimited Email Quota",
-      "99.9% Uptime Guarantee",
-    ],
   },
 ];

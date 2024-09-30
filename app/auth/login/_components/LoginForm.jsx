@@ -24,7 +24,6 @@ export const LoginForm = () => {
         password: user.password,
       });
 
-      console.log(res);
       if (res?.error) {
         toast.error("Invalid details!");
       } else if (res?.url) {
@@ -32,7 +31,6 @@ export const LoginForm = () => {
         route.replace("/dashboard");
       }
     } catch (error) {
-      console.error("Error during sign-in:", error);
       toast.error("An unexpected error occurred. Please try again.");
     }
   };

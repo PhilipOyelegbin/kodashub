@@ -35,51 +35,35 @@ export const Domains = () => {
   return (
     <section className='text-center py-10'>
       <h3>My Domains</h3>
-      {!domain ? (
-        <p>Loading...</p>
-      ) : (
-        domain?.length <= 0 && <p>No domain found</p>
-      )}
-      <table className='text-left min-w-full divide-y divide-gray-200 my-5'>
-        <thead className='bg-purple-200'>
-          <tr>
-            <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              ID
-            </th>
-            <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Domain
-            </th>
-            <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Expiration
-            </th>
-            <th
-              scope='col'
-              className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
-              Status
-            </th>
-          </tr>
-        </thead>
-        <tbody className='bg-white divide-y divide-gray-200'>
-          {domain?.map((item) => (
-            <tr key={item?.id}>
-              <td className='px-6 py-4 whitespace-nowrap'>{item?.id}</td>
-              <td className='px-6 py-4 whitespace-nowrap'>{item?.domain}</td>
-              <td className='px-6 py-4 whitespace-nowrap'>
-                {item?.expiration}
-              </td>
-              <td className='px-6 text-center py-4 whitespace-nowrap border rounded-2xl w-fit bg-lime-500 text-white'>
-                {item?.status}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      {domain?.length <= 0 && <p>No domain found</p>}
+
+      <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3'>
+        {!domain
+          ? Array(6)
+              .fill(0)
+              .map((d, index) => <Skeleton key={index} />)
+          : domain?.map((item) => (
+              <li className='rounded-md bg-purple-100' key={item.id}>
+                <div className='flex items-start justify-between p-4'>
+                  <div className='space-y-2'>
+                    {item.id}
+                    <h4 className='text-gray-800 font-semibold'>
+                      {item.domain}
+                    </h4>
+                    <p className='text-gray-600 text-sm'>{item.plan}</p>
+                    <p className='text-gray-600 text-sm'>{item.expiration}</p>
+                  </div>
+                </div>
+                <div className='flex justify-between py-5 px-4 border-t text-right'>
+                  <span>
+                    {item.status == false ? "In Progress" : "Completed"}
+                  </span>
+                  {/* <span>{item?.createdAt.split("T")[0] || "undefined"}</span> */}
+                </div>
+              </li>
+            ))}
+      </ul>
     </section>
   );
 };

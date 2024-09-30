@@ -38,26 +38,35 @@ export const MyInvoices = () => {
 
       {data?.length <= 0 && <p>No invoice found</p>}
 
-      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mt-3'>
+      <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3'>
         {!data
           ? Array(6)
               .fill(0)
               .map((d, index) => <Skeleton key={index} />)
-          : data?.map((invoice) => (
-              <div
-                className='flex flex-col gap-1 w-full p-4 bg-slate-200 shadow-md rounded-md cursor-pointer hover:bg-purple-200 duration-300 ease-in-out'
-                key={invoice.id}
-                onClick={() => handlePayment(invoice.name, invoice.price)}>
-                <span>ID: {invoice.id.split("-")[0]}</span>
-                <span>Item: {invoice.name}</span>
-                <span>Price: ₦{invoice.price}</span>
-                <span>
-                  Status: {invoice.status == false ? "Unpaid" : "Paid"}
-                </span>
-                <span>Date: {invoice.createdAt.split("T")[0]}</span>
-              </div>
+          : data?.map((item) => (
+              <li
+                className='rounded-md bg-purple-100'
+                key={item.id}
+                onClick={() => handlePayment(item.name, item.price)}>
+                <div className='flex items-start justify-between p-4'>
+                  <div className='space-y-2'>
+                    {item.id}
+                    <h4 className='text-gray-800 font-semibold'>{item.name}</h4>
+                    <p className='text-gray-600'>₦{item.price}</p>
+                  </div>
+                </div>
+                <div className='flex justify-between py-5 px-4 border-t text-right'>
+                  <span
+                    className={`text-sm w-fit px-2 py-1 text-white rounded-lg ${
+                      item.status ? "bg-lime-500" : "bg-red-500"
+                    }`}>
+                    {item.status == false ? "Unpaid" : "Paid"}
+                  </span>
+                  <span>{item?.createdAt.split("T")[0]}</span>
+                </div>
+              </li>
             ))}
-      </section>
+      </ul>
       <ToastContainer
         position='top-right'
         autoClose={2000}

@@ -3,16 +3,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Verify } from "../utils/middleware";
 
 function AdminLoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useRouter();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (username === "admin" && password === "password") {
+    const authenticate = await Verify(username, password);
+
+    if (authenticate) {
       navigate.replace("/admin/panel");
     } else {
       toast.error("Invalid username or password");

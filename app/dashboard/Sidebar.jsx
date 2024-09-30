@@ -11,7 +11,6 @@ export const Sidebar = ({ toggle, handleToggle }) => {
     { url: "/dashboard", title: "Dashboard" },
     { url: "/dashboard/offerings", title: "New Services" },
     { url: "/dashboard/hosting", title: "My Hosting" },
-    // { url: "/domain", title: "My Domain" },
     { url: "/dashboard/website", title: "My Website" },
     { url: "/dashboard/billing", title: "My Invoice" },
     { url: "/dashboard/profile", title: "Profile" },
@@ -41,7 +40,9 @@ export const Sidebar = ({ toggle, handleToggle }) => {
           height={100}
           alt='profile image'
         />
-        <h5 className='text-wrap w-full'>{sessionStorage?.getItem("user")}</h5>
+        <h5 className='text-wrap w-full'>
+          {sessionStorage?.getItem("user").split("@")[0]}...
+        </h5>
       </div>
 
       <hr />

@@ -34,7 +34,7 @@ model User {
 model Invoice {
   id        String   @id @default(uuid())
   name      String   @db.VarChar(255)
-  price     String
+  price     Int
   status    Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   userId    String
@@ -67,9 +67,9 @@ model Development {
 
 model Offerings {
   id          String   @id @default(uuid())
-  plan        String?
+  plan        String
   description String?
-  amount      Int?
+  amount      Int
   features    String[]
   category    Category @default(UNCATEGORIZED)
   createdAt   DateTime @default(now())
@@ -86,6 +86,6 @@ enum Role {
 enum Category {
   DOMAIN
   HOSTING
-  DEVELOPMEMNT
+  DEVELOPMENT
   UNCATEGORIZED
 }

@@ -32,25 +32,32 @@ export const Websites = () => {
 
       {website?.length <= 0 && <p>No website found</p>}
 
-      <section className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mt-3'>
+      <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3'>
         {!website
           ? Array(6)
               .fill(0)
               .map((d, index) => <Skeleton key={index} />)
           : website?.map((item) => (
-              <div
-                className='flex flex-col gap-1 w-full p-4 bg-slate-200 shadow-md rounded-md cursor-pointer hover:bg-purple-200 duration-300 ease-in-out'
-                key={item.id}>
-                <span>ID: {item.id}</span>
-                <span>Plan: {item.plan}</span>
-                <span>Domain: {item.domain}</span>
-                <span>
-                  Status: {item.status == false ? "In Progress" : "Completed"}
-                </span>
-                <span>Exp: {item.expiration}</span>
-              </div>
+              <li className='rounded-md bg-purple-100' key={item.id}>
+                <div className='flex items-start justify-between p-4'>
+                  <div className='space-y-2'>
+                    {item.id}
+                    <h4 className='text-gray-800 font-semibold'>
+                      {item.domain}
+                    </h4>
+                    <p className='text-gray-600 text-sm'>{item.plan}</p>
+                    <p className='text-gray-600 text-sm'>{item.expiration}</p>
+                  </div>
+                </div>
+                <div className='flex justify-between py-5 px-4 border-t text-right'>
+                  <span>
+                    {item.status == false ? "In Progress" : "Completed"}
+                  </span>
+                  {/* <span>{item?.createdAt.split("T")[0] || "undefined"}</span> */}
+                </div>
+              </li>
             ))}
-      </section>
+      </ul>
     </section>
   );
 };
