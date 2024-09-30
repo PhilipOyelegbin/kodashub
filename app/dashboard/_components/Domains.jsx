@@ -1,3 +1,4 @@
+import { Skeleton } from "@/app/components/Skeleton";
 import Link from "next/link";
 
 export const Domains = () => {
