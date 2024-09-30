@@ -1,3 +1,12 @@
+import {
+  FaChartLine,
+  FaDollarSign,
+  FaHeadphones,
+  FaLock,
+  FaRegCompass,
+  FaTachometerAlt,
+} from "react-icons/fa";
+
 function Features() {
   return (
     <section className='flex flex-col justify-center items-center bg-gray-100py-10 px-5 lg:px-20 my-5'>
@@ -13,10 +22,7 @@ function Features() {
             Our servers are optimized for speed and reliability, ensuring your
             website loads quickly and stays online.
           </p>
-          <img
-            src='https://example.com/fast-and-reliable-icon.png'
-            alt='Fast and Reliable'
-          />
+          <FaTachometerAlt className='text-2xl' />
         </div>
         <div className='bg-blue-100 p-4 rounded shadow-md'>
           <h3 className='text-lg font-bold text-blue-600 mb-2'>
@@ -26,10 +32,7 @@ function Features() {
             We take security seriously, with regular backups, firewalls, and
             malware scanning to keep your website safe.
           </p>
-          <img
-            src='https://example.com/secure-and-protected-icon.png'
-            alt='Secure and Protected'
-          />
+          <FaLock className='text-2xl' />
         </div>
         <div className='bg-green-100 p-4 rounded shadow-md'>
           <h3 className='text-lg font-bold text-green-600 mb-2'>
@@ -39,10 +42,7 @@ function Features() {
             Our hosting plans are designed to grow with your website, with easy
             upgrades and flexible pricing options.
           </p>
-          <img
-            src='https://example.com/scalable-and-flexible-icon.png'
-            alt='Scalable and Flexible'
-          />
+          <FaChartLine className='text-2xl' />
         </div>
         <div className='bg-orange-100 p-4 rounded shadow-md'>
           <h3 className='text-lg font-bold text-orange-600 mb-2'>
@@ -52,10 +52,7 @@ function Features() {
             Our team of experts is available 24/7 to help with any questions or
             issues you may have.
           </p>
-          <img
-            src='https://example.com/expert-support-icon.png'
-            alt='Expert Support'
-          />
+          <FaHeadphones className='text-2xl' />
         </div>
         <div className='bg-yellow-100 p-4 rounded shadow-md'>
           <h3 className='text-lg font-bold text-yellow-600 mb-2'>
@@ -65,10 +62,7 @@ function Features() {
             Our control panel is user-friendly and easy to navigate, making it
             simple to manage your website.
           </p>
-          <img
-            src='https://example.com/easy-to-use-icon.png'
-            alt='Easy to Use'
-          />
+          <FaRegCompass className='text-2xl' />
         </div>
         <div className='bg-red-100 p-4 rounded shadow-md'>
           <h3 className='text-lg font-bold text-red-600 mb-2'>
@@ -78,10 +72,7 @@ function Features() {
             We offer competitive pricing plans to fit any budget, with discounts
             for long-term commitments.
           </p>
-          <img
-            src='https://example.com/affordable-pricing-icon.png'
-            alt='Affordable Pricing'
-          />
+          <FaDollarSign className='text-2xl' />
         </div>
       </div>
     </section>
