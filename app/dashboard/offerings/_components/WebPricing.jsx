@@ -65,7 +65,7 @@ function WebPricing() {
   }, []);
 
   return (
-    <section className='px-5 lg:px-20 py-14 text-gray-600'>
+    <div className='p-5 bg-white rounded-md text-gray-600'>
       <div className='relative max-w-xl mx-auto sm:text-center'>
         <h3 className='text-purple-600 text-3xl font-semibold sm:text-4xl'>
           Pricing for all website design plan
@@ -87,8 +87,8 @@ function WebPricing() {
                       {item.plan}
                     </span>
                     <div className='mt-4 text-gray-800 text-3xl font-semibold'>
-                      ${item.amount}{" "}
-                      <span className='text-xl text-gray-600 font-normal'>
+                      ₦{item.amount}{" "}
+                      <span className='text-xs text-gray-600 font-normal'>
                         one time payment
                       </span>
                     </div>
@@ -128,7 +128,7 @@ function WebPricing() {
         pauseOnFocusLoss
         pauseOnHover
       />
-    </section>
+    </div>
   );
 }
 

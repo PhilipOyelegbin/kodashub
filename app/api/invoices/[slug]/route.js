@@ -50,6 +50,36 @@ export async function POST(req, params) {
   }
 }
 
+// update an invoice for a user to the email provided
+export async function PATCH(req, params) {
+  try {
+    const { status, ...body } = await req.json();
+    const {
+      params: { slug },
+    } = params;
+    const id = slug;
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Error: Email is required" },
+        { status: 403 }
+      );
+    }
+
+    await prisma.invoice.update({
+      where: { id },
+      data: { status: JSON.parse(status), ...body },
+    });
+
+    return NextResponse.json(
+      { message: "Invoice updated successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json({ message: "Error", error }, { status: 500 });
+  }
+}
+
 export async function GET(req, params) {
   const {
     params: { slug },

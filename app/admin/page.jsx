@@ -12,10 +12,10 @@ function AdminLoginPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const authenticate = await Verify(username, password);
 
     if (authenticate) {
+      localStorage.setItem("ssp", process.env.SSP);
       navigate.replace("/admin/panel");
     } else {
       toast.error("Invalid username or password");

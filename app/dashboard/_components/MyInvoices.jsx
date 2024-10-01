@@ -33,7 +33,7 @@ export const MyInvoices = () => {
   }, [sessionStorage.getItem("user")]);
 
   return (
-    <div className='text-center py-10'>
+    <div className='text-center p-5 bg-white rounded-md'>
       <h3>My Invoices</h3>
 
       {data?.length <= 0 && <p>No invoice found</p>}
@@ -55,14 +55,14 @@ export const MyInvoices = () => {
                     <p className='text-gray-600'>₦{item.price}</p>
                   </div>
                 </div>
-                <div className='flex justify-between py-5 px-4 border-t text-right'>
+                <div className='flex justify-between py-2 px-4 border-t text-right'>
                   <span
                     className={`text-sm w-fit px-2 py-1 text-white rounded-lg ${
                       item.status ? "bg-lime-500" : "bg-red-500"
                     }`}>
                     {item.status == false ? "Unpaid" : "Paid"}
                   </span>
-                  <span>{item?.createdAt.split("T")[0]}</span>
+                  <span>{item?.updatedAt.split("T")[0]}</span>
                 </div>
               </li>
             ))}

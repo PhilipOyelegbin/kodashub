@@ -87,9 +87,9 @@ function HostPricing() {
                       {item.plan}
                     </span>
                     <div className='my-4 text-gray-800 text-3xl font-semibold'>
-                      ${item.amount}
-                      <span className='text-xl text-gray-600 font-normal'>
-                        /mo
+                      ₦{item.amount}
+                      <span className='text-sm text-gray-600 font-normal'>
+                        /mo/yr*
                       </span>
                     </div>
                     <p>{item.description}</p>

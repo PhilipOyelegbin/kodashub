@@ -6,11 +6,11 @@ import { Websites } from "./_components/Websites";
 export default function DashboardPage() {
   return (
     <>
-      <main className='p-5'>
+      <section className='space-y-5'>
         <Hostings />
         <Websites />
         <MyInvoices />
-      </main>
+      </section>
     </>
   );
 }

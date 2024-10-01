@@ -87,8 +87,8 @@ function WebPricing() {
                       {item.plan}
                     </span>
                     <div className='mt-4 text-gray-800 text-3xl font-semibold'>
-                      ${item.amount}{" "}
-                      <span className='text-xl text-gray-600 font-normal'>
+                      ₦{item.amount}{" "}
+                      <span className='text-xs text-gray-600 font-normal'>
                         one time payment
                       </span>
                     </div>

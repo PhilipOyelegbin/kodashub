@@ -54,8 +54,10 @@ export const User = () => {
   }, []);
 
   return (
-    <form onSubmit={handleUpdate} className='auth-form'>
-      <h3>Get Started with us!</h3>
+    <form
+      onSubmit={handleUpdate}
+      className='auth-form lg:w-1/2 p-5 bg-white rounded-md'>
+      <h3>Review your details</h3>
       <div className='form-group'>
         <label htmlFor='first_name'>First name</label>
         <input

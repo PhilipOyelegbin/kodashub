@@ -26,7 +26,7 @@ export default function UpdateDomain() {
   };
 
   useLayoutEffect(() => {
-    fetch(`/api/domains/${header?.split("/")[4]}`)
+    fetch(`/api/domains/${header.split("/")[4]}`)
       .then((resp) => resp.json())
       .then((result) =>
         setData({

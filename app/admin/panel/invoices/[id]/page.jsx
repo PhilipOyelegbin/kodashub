@@ -20,9 +20,22 @@ export default function UpdateInvoice() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    navigate.replace("/admin/panel/invoices");
     try {
-    } catch (error) {}
+      fetch(`/api/invoices/${header.split("/")[4]}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      })
+        .then((resp) => {
+          if (resp.ok) {
+            navigate.replace("/admin/panel/invoices");
+          } else {
+            toast.error(resp.statusText);
+          }
+        })
+        .catch((err) => toast.error(err));
+    } catch (err) {
+      toast.error(err);
+    }
   };
 
   useLayoutEffect(() => {

@@ -17,8 +17,8 @@ export const Sidebar = ({ toggle, handleToggle }) => {
   ];
 
   const handleSignOut = async () => {
+    localStorage.clear();
     await signOut({ redirect: true, callbackUrl: "/" });
-    sessionStorage?.clear();
   };
 
   return (

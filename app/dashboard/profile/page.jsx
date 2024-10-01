@@ -3,10 +3,10 @@ import { User } from "./_components/User";
 
 const Profile = () => {
   return (
-    <article className='p-5'>
+    <section className='space-y-5 flex flex-wrap justify-around'>
       <User />
       <UpdatePassword />
-    </article>
+    </section>
   );
 };
 

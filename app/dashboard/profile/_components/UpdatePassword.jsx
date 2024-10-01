@@ -40,8 +40,10 @@ export const UpdatePassword = () => {
   };
 
   return (
-    <form onSubmit={handleUpdate} className='auth-form'>
-      <h3>Update your password</h3>
+    <form
+      onSubmit={handleUpdate}
+      className='auth-form h-fit p-5 bg-white rounded-md'>
+      <h3>Change your password</h3>
       <div className='form-group'>
         <label htmlFor='password'>New Password</label>
         <input

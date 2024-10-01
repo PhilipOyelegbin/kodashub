@@ -2,9 +2,9 @@ import { Websites } from "../_components/Websites";
 
 const Website = () => {
   return (
-    <article className='p-5'>
+    <section>
       <Websites />
-    </article>
+    </section>
   );
 };
 

@@ -21,9 +21,22 @@ export default function UpdateUser() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    navigate.replace("/admin/panel/users");
     try {
-    } catch (error) {}
+      fetch(`/api/users/${header.split("/")[4]}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      })
+        .then((resp) => {
+          if (resp.ok) {
+            navigate.replace("/admin/panel/users");
+          } else {
+            toast.error(resp.statusText);
+          }
+        })
+        .catch((err) => toast.error(err));
+    } catch (err) {
+      toast.error(err);
+    }
   };
 
   useLayoutEffect(() => {

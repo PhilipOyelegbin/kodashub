@@ -11,7 +11,7 @@ export default function UpdateHosting() {
   const [data, setData] = useState({
     plan: "",
     price: "",
-    status: Boolean,
+    status: "",
   });
 
   const handleChange = (e) => {
@@ -20,13 +20,26 @@ export default function UpdateHosting() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    navigate.replace("/admin/panel/hostings");
     try {
-    } catch (error) {}
+      fetch(`/api/hosting/${header.split("/")[4]}`, {
+        method: "PATCH",
+        body: JSON.stringify(data),
+      })
+        .then((resp) => {
+          if (resp.ok) {
+            navigate.replace("/admin/panel/hostings");
+          } else {
+            toast.error(resp.statusText);
+          }
+        })
+        .catch((err) => toast.error(err));
+    } catch (err) {
+      toast.error(err);
+    }
   };
 
   useLayoutEffect(() => {
-    fetch(`/api/hostings/${header.split("/")[4]}`)
+    fetch(`/api/hosting/${header.split("/")[4]}`)
       .then((resp) => resp.json())
       .then((result) =>
         setData({

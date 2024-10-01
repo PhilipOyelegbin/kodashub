@@ -3,10 +3,10 @@ import WebPricing from "./_components/WebPricing";
 
 function Service() {
   return (
-    <article className='p-5'>
+    <section className='space-y-5'>
       <HostPricing />
       <WebPricing />
-    </article>
+    </section>
   );
 }
 

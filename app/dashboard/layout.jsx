@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }) {
       <Sidebar toggle={toggle} handleToggle={handleToggle} />
       <div className='w-full h-screen overflow-x-scroll scroll-m-0'>
         <Header handleToggle={handleToggle} />
-        {children}
+        <div className='p-5 bg-slate-300'>{children}</div>
       </div>
     </article>
   );

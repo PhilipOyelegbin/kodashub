@@ -2,9 +2,9 @@ import { Hostings } from "../_components/Hostings";
 
 const Hosting = () => {
   return (
-    <article className='p-5'>
+    <section>
       <Hostings />
-    </article>
+    </section>
   );
 };
 

@@ -43,21 +43,23 @@ model Invoice {
 }
 
 model Hosting {
-  id        String   @id @default(uuid())
-  name      String   @db.VarChar(255)
-  price     String
-  url       String?
-  status    Boolean  @default(false)
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String   @id @default(uuid())
+  name       String   @db.VarChar(255)
+  price      String
+  url        String?
+  expiration String
+  status     Boolean  @default(false)
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Development {
   id        String   @id @default(uuid())
   name      String   @db.VarChar(255)
   price     String
+  url       String?
   status    Boolean  @default(false)
   user      User     @relation(fields: [userId], references: [id])
   userId    String

@@ -52,14 +52,14 @@ function AdminServicePage() {
       <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
         {data?.map((service) => (
           <li className='rounded-md bg-purple-100' key={service.id}>
-            <div className='flex items-start justify-between p-4'>
+            <div className='flex text-center justify-center p-4'>
               <div className='space-y-2'>
                 {service.category}
                 <h4 className='text-gray-800 font-semibold'>{service.plan}</h4>
-                <p className='text-gray-600 text-sm'>{service.amount}</p>
+                <p className='text-gray-600 text-sm'>₦{service.amount}</p>
               </div>
             </div>
-            <div className='flex gap-2 text-2xl py-5 px-4 border-t-2 text-right'>
+            <div className='flex gap-2 text-2xl py-2 px-4 border-t-2 text-right'>
               <Link href={`/admin/panel/services/${service.id}`}>
                 <FaEdit className='text-purple-500 hover:text-purple-700' />
               </Link>

@@ -34,7 +34,7 @@ export const Domains = () => {
   ];
 
   return (
-    <section className='text-center py-10'>
+    <div className='text-center p-5 bg-white rounded-md'>
       <h3>My Domains</h3>
 
       {domain?.length <= 0 && <p>No domain found</p>}
@@ -65,6 +65,6 @@ export const Domains = () => {
               </li>
             ))}
       </ul>
-    </section>
+    </div>
   );
 };

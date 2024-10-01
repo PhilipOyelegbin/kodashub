@@ -1,6 +1,6 @@
 const Feedback = () => {
   return (
-    <article className='flex flex-col justify-center items-center min-h-svh'>
+    <section className='flex flex-col bg-white justify-center items-center min-h-svh'>
       <div className='bg-slate-200 p-4 rounded-lg space-y-5 text-center shadow-md md:w-3/5'>
         <h1 className='text-lime-500'>Successfull</h1>
         <h4>
@@ -9,7 +9,7 @@ const Feedback = () => {
         </h4>
         <h4>Your invoice will be updated within 24 hours.</h4>
       </div>
-    </article>
+    </section>
   );
 };
 

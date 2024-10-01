@@ -129,15 +129,15 @@ export async function DELETE(req, params) {
 
     // delete the data of other users relatinship conditionally
     if (prisma.invoice) {
-      const invoice = await prisma.invoice.deleteMany();
+      const invoice = await prisma.invoice.delete();
     }
 
     if (prisma.hosting) {
-      const hosting = await prisma.hosting.deleteMany();
+      const hosting = await prisma.hosting.delete();
     }
 
     if (prisma.development) {
-      const development = await prisma.development.deleteMany();
+      const development = await prisma.development.delete();
     }
 
     // delete the user
