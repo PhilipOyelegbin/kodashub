@@ -1,16 +1,11 @@
-"use client";
-import { Hostings } from "./_components/Hostings";
-import { MyInvoices } from "./_components/MyInvoices";
-import { Websites } from "./_components/Websites";
+import Datapool from "./_components/Datapool";
+import Ticket from "./_components/Ticket";
 
 export default function DashboardPage() {
   return (
-    <>
-      <section className='space-y-5'>
-        <Hostings />
-        <Websites />
-        <MyInvoices />
-      </section>
-    </>
+    <section className='space-y-5'>
+      <Datapool />
+      <Ticket />
+    </section>
   );
 }

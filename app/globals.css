@@ -31,7 +31,7 @@
     @apply w-full;
   }
   .form-input {
-    @apply p-2 rounded-md border;
+    @apply p-2 rounded-md border text-gray-700;
   }
   .auth-form {
     @apply bg-white md:w-2/3 lg:w-2/5 p-10 rounded-md;

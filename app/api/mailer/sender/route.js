@@ -1,12 +1,11 @@
-// pages/api/send-email.js
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { createTransport } from "nodemailer";
 
 export async function POST(req) {
   try {
-    const { recipient, subject, message } = await req.json();
+    const { subject, full_name, email, message } = await req.json();
 
-    const transporter = nodemailer.createTransport({
+    const transporter = createTransport({
       host: process.env.SMTP_HOST,
       port: 587,
       auth: {
@@ -16,9 +15,9 @@ export async function POST(req) {
     });
 
     const mailOptions = {
-      from: process.env.SMTP_USER,
-      to: [recipient, process.env.SMTP_USER],
-      subject,
+      from: email,
+      to: process.env.SMTP_USER,
+      subject: `${subject}: ${full_name || email}`,
       text: message,
     };
 
@@ -28,6 +27,6 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
-    return NextResponse.json({ error: "Error sending email" }, { status: 500 });
+    return NextResponse.json({ message: "Error", error }, { status: 500 });
   }
 }

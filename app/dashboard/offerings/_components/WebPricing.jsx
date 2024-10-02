@@ -13,28 +13,27 @@ function WebPricing() {
 
   const handleOrder = async (name, price) => {
     if (session?.status === "authenticated") {
-      const user = sessionStorage.getItem("user");
-      const recipient = [user, "contact@philipoyelegbin.com.ng"];
+      const recipient = sessionStorage.getItem("user");
       const subject = "KodasHub: New Web Design Order Placed";
       const message = `
-      Hello,
-  
-      Thank you for your interest in our services.
+  Hello,
 
-      We would like to confirm that you recently placed an order for ∗∗${name}∗∗ at the price of ∗∗₦${price}**. To proceed with the payment, please log in to your account and navigate to the billing section. You can complete the payment by clicking on the generated invoice.
+  Thank you for your interest in our services.
 
-      If you have any questions or require assistance, please don't hesitate to reach out.
+  We would like to confirm that you recently placed an order for ∗∗${name}∗∗ at the price of ∗∗₦${price}**. To proceed with the payment, please log in to your account and navigate to the billing section. You can complete the payment by clicking on the generated invoice.
 
-      Best regards,
-  
-      KodasHub.
+  If you have any questions or require assistance, please don't hesitate to reach out.
+
+  Best regards,
+
+  KodasHub.
       `;
       try {
         const invoice = {
           name,
           price,
         };
-        await fetch(`/api/invoices/${user}`, {
+        await fetch(`/api/invoices/${recipient}`, {
           method: "POST",
           body: JSON.stringify(invoice),
           headers: {

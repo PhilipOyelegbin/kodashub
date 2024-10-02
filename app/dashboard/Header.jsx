@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { FaAlignJustify } from "react-icons/fa";
+import { FaAlignJustify, FaUserCircle } from "react-icons/fa";
 
 export const Header = ({ handleToggle }) => {
   const path = usePathname();
@@ -16,13 +16,7 @@ export const Header = ({ handleToggle }) => {
       <h3>
         {headerTitle.length == 0 ? "DASHBOARD" : headerTitle[0]?.toUpperCase()}
       </h3>
-      <Image
-        src='/male.jpg'
-        className='w-10 border-2 border-purple-500 aspect-square rounded-full'
-        width={100}
-        height={100}
-        alt='avatar'
-      />
+      <FaUserCircle className='w-10 h-10 text-purple-500' />
     </header>
   );
 };

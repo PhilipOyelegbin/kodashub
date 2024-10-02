@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(req, params) {
   try {
-    const { password, ...data } = await req.json();
+    const { password, ...body } = await req.json();
     const {
       params: { email },
     } = params;
@@ -43,7 +43,7 @@ export async function PATCH(req, params) {
     } else {
       await prisma.user.update({
         where: { email },
-        data: { ...data },
+        data: { ...body },
       });
     }
 

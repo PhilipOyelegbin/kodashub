@@ -1,8 +1,11 @@
 "use client";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ContactForm() {
   const [data, setData] = useState({
+    subject: "",
     full_name: "",
     email: "",
     message: "",
@@ -14,6 +17,24 @@ function ContactForm() {
 
   const sendMail = async (e) => {
     e.preventDefault();
+    await fetch("/api/mailer/sender", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((resp) => {
+        if (resp.ok) {
+          setData({
+            subject: "",
+            full_name: "",
+            email: "",
+            message: "",
+          });
+          toast.success("Email sent successfully");
+        } else {
+          toast.error("Unable to send mail!");
+        }
+      })
+      .catch((error) => toast.error(error));
   };
 
   return (
@@ -23,11 +44,21 @@ function ContactForm() {
       <h3>Questions or Feedback?</h3>
       <input
         type='text'
+        name='subject'
+        value={data.subject}
+        onChange={handleChange}
+        className='form-input'
+        placeholder='Enter your mail subject'
+        required
+      />
+      <input
+        type='text'
         name='full_name'
         value={data.full_name}
         onChange={handleChange}
         className='form-input'
         placeholder='Enter your full name'
+        required
       />
       <input
         type='email'
@@ -36,6 +67,7 @@ function ContactForm() {
         onChange={handleChange}
         className='form-input'
         placeholder='Enter your email address'
+        required
       />
       <textarea
         name='message'
@@ -44,8 +76,17 @@ function ContactForm() {
         className='form-input resize-y'
         cols={30}
         rows={5}
-        placeholder='Enter your email address'></textarea>
+        required
+        placeholder='Write your meesage here...'></textarea>
       <button className='btn'>Send</button>
+
+      <ToastContainer
+        position='top-right'
+        autoClose={2000}
+        closeOnClick
+        pauseOnFocusLoss
+        pauseOnHover
+      />
     </form>
   );
 }

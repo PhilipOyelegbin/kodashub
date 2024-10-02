@@ -3,7 +3,7 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FaBackward, FaTimes } from "react-icons/fa";
+import { FaBackward, FaTimes, FaUserCircle } from "react-icons/fa";
 
 export const Sidebar = ({ toggle, handleToggle }) => {
   const path = usePathname();
@@ -33,13 +33,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
             onClick={handleToggle}
           />
         </div>
-        <Image
-          src='/male.jpg'
-          className='w-20 border-2 border-purple-500 aspect-square rounded-full'
-          width={100}
-          height={100}
-          alt='profile image'
-        />
+        <FaUserCircle className='w-20 h-20 text-purple-500' />
         <h5 className='text-wrap w-full'>
           {sessionStorage?.getItem("user").split("@")[0]}...
         </h5>

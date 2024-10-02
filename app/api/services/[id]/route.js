@@ -28,7 +28,7 @@ export async function PATCH(req, params) {
 
     const newData = await prisma.offerings.update({
       where: { id },
-      data: { features: features?.split(","), ...data },
+      data: { features: features?.split(","), ...body },
     });
 
     return NextResponse.json(
