@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(req, params) {
   try {
-    const data = await req.json();
+    const { features, ...body } = await req.json();
     const {
       params: { id },
     } = params;
@@ -28,7 +28,7 @@ export async function PATCH(req, params) {
 
     const newData = await prisma.offerings.update({
       where: { id },
-      data: { ...data },
+      data: { features: features?.split(","), ...data },
     });
 
     return NextResponse.json(

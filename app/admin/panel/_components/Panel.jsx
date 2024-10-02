@@ -96,7 +96,7 @@ function Panel() {
             <h3 className='text-lg font-bold text-orange-600 mb-2'>Invoices</h3>
             <p className='text-3xl font-bold text-gray-700'>{invoices}</p>
             <Link
-              href='/admin/panel/invoice'
+              href='/admin/panel/invoices'
               className='text-sm text-orange-600 hover:text-orange-700'>
               View All Invoices
             </Link>

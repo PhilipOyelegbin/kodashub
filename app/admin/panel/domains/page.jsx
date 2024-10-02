@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useLayoutEffect } from "react";
@@ -38,10 +39,16 @@ function AdminDomainPage() {
     <section className='p-3 bg-white rounded shadow-md'>
       <h2 className='text-3xl font-bold text-purple-600 mb-4'>Domains</h2>
 
-      {error && (
-        <h5 className='text-center text-red-600 mb-4'>
-          Error: {error.message}
-        </h5>
+      {!data ? (
+        <Loading />
+      ) : data?.length <= 0 ? (
+        <h5 className='text-center text-blue-600 mb-4'>No data to display</h5>
+      ) : (
+        error && (
+          <h5 className='text-center text-red-600 mb-4'>
+            Error: {error.message}
+          </h5>
+        )
       )}
 
       <table className='w-full'>

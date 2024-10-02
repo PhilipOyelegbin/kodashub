@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/app/loading";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useLayoutEffect } from "react";
@@ -43,10 +44,16 @@ function AdminWebsitePage() {
         </Link>
       </div>
 
-      {error && (
-        <h5 className='text-center text-red-600 mb-4'>
-          Error: {error.message}
-        </h5>
+      {!data ? (
+        <Loading />
+      ) : data?.length <= 0 ? (
+        <h5 className='text-center text-blue-600 mb-4'>No data to display</h5>
+      ) : (
+        error && (
+          <h5 className='text-center text-red-600 mb-4'>
+            Error: {error.message}
+          </h5>
+        )
       )}
 
       <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>

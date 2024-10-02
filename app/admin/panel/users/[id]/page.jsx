@@ -95,7 +95,7 @@ export default function UpdateUser() {
             <span className='text-gray-700'>Phone number</span>
             <input
               type='tel'
-              name='phone_nmuber'
+              name='phone_number'
               value={data.phone_number}
               onChange={handleChange}
               className='w-full p-2 pl-10 text-sm text-gray-700 border border-gray-400 rounded-md outline-none'

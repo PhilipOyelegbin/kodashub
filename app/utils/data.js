@@ -96,43 +96,22 @@ export const Testimonials = [
   {
     name: "Lomolink",
     summary:
-      "KodasHub transformed our website with their exceptional development team. Highly recommend!",
+      "I've worked with several companies in the past, but none have delivered the level of service and expertise that this company has.",
     cover_image: "/male.jpg",
     rating: 5,
   },
   {
     name: "Sparklewise",
     summary:
-      "Outstanding service and support. KodasHub is the best choice for web hosting.",
+      "I was blown away by the quality of service I received from this company. They truly exceeded my expectations!",
     cover_image: "/female.jpg",
     rating: 5,
   },
   {
     name: "WAO",
     summary:
-      "Professional and reliable. Our website's performance has improved significantly.",
-    cover_image: "/male.jpg",
-    rating: 5,
-  },
-  {
-    name: "Lomolink",
-    summary:
-      "I was blown away by the quality of service I received from this company. They truly exceeded my expectations!",
-    cover_image: "/male.jpg",
-    title: "CEO, ABC Corporation",
-  },
-  {
-    name: "Lomolink",
-    summary:
-      "I've worked with several companies in the past, but none have delivered the level of service and expertise that this company has.",
-    cover_image: "/male.jpg",
-    title: "Marketing Manager, DEF Inc.",
-  },
-  {
-    name: "Lomolink",
-    summary:
       "I was impressed by the company's attention to detail and commitment to delivering high-quality results.",
     cover_image: "/male.jpg",
-    title: "Founder, GHI Startups",
+    rating: 5,
   },
 ];

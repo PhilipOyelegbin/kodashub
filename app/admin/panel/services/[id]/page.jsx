@@ -36,6 +36,8 @@ export default function UpdateDomain() {
         .then((resp) => {
           if (resp.ok) {
             navigate.replace("/admin/panel/services");
+          } else {
+            toast.error("Error updating service");
           }
         })
         .catch((err) => toast.error(err));
@@ -63,7 +65,7 @@ export default function UpdateDomain() {
     <section className='p-5 bg-white rounded shadow-md'>
       <div className='flex-1'>
         <h2 className='text-3xl font-bold text-purple-600 mb-4'>
-          Update a Domain
+          Update a Service
         </h2>
 
         <form onSubmit={handleSave}>
