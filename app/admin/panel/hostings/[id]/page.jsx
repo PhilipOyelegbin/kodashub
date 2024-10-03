@@ -9,7 +9,7 @@ export default function UpdateHosting() {
   const header = usePathname();
   const navigate = useRouter();
   const [data, setData] = useState({
-    plan: "",
+    name: "",
     price: "",
     status: "",
   });
@@ -60,11 +60,11 @@ export default function UpdateHosting() {
 
         <form onSubmit={handleSave}>
           <label className='block mb-2'>
-            <span className='text-gray-700'>Plan</span>
+            <span className='text-gray-700'>Name</span>
             <input
               type='text'
-              name='plan'
-              value={data.plan}
+              name='name'
+              value={data.name}
               onChange={handleChange}
               className='w-full p-2 pl-10 text-sm text-gray-700 border border-gray-400 rounded-md outline-none'
             />
