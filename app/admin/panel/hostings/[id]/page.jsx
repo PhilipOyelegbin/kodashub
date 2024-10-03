@@ -43,7 +43,7 @@ export default function UpdateHosting() {
       .then((resp) => resp.json())
       .then((result) =>
         setData({
-          plan: result?.data.plan,
+          name: result?.data.name,
           price: result?.data.price,
           status: result?.data.status,
         })
