@@ -18,7 +18,7 @@ export const UpdatePassword = () => {
       const response = await fetch(
         `/api/users/${sessionStorage.getItem("user")}`,
         {
-          method: "PUT",
+          method: "PATCH",
           body: JSON.stringify(user),
           headers: {
             "Content-Type": "application/json",

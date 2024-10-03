@@ -32,9 +32,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Custom website design
             </li>
@@ -45,9 +45,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Responsive design for mobile and tablet devices
             </li>
@@ -58,9 +58,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Easy-to-use content management system
             </li>
@@ -71,9 +71,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Search engine optimization (SEO) techniques
             </li>
@@ -84,9 +84,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Fast and reliable hosting options
             </li>
@@ -116,9 +116,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Fast and reliable servers
             </li>
@@ -129,9 +129,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Ample storage and bandwidth options
             </li>
@@ -142,9 +142,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Expert support and maintenance
             </li>
@@ -155,9 +155,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Secure and protected servers
             </li>
@@ -168,9 +168,9 @@ function Services() {
                 viewBox='0 0 20 20'
                 fill='currentColor'>
                 <path
-                  fill-rule='evenodd'
+                  fillRule='evenodd'
                   d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                  clip-rule='evenodd'></path>
+                  clipRule='evenodd'></path>
               </svg>
               Easy-to-use control panel
             </li>

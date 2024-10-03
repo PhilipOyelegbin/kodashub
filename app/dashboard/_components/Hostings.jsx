@@ -29,8 +29,8 @@ export const Hostings = () => {
           : data?.map((item) => (
               <li className='rounded-md bg-purple-100' key={item.id}>
                 <div className='flex items-start justify-between p-4'>
-                  <div className='space-y-2'>
-                    {item.id}
+                  <div className='space-y-2 w-full'>
+                    <span>{item.id}</span>
                     <h4 className='text-gray-800 font-semibold'>{item.name}</h4>
                     <p className='text-gray-600 text-sm'>₦{item.price}</p>
                   </div>

@@ -49,8 +49,8 @@ export const MyInvoices = () => {
                 key={item.id}
                 onClick={() => handlePayment(item.name, item.price)}>
                 <div className='flex items-start justify-between p-4'>
-                  <div className='space-y-2'>
-                    {item.id}
+                  <div className='space-y-2 w-full'>
+                    <span>{item.id}</span>
                     <h4 className='text-gray-800 font-semibold'>{item.name}</h4>
                     <p className='text-gray-600'>₦{item.price}</p>
                   </div>

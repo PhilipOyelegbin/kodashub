@@ -25,7 +25,7 @@ export default function CreateService() {
       })
         .then((resp) => {
           if (resp.ok) {
-            toast.success("Hosting created successfully");
+            toast.success("Website created successfully");
             setData({
               name: "",
               url: "",
