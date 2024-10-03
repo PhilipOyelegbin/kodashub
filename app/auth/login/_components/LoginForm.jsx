@@ -72,10 +72,13 @@ export const LoginForm = () => {
       </div>
       <div className='flex flex-col items-center gap-5 lg:flex-row lg:justify-between'>
         <button className='btn'>Sign In</button>
-        <Link href='/reset' className='text-sm text-center block underline'>
+        <Link
+          href='/auth/forgotpassword'
+          className='text-sm text-center block underline'>
           Forgot password?
         </Link>
       </div>
+
       <ToastContainer
         position='top-right'
         autoClose={2000}
