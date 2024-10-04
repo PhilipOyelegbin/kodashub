@@ -64,7 +64,7 @@ export async function PATCH(req) {
 
       <p>Warm regards,</p>
 
-      <p><br>KodasHub Support</p>
+      <p>KodasHub Support</p>
       `, // HTML body,
     };
 

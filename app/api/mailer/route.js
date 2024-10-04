@@ -16,10 +16,10 @@ export async function POST(req) {
     });
 
     const mailOptions = {
-      from: process.env.SMTP_USER,
+      from: `"KodasHub" <${process.env.SMTP_USER}>`,
       to: [recipient, process.env.SMTP_USER],
       subject,
-      text: message,
+      html: message,
     };
 
     await transporter.sendMail(mailOptions);
