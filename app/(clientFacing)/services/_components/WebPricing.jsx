@@ -91,6 +91,7 @@ function WebPricing() {
                         one time payment
                       </span>
                     </div>
+                    <p>{item.description}</p>
                   </div>
                   <ul className='py-8 space-y-3'>
                     {item.features.map((featureItem, idx) => (
