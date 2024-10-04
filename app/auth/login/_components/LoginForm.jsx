@@ -1,10 +1,10 @@
 "use client";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLayoutEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Link from "next/link";
 
 export const LoginForm = () => {
   const route = useRouter();
@@ -73,7 +73,7 @@ export const LoginForm = () => {
       <div className='flex flex-col items-center gap-5 lg:flex-row lg:justify-between'>
         <button className='btn'>Sign In</button>
         <Link
-          href='/auth/forgotpassword'
+          href='/passwordreset'
           className='text-sm text-center block underline'>
           Forgot password?
         </Link>

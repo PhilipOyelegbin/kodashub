@@ -49,7 +49,7 @@ export default function UpdateHosting() {
         })
       )
       .catch((err) => toast.error(err));
-  }, []);
+  }, [header]);
 
   return (
     <section className='p-5 bg-white rounded shadow-md'>

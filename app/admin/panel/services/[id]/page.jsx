@@ -59,7 +59,7 @@ export default function UpdateDomain() {
         })
       )
       .catch((err) => toast.error(err));
-  }, []);
+  }, [header]);
 
   return (
     <section className='p-5 bg-white rounded shadow-md'>

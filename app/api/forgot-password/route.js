@@ -10,15 +10,15 @@ export async function PATCH(req) {
     const existingUser = await prisma.user.findFirst({
       where: { email },
     });
-    if (existingUser) {
+    if (!existingUser) {
       return NextResponse.json(
-        { message: "Email already in use" },
-        { status: 400 }
+        { message: "Email not found!" },
+        { status: 404 }
       );
     }
 
     // generate reset token
-    const resetToken = crypto.randomBytes("20").toString("hex");
+    const resetToken = crypto.randomBytes(20).toString("hex");
     const resetTokenExpiration = Date.now() + 3600000; // 1 hour
 
     // save reset token
@@ -26,7 +26,7 @@ export async function PATCH(req) {
       where: { email },
       data: {
         reset_token: resetToken,
-        reset_expiration: resetTokenExpiration,
+        reset_expiration: resetTokenExpiration.toString(),
       },
     });
 
@@ -47,7 +47,7 @@ export async function PATCH(req) {
       text: `
       Hi,
 
-      You requested a password reset. Please use the following token to reset your password: ${resetToken}
+      You requested a password reset. Please click the following link to reset your password: ${process.env.HOST_URI}/passwordreset/updatepassword?token=${resetToken}
 
       It will expire within an hour. If you did not request this, please ignore this email.
 
@@ -58,7 +58,7 @@ export async function PATCH(req) {
       html: `
       <p>Hi</p>
 
-      <p>You requested a password reset. Please use the following token to reset your password: <strong>${resetToken}</strong></p>
+      <p>You requested a password reset. Please click the following link to reset your password: <a href="${process.env.HOST_URI}/passwordreset/updatepassword?token=${resetToken}">Reset password</a></p>
 
       <p>It will expire within an hour. If you did not request this, please ignore this email.</p>
 
@@ -71,7 +71,7 @@ export async function PATCH(req) {
     await transporter.sendMail(mailOptions);
 
     return NextResponse.json(
-      { message: "Reset token generated and sent successfully." },
+      { message: "Reset token generated and sent successfully.", resetToken },
       { status: 200 }
     );
   } catch (error) {

@@ -49,7 +49,7 @@ export default function UpdateInvoice() {
         })
       )
       .catch((err) => toast.error(err));
-  }, []);
+  }, [header]);
 
   return (
     <section className='p-5 bg-white rounded shadow-md'>

@@ -1,19 +1,20 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ResetPassword = () => {
   const route = useRouter();
-  const [password, setPassword] = useState("");
+  const token = useSearchParams();
+  const [formInput, setFormInput] = useState({ password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`/api/reset-password`, {
+      await fetch(`/api/forgot-password/${token.get("token")}`, {
         method: "PATCH",
-        bocy: JSON.stringify(password),
+        body: JSON.stringify(formInput),
       })
         .then((resp) => {
           if (resp?.ok) {
@@ -24,7 +25,7 @@ const ResetPassword = () => {
         })
         .catch((err) => toast.error(err));
     } catch (error) {
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error(error.message);
     }
   };
 
@@ -39,8 +40,10 @@ const ResetPassword = () => {
             name='password'
             id='password'
             className='p-2 rounded-md border w-full'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formInput.password}
+            onChange={(e) =>
+              setFormInput({ ...formInput, [e.target.name]: e.target.value })
+            }
             placeholder='XXXXXXXXX'
             required
           />

@@ -18,7 +18,7 @@ export default function PanelLayout({ children }) {
     if (localStorage.getItem("ssp") !== process.env.SSP) {
       path.replace("/admin");
     }
-  }, []);
+  }, [path]);
 
   return (
     <article className='relative flex gap-1 items-start'>
