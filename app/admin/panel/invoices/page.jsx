@@ -3,7 +3,7 @@ import Loading from "@/app/loading";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useLayoutEffect } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaEdit, FaPlusSquare, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
