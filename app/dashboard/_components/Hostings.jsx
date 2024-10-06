@@ -28,22 +28,26 @@ export const Hostings = () => {
               .map((d, index) => <Skeleton key={index} />)
           : data?.map((item) => (
               <li className='rounded-md bg-purple-100' key={item.id}>
-                <div className='flex items-start justify-between p-4'>
-                  <div className='space-y-2 w-full'>
-                    <span>{item.id}</span>
-                    <h4 className='text-gray-800 font-semibold'>{item.name}</h4>
-                    <p className='text-gray-600 text-sm'>₦{item.price}</p>
+                <Link href={item.url || "/"}>
+                  <div className='flex items-start justify-between p-4'>
+                    <div className='space-y-2 w-full'>
+                      <span>{item.id}</span>
+                      <h4 className='text-gray-800 font-semibold'>
+                        {item.name}
+                      </h4>
+                      <p className='text-gray-600 text-sm'>₦{item.price}</p>
+                    </div>
                   </div>
-                </div>
-                <div className='flex justify-between py-2 px-4 border-t-2 text-right'>
-                  <span
-                    className={`text-sm w-fit px-2 py-1 text-white rounded-lg ${
-                      item.status ? "bg-lime-500" : "bg-red-500"
-                    }`}>
-                    {item.status ? "Active" : "Inactive"}
-                  </span>
-                  <span>{item.expiration}</span>
-                </div>
+                  <div className='flex justify-between py-2 px-4 border-t-2 text-right'>
+                    <span
+                      className={`text-sm w-fit px-2 py-1 text-white rounded-lg ${
+                        item.status ? "bg-lime-500" : "bg-red-500"
+                      }`}>
+                      {item.status ? "Active" : "Inactive"}
+                    </span>
+                    <span>{item.expiration}</span>
+                  </div>
+                </Link>
               </li>
             ))}
       </ul>

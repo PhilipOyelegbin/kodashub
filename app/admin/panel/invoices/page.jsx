@@ -37,7 +37,12 @@ function AdminInvoicePage() {
 
   return (
     <section className='p-3 bg-white rounded shadow-md'>
-      <h2 className='text-3xl font-bold text-purple-600 mb-4'>Invoices</h2>
+      <div className='flex justify-between items-center'>
+        <h2 className='text-3xl font-bold text-purple-600 mb-4'>Invoices</h2>
+        <Link href='/admin/panel/invoices/new'>
+          <FaPlusSquare className='text-blue-500 hover:text-blue-700 text-2xl' />
+        </Link>
+      </div>
 
       {!data ? (
         <Loading />

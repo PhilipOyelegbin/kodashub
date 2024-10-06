@@ -9,8 +9,8 @@ export const MyInvoices = () => {
   const [data, setData] = useState();
   const navigate = useRouter();
 
-  const handlePayment = async (name, price) => {
-    const payment = { name, price };
+  const handlePayment = async (id, email, price) => {
+    const payment = { id, email, price };
     try {
       await fetch("/api/checkout", {
         method: "POST",
@@ -45,9 +45,15 @@ export const MyInvoices = () => {
               .map((d, index) => <Skeleton key={index} />)
           : data?.map((item) => (
               <li
-                className='rounded-md bg-purple-100'
+                className='rounded-md bg-purple-100 cursor-pointer'
                 key={item.id}
-                onClick={() => handlePayment(item.name, item.price)}>
+                onClick={() =>
+                  handlePayment(
+                    item.id,
+                    sessionStorage.getItem("user"),
+                    item.price
+                  )
+                }>
                 <div className='flex items-start justify-between p-4'>
                   <div className='space-y-2 w-full'>
                     <span>{item.id}</span>

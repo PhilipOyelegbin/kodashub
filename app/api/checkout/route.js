@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import Stripe from "stripe";
-
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function POST(req) {
-  const { name, price } = await req.json();
+  const { id, email, price } = await req.json();
 
-  if (!name || !price) {
+  if (!id || !email || !price) {
     return NextResponse.json(
       { message: "A required field is missing!" },
       { status: 400 }
@@ -14,24 +11,35 @@ export async function POST(req) {
   }
 
   try {
-    const session = await stripe.checkout.sessions.create({
-      line_items: [
-        {
-          price_data: {
-            currency: "usd",
-            product_data: { name },
-            unit_amount: parseInt(price) * 100,
-          },
-          quantity: 1,
-        },
-      ],
-      mode: "payment",
-      success_url: `${process.env.HOST_URI}/dashboard/feedback`,
-      cancel_url: `${process.env.HOST_URI}`,
+    const params = JSON.stringify({
+      reference: id,
+      email,
+      amount: price * 100,
+      channels: ["card", "bank_transfer"],
     });
 
+    const response = await fetch(
+      "https://api.paystack.co/transaction/initialize",
+      {
+        method: "POST",
+        body: params,
+        headers: {
+          Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+
+    if (!result.status) {
+      throw new Error("Network error encountered!");
+    }
+
     return NextResponse.json(
-      { message: "Payment gatway received", path: session.url },
+      {
+        message: "Payment gatway received",
+        path: result.data.authorization_url,
+      },
       { status: 200 }
     );
   } catch (error) {
