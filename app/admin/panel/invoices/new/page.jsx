@@ -4,6 +4,29 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const sendMail = async (user, name, price) => {
+  const recipient = user;
+  const subject = "KodasHub: Upcoming Renewal Invoice Generated";
+  const message = `
+  <p>Hello,</p>
+
+  <p>Thank you for your interest in our services.</p>
+
+  <p>We would like to confirm that you recently placed an order for <b>${name}</b> at the price of <b>₦${price}</b>. To proceed with the payment, please log in to your account and navigate to the billing section. You can complete the payment by clicking on the generated invoice.</p>
+
+  <p>If you have any questions or require assistance, please don't hesitate to reach out.</p>
+
+  <p><i>Best regards,</i></p>
+
+  <p><b>KodasHub</b></p>.
+        `;
+  const data = { recipient, subject, message };
+  await fetch("/api/mailer", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
 export default function CreateService() {
   const [user, setUser] = useState();
   const [data, setData] = useState({
@@ -24,6 +47,7 @@ export default function CreateService() {
       })
         .then((resp) => {
           if (resp.ok) {
+            sendMail(user, data.name, data.price);
             toast.success("Invoice created successfully");
             setData({
               name: "",
@@ -44,7 +68,7 @@ export default function CreateService() {
     <section className='p-5 bg-white rounded shadow-md flex gap-5 justify-center'>
       <div className='flex-1'>
         <h2 className='text-3xl font-bold text-purple-600 mb-4'>
-          Create a new website service
+          Create a new invoice
         </h2>
 
         <form onSubmit={handleSave}>

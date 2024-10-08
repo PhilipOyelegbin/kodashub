@@ -16,17 +16,17 @@ function WebPricing() {
       const recipient = sessionStorage.getItem("user");
       const subject = "KodasHub: New Web Design Order Placed";
       const message = `
-  Hello,
+  <p>Hello</p>,
 
-  Thank you for your interest in our services.
+  <p>Thank you for your interest in our services.</p>
 
-  We would like to confirm that you recently placed an order for ∗∗${name}∗∗ at the price of ∗∗₦${price}**. To proceed with the payment, please log in to your account and navigate to the billing section. You can complete the payment by clicking on the generated invoice.
+  <p>We would like to confirm that you recently placed an order for <b>${name}</b> at the price of <b>₦${price}</b>. To proceed with the payment, please log in to your account and navigate to the billing section. You can complete the payment by clicking on the generated invoice.</p>
 
-  If you have any questions or require assistance, please don't hesitate to reach out.
+  <p>If you have any questions or require assistance, please don't hesitate to reach out.</p>
 
-  Best regards,
+  <p><i>Best regards,</i></p>
 
-  KodasHub.
+  <p><b>KodasHub.</b></p>
         `;
       try {
         const invoice = {

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   FaGlobe,
   FaInternetExplorer,
@@ -15,7 +15,7 @@ function Panel() {
   const [websites, setWebsites] = useState();
   const [invoices, setInvoices] = useState();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetch("/api/users")
       .then((resp) => resp.json())
       .then((result) => setUsers(result.data.length))

@@ -2,18 +2,28 @@
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { FaBackward, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaFileInvoice } from "react-icons/fa";
+import {
+  FiBriefcase,
+  FiChrome,
+  FiLogOut,
+  FiMonitor,
+  FiServer,
+  FiUser,
+} from "react-icons/fi";
 
 export const Sidebar = ({ toggle, handleToggle }) => {
-  const path = usePathname();
-  const sideLinks = [
-    { url: "/dashboard", title: "Dashboard" },
-    { url: "/dashboard/offerings", title: "New Services" },
-    { url: "/dashboard/hosting", title: "My Hosting" },
-    { url: "/dashboard/website", title: "My Website" },
-    { url: "/dashboard/billing", title: "My Invoice" },
-    { url: "/dashboard/profile", title: "Profile" },
+  const navigation = [
+    { url: "/dashboard", title: "Dashboard", icon: <FiMonitor /> },
+    {
+      url: "/dashboard/offerings",
+      title: "New Services",
+      icon: <FiBriefcase />,
+    },
+    { url: "/dashboard/hosting", title: "My Hosting", icon: <FiServer /> },
+    { url: "/dashboard/website", title: "My Website", icon: <FiChrome /> },
+    { url: "/dashboard/billing", title: "My Invoice", icon: <FaFileInvoice /> },
+    { url: "/dashboard/profile", title: "Profile", icon: <FiUser /> },
   ];
 
   const handleSignOut = async () => {
@@ -25,43 +35,52 @@ export const Sidebar = ({ toggle, handleToggle }) => {
     <aside
       className={`${
         toggle ? "left-0 absolute md:static" : "-left-full fixed"
-      } p-5 h-screen shadow-md duration-300 ease-linear bg-white z-30`}>
-      <div className='text-center mb-5'>
-        <div className='w-full flex justify-end mb-5 text-2xl right-5 md:hidden'>
-          <FaTimes
-            className='cursor-pointer text-purple-500'
-            onClick={handleToggle}
+      } w-24 h-screen duration-300 ease-linear bg-white z-30`}>
+      <div className='flex flex-col h-full p-5 space-y-5 relative'>
+        <div className='text-center'>
+          <Image
+            src='/logo.png'
+            width={300}
+            height={300}
+            className='object-fill w-40 aspect-square'
+            alt='KodasHub logo'
           />
+          <h5 className='text-wrap w-full'>
+            {sessionStorage?.getItem("user").split("@")[0]}...
+          </h5>
         </div>
-        <FaUserCircle className='w-20 h-20 text-purple-500' />
-        <h5 className='text-wrap w-full'>
-          {sessionStorage?.getItem("user").split("@")[0]}...
-        </h5>
+
+        <div className='flex-1 flex flex-col h-full'>
+          <ul className='px-4 font-medium flex-1'>
+            {navigation.map((item, idx) => (
+              <li key={idx}>
+                <Link
+                  href={item.url}
+                  onClick={handleToggle}
+                  className='relative flex items-center justify-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150 group'>
+                  <div className='text-gray-500 text-2xl'>{item.icon}</div>
+                  <span className='absolute left-14 p-1 px-1.5 rounded-md whitespace-nowrap text-xs text-white bg-gray-800 hidden group-hover:inline-block group-focus:hidden duration-150'>
+                    {item.title}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+
+          <ul className='px-4 pb-4 text-sm font-medium'>
+            <li
+              onClick={handleSignOut}
+              className='relative flex items-center justify-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150 group cursor-pointer'>
+              <div className='text-gray-500 text-2xl'>
+                <FiLogOut />
+              </div>
+              <span className='absolute left-14 p-1 px-1.5 rounded-md whitespace-nowrap text-xs text-white bg-gray-800 hidden group-hover:inline-block group-focus:hidden duration-150'>
+                Logout
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
-
-      <hr />
-
-      <ul className='flex flex-col gap-5 mt-5'>
-        {sideLinks.map((list, i) => (
-          <Link
-            key={i}
-            href={list.url}
-            onClick={handleToggle}
-            className={
-              path === list.url
-                ? "text-purple-500"
-                : "text-slate-700 duration-300 ease-linear hover:text-purple-400"
-            }>
-            {list.title}
-          </Link>
-        ))}
-        <p
-          className='flex items-center gap-1 border-b border-red-500 w-fit cursor-pointer text-red-500 hover:text-red-300 hover:border-red-300 duration-300 ease-linear'
-          onClick={handleSignOut}>
-          <FaBackward />
-          Logout
-        </p>
-      </ul>
     </aside>
   );
 };

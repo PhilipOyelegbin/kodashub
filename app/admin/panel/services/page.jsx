@@ -2,7 +2,7 @@
 import Loading from "@/app/loading";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useLayoutEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,7 +28,7 @@ function AdminServicePage() {
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetch(`/api/services`)
       .then((resp) => resp.json())
       .then((result) => setData(result?.data))
