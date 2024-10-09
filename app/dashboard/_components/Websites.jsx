@@ -3,18 +3,17 @@ import { Skeleton } from "@/app/components/Skeleton";
 import { useState, useLayoutEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Link from "next/link";
 
 export const Websites = () => {
   const [data, setData] = useState();
-  // const navigate = useRouter();
 
   useLayoutEffect(() => {
-    fetch(`/api/development/${sessionStorage.getItem("user")}`)
+    const user = sessionStorage.getItem("user");
+    fetch(`/api/development/${user}`)
       .then((resp) => resp.json())
       .then((result) => setData(result.data))
       .catch((error) => toast.error(error));
-  }, [sessionStorage.getItem("user")]);
+  }, []);
 
   return (
     <div className='text-center p-5 bg-white rounded-md'>

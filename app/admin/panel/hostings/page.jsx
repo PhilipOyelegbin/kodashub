@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { FaEdit, FaPlusSquare, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getHosting } from "../_components/action";
 
 function AdminHostingPage() {
   const navigate = useRouter();
@@ -29,10 +30,15 @@ function AdminHostingPage() {
   };
 
   useEffect(() => {
-    fetch(`/api/hosting`)
-      .then((resp) => resp.json())
-      .then((result) => setData(result?.data))
-      .catch((err) => setError(err));
+    (async () => {
+      const response = await getHosting();
+      if (response.ok) {
+        const result = await response.json();
+        setData(result?.data);
+      } else {
+        setError(response?.statusText);
+      }
+    })();
   }, []);
 
   return (

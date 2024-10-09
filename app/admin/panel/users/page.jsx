@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getUser } from "../_components/action";
 
 function AdminUserPage() {
   const [data, setData] = useState();
@@ -26,10 +27,15 @@ function AdminUserPage() {
   };
 
   useEffect(() => {
-    fetch(`/api/users`)
-      .then((resp) => resp.json())
-      .then((result) => setData(result?.data))
-      .catch((err) => setError(err));
+    (async () => {
+      const response = await getUser();
+      if (response.ok) {
+        const result = await response.json();
+        setData(result?.data);
+      } else {
+        setError(response?.statusText);
+      }
+    })();
   }, []);
 
   return (

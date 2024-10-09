@@ -9,11 +9,12 @@ export const Hostings = () => {
   const [data, setData] = useState();
 
   useLayoutEffect(() => {
-    fetch(`/api/hosting/${sessionStorage.getItem("user")}`)
+    const user = sessionStorage.getItem("user");
+    fetch(`/api/hosting/${user}`)
       .then((resp) => resp.json())
       .then((result) => setData(result.data))
       .catch((error) => toast.error(error));
-  }, [sessionStorage.getItem("user")]);
+  }, []);
 
   return (
     <div className='text-center p-5 bg-white rounded-md'>

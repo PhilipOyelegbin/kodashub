@@ -26,11 +26,12 @@ export const MyInvoices = () => {
   };
 
   useLayoutEffect(() => {
-    fetch(`/api/invoices/${sessionStorage.getItem("user")}`)
+    const user = sessionStorage.getItem("user");
+    fetch(`/api/invoices/${user}`)
       .then((resp) => resp.json())
       .then((result) => setData(result.data))
       .catch((error) => toast.error(error));
-  }, [sessionStorage.getItem("user")]);
+  }, []);
 
   return (
     <div className='text-center p-5 bg-white rounded-md'>

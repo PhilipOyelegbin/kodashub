@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import {
@@ -8,6 +9,7 @@ import {
   FaServer,
   FaUserCircle,
 } from "react-icons/fa";
+import { getHosting, getInvoice, getUser, getWebsite } from "./action";
 
 function Panel() {
   const [users, setUsers] = useState();
@@ -16,22 +18,39 @@ function Panel() {
   const [invoices, setInvoices] = useState();
 
   useEffect(() => {
-    fetch("/api/users")
-      .then((resp) => resp.json())
-      .then((result) => setUsers(result.data.length))
-      .catch((err) => console.log(err));
-    fetch("/api/hosting")
-      .then((resp) => resp.json())
-      .then((result) => setHostings(result.data.length))
-      .catch((err) => console.log(err));
-    fetch("/api/development")
-      .then((resp) => resp.json())
-      .then((result) => setWebsites(result.data.length))
-      .catch((err) => console.log(err));
-    fetch("/api/invoices")
-      .then((resp) => resp.json())
-      .then((result) => setInvoices(result.data.length))
-      .catch((err) => console.log(err));
+    (async () => {
+      const userResponse = await getUser();
+      if (userResponse.ok) {
+        const result = await userResponse.json();
+        setUsers(result?.data.length);
+      } else {
+        console.log(userResponse?.statusText);
+      }
+
+      const hostingResponse = await getHosting();
+      if (hostingResponse.ok) {
+        const result = await hostingResponse.json();
+        setHostings(result?.data.length);
+      } else {
+        console.log(hostingResponse?.statusText);
+      }
+
+      const websiteResponse = await getWebsite();
+      if (websiteResponse.ok) {
+        const result = await websiteResponse.json();
+        setWebsites(result?.data.length);
+      } else {
+        console.log(websiteResponse?.statusText);
+      }
+
+      const invoiceResponse = await getInvoice();
+      if (invoiceResponse.ok) {
+        const result = await invoiceResponse.json();
+        setInvoices(result?.data.length);
+      } else {
+        console.log(invoiceResponse?.statusText);
+      }
+    })();
   }, []);
 
   return (

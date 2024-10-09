@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { FaEdit, FaPlusSquare, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getInvoice } from "../_components/action";
 
 function AdminInvoicePage() {
   const navigate = useRouter();
@@ -29,10 +30,15 @@ function AdminInvoicePage() {
   };
 
   useEffect(() => {
-    fetch(`/api/invoices`)
-      .then((resp) => resp.json())
-      .then((result) => setData(result?.data))
-      .catch((err) => setError(err));
+    (async () => {
+      const response = await getInvoice();
+      if (response.ok) {
+        const result = await response.json();
+        setData(result?.data);
+      } else {
+        setError(response?.statusText);
+      }
+    })();
   }, []);
 
   return (
@@ -50,9 +56,7 @@ function AdminInvoicePage() {
         <h5 className='text-center text-blue-600 mb-4'>No data to display</h5>
       ) : (
         error && (
-          <h5 className='text-center text-red-600 mb-4'>
-            Error: {error.message}
-          </h5>
+          <h5 className='text-center text-red-600 mb-4'>Error: {error}</h5>
         )
       )}
 
