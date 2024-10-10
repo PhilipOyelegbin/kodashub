@@ -31,12 +31,6 @@ app.use(express.urlencoded({ extended: false }));
 // User routes
 app.use("/", userRoutes);
 
-// connect the server
-const port = process.env.PORT;
-app.listen(port, async () => {
-  console.log("Server is running on port: ", port);
-});
-
 // page route
 app.get("/", (req, res) => {
   res.send("KodasHub API built using express.");
@@ -45,4 +39,10 @@ app.get("/", (req, res) => {
 // error route
 app.all("*", (req, res) => {
   res.status(404).send("Sorry, the route you are going to does not exist");
+});
+
+// connect the server
+const port = process.env.PORT;
+app.listen(port, async () => {
+  console.log("Server is running on port: ", port);
 });

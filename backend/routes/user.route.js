@@ -1,5 +1,11 @@
 const { Router } = require("express");
-const { getUsers, createUser } = require("../controller/user.controller");
+const {
+  getUsers,
+  createUser,
+  updateUserByEmail,
+  getUserByEmail,
+  deleteUserByEmail,
+} = require("../controller/user.controller");
 const { hashPassword } = require("../utils/auth");
 
 const router = Router();
@@ -29,7 +35,75 @@ router.post("/api/users", async (req, res) => {
       phone_number,
       password: await hashPassword(password),
     });
-    res.status(200).json({ message: "All users received successfully", users });
+    res.status(200).json({ message: "User data saved successfully", users });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/api/users/:email", async (req, res) => {
+  // #swagger.tags = ['Users']
+  try {
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(403).json({ message: "Error: Email is required" });
+    }
+
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    res.status(200).json({ message: "User found", existingUser });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.patch("/api/users/:email", async (req, res) => {
+  // #swagger.tags = ['Users']
+  try {
+    const { password, ...body } = await req.body;
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(403).json({ message: "Error: Email is required" });
+    }
+
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    if (password) {
+      const newPassword = await hashPassword(password);
+      await updateUserByEmail(email, { password: newPassword });
+    } else {
+      await updateUserByEmail(email, body);
+    }
+    res.status(200).json({ message: "User data updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.delete("/api/users/:email", async (req, res) => {
+  // #swagger.tags = ['Users']
+  try {
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(403).json({ message: "Error: Email is required" });
+    }
+
+    const existingUser = await getUserByEmail(email);
+    if (!existingUser) {
+      return res.status(404).json({ message: "User does not exist" });
+    }
+
+    await deleteUserByEmail(email);
+    res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
