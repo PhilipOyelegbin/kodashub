@@ -38,11 +38,11 @@ app.listen(port, async () => {
 });
 
 // page route
-app.get("/api", (req, res) => {
+app.get("/", (req, res) => {
   res.send("KodasHub API built using express.");
 });
 
 // error route
-app.use((req, res) => {
-  res.status(404).send("404, route not found");
+app.all("*", (req, res) => {
+  res.status(404).send("Sorry, the route you are going to does not exist");
 });
