@@ -4,6 +4,8 @@
   "description": "API for the web hosting application.",
   "main": "index.js",
   "scripts": {
+    "build": "npm install",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
