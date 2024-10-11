@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "swagger.js"
+      "dest": "index.js"
     }
   ]
 }

@@ -6,8 +6,9 @@
   "scripts": {
     "postinstall": "prisma generate",
     "build": "npm install && npx prisma generate",
-    "start": "node ./swagger.js",
+    "start": "npm run swagger",
     "vercel-build": "prisma generate && prisma migrate deploy",
+    "swagger": "node ./swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
