@@ -44,6 +44,7 @@ router.post("/v1/api/website/:email", async (req, res) => {
       .status(200)
       .json({ message: "Website data saved successfully", website });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: error.message });
   }
 });
