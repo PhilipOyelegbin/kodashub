@@ -41,7 +41,7 @@ const getUserWebsites = async (email) => {
 
 const getWebsiteById = async (id) => {
   try {
-    const website = await prisma.offerings.findUnique({
+    const website = await prisma.development.findUnique({
       where: { id },
     });
     return website;
@@ -52,7 +52,7 @@ const getWebsiteById = async (id) => {
 
 const updateWebsiteById = async (id, newData) => {
   try {
-    const website = await prisma.offerings.update({
+    const website = await prisma.development.update({
       where: { id },
       data: { ...newData },
     });
@@ -64,7 +64,7 @@ const updateWebsiteById = async (id, newData) => {
 
 const deleteWebsiteById = async (id) => {
   try {
-    const website = await prisma.offerings.delete({
+    const website = await prisma.development.delete({
       where: { id },
     });
     return website;

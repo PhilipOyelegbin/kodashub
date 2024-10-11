@@ -18,6 +18,31 @@
           "Checkout"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Checkout data to be provided.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -29,6 +54,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -65,6 +95,29 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Hosting data to be created.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -83,35 +136,33 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "get": {
-        "tags": [
-          "Hosting"
-        ],
-        "description": "",
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "email",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "price": {
+                    "example": "any"
+                  },
+                  "expiration": {
+                    "example": "any"
+                  },
+                  "url": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -132,7 +183,7 @@
         }
       }
     },
-    "/v1/api/hosting/{id}": {
+    "/v1/api/hosting/{slug}": {
       "get": {
         "tags": [
           "Hosting"
@@ -140,7 +191,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
@@ -161,8 +212,15 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/api/hosting/{id}": {
       "patch": {
         "tags": [
           "Hosting"
@@ -176,6 +234,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Hosting data to be updated.",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -191,7 +276,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -221,7 +311,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/v1/api/invoice/{email}": {
@@ -237,6 +332,25 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Invoice data to be created.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
             }
           }
         ],
@@ -256,35 +370,27 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "get": {
-        "tags": [
-          "Invoice"
-        ],
-        "description": "",
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "email",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "bearerAuth": []
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "example": "any"
+                  },
+                  "price": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -305,7 +411,7 @@
         }
       }
     },
-    "/v1/api/invoice/{id}": {
+    "/v1/api/invoice/{slug}": {
       "get": {
         "tags": [
           "Invoice"
@@ -313,7 +419,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
@@ -334,8 +440,15 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/api/invoice/{id}": {
       "patch": {
         "tags": [
           "Invoice"
@@ -349,6 +462,29 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Invoice data to be updated.",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 0
+                },
+                "status": {
+                  "type": "boolean",
+                  "example": false
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -363,6 +499,28 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "example": "any"
+                  },
+                  "body": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -394,7 +552,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/v1/api/servicemail": {
@@ -554,7 +717,7 @@
     "/v1/api/service": {
       "post": {
         "tags": [
-          "service"
+          "Service"
         ],
         "description": "",
         "responses": {
@@ -568,6 +731,11 @@
             "description": "Internal Server Error"
           }
         },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -594,7 +762,7 @@
       },
       "get": {
         "tags": [
-          "service"
+          "Service"
         ],
         "description": "",
         "responses": {
@@ -610,7 +778,7 @@
     "/v1/api/service/{id}": {
       "get": {
         "tags": [
-          "service"
+          "Service"
         ],
         "description": "",
         "parameters": [
@@ -640,7 +808,7 @@
       },
       "patch": {
         "tags": [
-          "service"
+          "Service"
         ],
         "description": "",
         "parameters": [
@@ -650,6 +818,38 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Service data to be updated.",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "paln": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "amount": {
+                  "type": "number",
+                  "example": 0
+                },
+                "description": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "features": {
+                  "type": "array",
+                  "example": [
+                    "string"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
         ],
@@ -666,11 +866,16 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
-          "service"
+          "Service"
         ],
         "description": "",
         "parameters": [
@@ -696,10 +901,15 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
-    "v1/api/users": {
+    "/v1/api/users": {
       "get": {
         "tags": [
           "Users"
@@ -713,9 +923,7 @@
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/v1/api/users": {
+      },
       "post": {
         "tags": [
           "Users"
@@ -789,7 +997,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "patch": {
         "tags": [
@@ -803,6 +1016,37 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "User data to be updated.",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "phone_number": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
             }
           }
         ],
@@ -819,7 +1063,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -849,7 +1098,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/v1/api/website/{email}": {
@@ -865,6 +1119,29 @@
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Website data to be created.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
             }
           }
         ],
@@ -884,37 +1161,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
-      "get": {
-        "tags": [
-          "Website"
-        ],
-        "description": "",
-        "parameters": [
+        },
+        "security": [
           {
-            "name": "email",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "bearerAuth": []
           }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "403": {
-            "description": "Forbidden"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        ]
       }
     },
     "/v1/api/website": {
@@ -933,7 +1185,7 @@
         }
       }
     },
-    "/v1/api/website/{id}": {
+    "/v1/api/website/{slug}": {
       "get": {
         "tags": [
           "Website"
@@ -941,7 +1193,7 @@
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "slug",
             "in": "path",
             "required": true,
             "schema": {
@@ -962,8 +1214,15 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
-      },
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/api/website/{id}": {
       "patch": {
         "tags": [
           "Website"
@@ -977,6 +1236,33 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Website data to be updated.",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "price": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "status": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -992,7 +1278,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1022,7 +1313,12 @@
           "500": {
             "description": "Internal Server Error"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   },

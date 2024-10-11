@@ -11,7 +11,20 @@ const { getUserByEmail } = require("../controller/user.controller");
 const router = Router();
 
 router.post("/v1/api/website/:email", async (req, res) => {
-  // #swagger.tags = ['Website']
+  /*
+    #swagger.tags = ['Website']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Website data to be created.',
+      required: true,
+      schema: {
+        name: "string",
+        price: "string",
+        url: "string",
+      }
+    }
+  */
   try {
     const body = await req.body;
     const { email } = req.params;
@@ -26,12 +39,12 @@ router.post("/v1/api/website/:email", async (req, res) => {
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    const website = await createWebsiteByUser(email, body);
-    res
+    const website = await createWebsiteByUser(existingUser, body);
+    return res
       .status(200)
       .json({ message: "Website data saved successfully", website });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -39,54 +52,63 @@ router.get("/v1/api/website", async (req, res) => {
   // #swagger.tags = ['Website']
   try {
     const website = await getWebsites();
-    res
+    return res
       .status(200)
       .json({ message: "All website received successfully", website });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
-router.get("/v1/api/website/:email", async (req, res) => {
-  // #swagger.tags = ['Website']
+router.get("/v1/api/website/:slug", async (req, res) => {
+  /*
+    #swagger.tags = ['Website']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
-    const { email } = req.params;
-    if (!email) {
+    const { slug } = req.params;
+    if (!slug) {
       return res.status(403).json({ message: "Bad request" });
     }
 
-    const existingUser = await getUserByEmail(email);
-    if (!existingUser) {
-      return res.status(404).json({ message: "User does not exist" });
-    }
+    if (slug.includes("@")) {
+      const existingUser = await getUserByEmail(slug);
+      if (!existingUser) {
+        return res.status(404).json({ message: "User does not exist" });
+      }
 
-    const userWebsite = await getUserWebsites(email);
-    res.status(200).json({ message: "User websites found", userWebsite });
+      const userWebsite = await getUserWebsites(slug);
+      return res
+        .status(200)
+        .json({ message: "User websites found", userWebsite });
+    } else {
+      const website = await getWebsiteById(slug);
+      if (!website) {
+        return res.status(404).json({ message: "Website not found" });
+      }
+      return res.status(200).json({ message: "Website found", website });
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-router.get("/v1/api/website/:id", async (req, res) => {
-  // #swagger.tags = ['Website']
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(403).json({ message: "Bad request" });
-    }
-
-    const website = await getWebsiteById(id);
-    if (!website) {
-      res.status(404).json({ message: "Website not found" });
-    }
-    res.status(200).json({ message: "Website found", website });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.patch("/v1/api/website/:id", async (req, res) => {
-  // #swagger.tags = ['Website']
+  /*
+    #swagger.tags = ['Website']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Website data to be updated.',
+      required: false,
+      schema: {
+        name: "string",
+        price: "string",
+        url: "string",
+        status: "string"
+      }
+    }
+  */
   try {
     const { status, ...body } = await req.body;
     const { id } = req.params;
@@ -100,14 +122,19 @@ router.patch("/v1/api/website/:id", async (req, res) => {
     }
 
     await updateWebsiteById(id, { status: JSON.parse(status), ...body });
-    res.status(200).json({ message: "Website data updated successfully" });
+    return res
+      .status(200)
+      .json({ message: "Website data updated successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.delete("/v1/api/website/:id", async (req, res) => {
-  // #swagger.tags = ['Website']
+  /*
+    #swagger.tags = ['Website']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
     const { id } = req.params;
     if (!id) {
@@ -120,9 +147,9 @@ router.delete("/v1/api/website/:id", async (req, res) => {
     }
 
     await deleteWebsiteById(id);
-    res.status(200).json({ message: "Website deleted successfully" });
+    return res.status(200).json({ message: "Website deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 

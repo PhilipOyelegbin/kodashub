@@ -10,41 +10,43 @@ const {
 const router = Router();
 
 router.post("/v1/api/service", async (req, res) => {
-  // #swagger.tags = ['service']
+  /*
+    #swagger.tags = ['Service']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   const { plan, description, amount, features } = await req.body;
-  if (!plan || !description || !amount || !features) {
-    return res.status(400).json({ message: "All field are required" });
-  }
   try {
+    if (!plan || !description || !amount || !features) {
+      return res.status(400).json({ message: "All field are required" });
+    }
     const service = await createService({
       plan,
       description,
       amount: parseInt(amount),
       features: features?.split(","),
     });
-    res
+    return res
       .status(200)
       .json({ message: "Service data saved successfully", service });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.get("/v1/api/service", async (req, res) => {
-  // #swagger.tags = ['service']
+  // #swagger.tags = ['Service']
   try {
     const service = await getServices();
-    res.status(200).json({ message: "All service found", service });
+    return res.status(200).json({ message: "All service found", service });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.get("/v1/api/service/:id", async (req, res) => {
-  // #swagger.tags = ['service']
+  // #swagger.tags = ['Service']
   try {
     const { id } = req.params;
-
     if (!id) {
       return res.status(403).json({ message: "Bad request" });
     }
@@ -54,14 +56,28 @@ router.get("/v1/api/service/:id", async (req, res) => {
       return res.status(404).json({ message: "Service does not exist" });
     }
 
-    res.status(200).json({ message: "Service found", existingService });
+    return res.status(200).json({ message: "Service found", existingService });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.patch("/v1/api/service/:id", async (req, res) => {
-  // #swagger.tags = ['service']
+  /*
+    #swagger.tags = ['Service']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Service data to be updated.',
+      required: false,
+      schema: {
+        paln: "string",
+        amount: 0,
+        description: "string",
+        features: ["string"]
+      }
+    }
+  */
   try {
     const { features, ...body } = await req.body;
     const { id } = req.params;
@@ -76,14 +92,19 @@ router.patch("/v1/api/service/:id", async (req, res) => {
     }
 
     await updateServiceById(id, { features: features?.split(","), ...body });
-    res.status(200).json({ message: "Service data updated successfully" });
+    return res
+      .status(200)
+      .json({ message: "Service data updated successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.delete("/v1/api/service/:id", async (req, res) => {
-  // #swagger.tags = ['service']
+  /*
+    #swagger.tags = ['Service']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
     const { id } = req.params;
 
@@ -97,9 +118,9 @@ router.delete("/v1/api/service/:id", async (req, res) => {
     }
 
     await deleteServiceById(id);
-    res.status(200).json({ message: "Service deleted successfully" });
+    return res.status(200).json({ message: "Service deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 

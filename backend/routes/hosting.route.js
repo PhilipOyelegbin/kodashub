@@ -11,11 +11,24 @@ const { getUserByEmail } = require("../controller/user.controller");
 const router = Router();
 
 router.post("/v1/api/hosting/:email", async (req, res) => {
-  // #swagger.tags = ['Hosting']
+  /*
+    #swagger.tags = ['Hosting']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Hosting data to be created.',
+      required: true,
+      schema: {
+        name: "string",
+        price: "string",
+        url: "string",
+      }
+    }
+  */
   try {
-    const body = await req.body;
+    const { name, price, expiration, url } = await req.body;
     const { email } = req.params;
-    if (!body) {
+    if (!name || !price || !expiration) {
       return res.status(400).json({ error: "All fields are required" });
     }
     if (!email) {
@@ -26,12 +39,17 @@ router.post("/v1/api/hosting/:email", async (req, res) => {
     if (!existingUser) {
       return res.status(404).json({ message: "User not found" });
     }
-    const hosting = await createHostingByUser(email, body);
-    res
+    const hosting = await createHostingByUser(existingUser, {
+      name,
+      price,
+      expiration,
+      url,
+    });
+    return res
       .status(200)
       .json({ message: "Hosting data saved successfully", hosting });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -39,54 +57,63 @@ router.get("/v1/api/hosting", async (req, res) => {
   // #swagger.tags = ['Hosting']
   try {
     const hosting = await getHostings();
-    res
+    return res
       .status(200)
       .json({ message: "All hosting received successfully", hosting });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
-router.get("/v1/api/hosting/:email", async (req, res) => {
-  // #swagger.tags = ['Hosting']
+router.get("/v1/api/hosting/:slug", async (req, res) => {
+  /*
+    #swagger.tags = ['Hosting']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
-    const { email } = req.params;
-    if (!email) {
+    const { slug } = req.params;
+    if (!slug) {
       return res.status(403).json({ message: "Bad request" });
     }
 
-    const existingUser = await getUserByEmail(email);
-    if (!existingUser) {
-      return res.status(404).json({ message: "User does not exist" });
-    }
+    if (slug.includes("@")) {
+      const existingUser = await getUserByEmail(slug);
+      if (!existingUser) {
+        return res.status(404).json({ message: "User does not exist" });
+      }
 
-    const userHosting = await getUserHostings(email);
-    res.status(200).json({ message: "User hostings found", userHosting });
+      const userHosting = await getUserHostings(slug);
+      return res
+        .status(200)
+        .json({ message: "User hostings found", userHosting });
+    } else {
+      const hosting = await getHostingById(slug);
+      if (!hosting) {
+        return res.status(404).json({ message: "Hosting not found" });
+      }
+      return res.status(200).json({ message: "Hosting found", hosting });
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-router.get("/v1/api/hosting/:id", async (req, res) => {
-  // #swagger.tags = ['Hosting']
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(403).json({ message: "Bad request" });
-    }
-
-    const hosting = await getHostingById(id);
-    if (!hosting) {
-      res.status(404).json({ message: "Hosting not found" });
-    }
-    res.status(200).json({ message: "Hosting found", hosting });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.patch("/v1/api/hosting/:id", async (req, res) => {
-  // #swagger.tags = ['Hosting']
+  /*
+    #swagger.tags = ['Hosting']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Hosting data to be updated.',
+      required: false,
+      schema: {
+        name: "string",
+        price: "string",
+        url: "string",
+        status: "string"
+      }
+    }
+  */
   try {
     const { status, ...body } = await req.body;
     const { id } = req.params;
@@ -100,14 +127,19 @@ router.patch("/v1/api/hosting/:id", async (req, res) => {
     }
 
     await updateHostingById(id, { status: JSON.parse(status), ...body });
-    res.status(200).json({ message: "Hosting data updated successfully" });
+    return res
+      .status(200)
+      .json({ message: "Hosting data updated successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.delete("/v1/api/hosting/:id", async (req, res) => {
-  // #swagger.tags = ['Hosting']
+  /*
+    #swagger.tags = ['Hosting']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
     const { id } = req.params;
     if (!id) {
@@ -120,9 +152,9 @@ router.delete("/v1/api/hosting/:id", async (req, res) => {
     }
 
     await deleteHostingById(id);
-    res.status(200).json({ message: "Hosting deleted successfully" });
+    return res.status(200).json({ message: "Hosting deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 

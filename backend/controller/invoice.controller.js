@@ -6,7 +6,7 @@ const createInvoiceByUser = async (user, newData) => {
       data: {
         ...newData,
         user: {
-          connect: { id: user?.id },
+          connect: { id: user.id },
         },
       },
     });
@@ -30,10 +30,10 @@ const getUserInvoices = async (email) => {
     const userInvoice = await prisma.user.findUnique({
       where: { email },
       include: {
-        invoice: true,
+        invoices: true,
       },
     });
-    return userInvoice?.invoice;
+    return userInvoice?.invoices;
   } catch (error) {
     throw error;
   }

@@ -11,13 +11,7 @@ const createService = async (newData) => {
 
 const getServices = async () => {
   try {
-    const services = await prisma.offerings.findMany({
-      include: {
-        hosting: true,
-        development: true,
-        invoices: true,
-      },
-    });
+    const services = await prisma.offerings.findMany();
     return services;
   } catch (error) {
     throw error;
@@ -28,11 +22,6 @@ const getServiceById = async (id) => {
   try {
     const services = await prisma.offerings.findUnique({
       where: { id },
-      include: {
-        hosting: true,
-        development: true,
-        invoices: true,
-      },
     });
     return services;
   } catch (error) {

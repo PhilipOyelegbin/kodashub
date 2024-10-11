@@ -3,7 +3,20 @@ const { Router } = require("express");
 const router = Router();
 
 router.post("/v1/api/checkout", async (req, res) => {
-  // #swagger.tags = ['Checkout']
+  /*
+    #swagger.tags = ['Checkout']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'Checkout data to be provided.',
+      required: true,
+      schema: {
+        id: "string",
+        email: "string",
+        price: "string"
+      }
+    }
+  */
   const { id, email, price } = await req.body;
 
   if (!id || !email || !price) {
@@ -14,7 +27,7 @@ router.post("/v1/api/checkout", async (req, res) => {
     const params = JSON.stringify({
       reference: id,
       email,
-      amount: price * 100,
+      amount: parseInt(price) * 100,
       channels: ["card", "bank_transfer"],
     });
 
@@ -43,3 +56,5 @@ router.post("/v1/api/checkout", async (req, res) => {
     return res.status(500).json({ message: "Error", error });
   }
 });
+
+module.exports = router;

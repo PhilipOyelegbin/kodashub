@@ -6,7 +6,7 @@ const createHostingByUser = async (user, newData) => {
       data: {
         ...newData,
         user: {
-          connect: { id: user?.id },
+          connect: { id: user.id },
         },
       },
     });

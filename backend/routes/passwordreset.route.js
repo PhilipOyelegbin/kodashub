@@ -1,4 +1,4 @@
-require(dotenv).config();
+require("dotenv").config();
 const { Router } = require("express");
 const { createTransport } = require("nodemailer");
 const { getUserByEmail } = require("../controller/user.controller");
@@ -102,3 +102,5 @@ router.post("/v1/api/resetpassword/:token", async (req, res) => {
     return res.status(500).json({ message: "Error", error });
   }
 });
+
+module.exports = router;

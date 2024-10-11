@@ -10,13 +10,15 @@ const { hashPassword } = require("../utils/auth");
 
 const router = Router();
 
-router.get("v1/api/users", async (req, res) => {
+router.get("/v1/api/users", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
     const users = await getUsers();
-    res.status(200).json({ message: "All users received successfully", users });
+    return res
+      .status(200)
+      .json({ message: "All users received successfully", users });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
@@ -35,14 +37,19 @@ router.post("/v1/api/users", async (req, res) => {
       phone_number,
       password: await hashPassword(password),
     });
-    res.status(200).json({ message: "User data saved successfully", users });
+    return res
+      .status(200)
+      .json({ message: "User data saved successfully", users });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.get("/v1/api/users/:email", async (req, res) => {
-  // #swagger.tags = ['Users']
+  /*
+    #swagger.tags = ['Users']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
     const { email } = req.params;
 
@@ -55,14 +62,29 @@ router.get("/v1/api/users/:email", async (req, res) => {
       return res.status(404).json({ message: "User does not exist" });
     }
 
-    res.status(200).json({ message: "User found", existingUser });
+    return res.status(200).json({ message: "User found", existingUser });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.patch("/v1/api/users/:email", async (req, res) => {
-  // #swagger.tags = ['Users']
+  /*
+    #swagger.tags = ['Users']
+    #swagger.security = [{"bearerAuth": []}]
+    #swagger.parameters['body'] = {
+      in: 'body',
+      description: 'User data to be updated.',
+      required: false,
+      schema: {
+        first_name: "string",
+        last_name: "string",
+        email: "string",
+        phone_number: "string",
+        password: "string"
+      }
+    }
+  */
   try {
     const { password, ...body } = await req.body;
     const { email } = req.params;
@@ -82,14 +104,17 @@ router.patch("/v1/api/users/:email", async (req, res) => {
     } else {
       await updateUserByEmail(email, body);
     }
-    res.status(200).json({ message: "User data updated successfully" });
+    return res.status(200).json({ message: "User data updated successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
 router.delete("/v1/api/users/:email", async (req, res) => {
-  // #swagger.tags = ['Users']
+  /*
+    #swagger.tags = ['Users']
+    #swagger.security = [{"bearerAuth": []}]
+  */
   try {
     const { email } = req.params;
 
@@ -103,9 +128,9 @@ router.delete("/v1/api/users/:email", async (req, res) => {
     }
 
     await deleteUserByEmail(email);
-    res.status(200).json({ message: "User deleted successfully" });
+    return res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 });
 
