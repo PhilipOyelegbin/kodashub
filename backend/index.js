@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const { default: helmet } = require("helmet");
+const swaggerUi = require("swagger-ui-express");
+const swaggerdocs = require("./swagger-output.json");
 
 // import routes
 const userRoutes = require("./routes/user.route");
@@ -27,14 +29,10 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerdocs)); // Swagger setup
 
 // User routes
 app.use("/", userRoutes);
-
-// page route
-app.get("/", (req, res) => {
-  res.send("KodasHub API built using express.");
-});
 
 // error route
 app.all("*", (req, res) => {

@@ -10,7 +10,7 @@ const { hashPassword } = require("../utils/auth");
 
 const router = Router();
 
-router.get("/api/users", async (req, res) => {
+router.get("v1/api/users", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
     const users = await getUsers();
@@ -20,7 +20,7 @@ router.get("/api/users", async (req, res) => {
   }
 });
 
-router.post("/api/users", async (req, res) => {
+router.post("/v1/api/users", async (req, res) => {
   // #swagger.tags = ['Users']
   const { first_name, last_name, email, phone_number, password } =
     await req.body;
@@ -41,7 +41,7 @@ router.post("/api/users", async (req, res) => {
   }
 });
 
-router.get("/api/users/:email", async (req, res) => {
+router.get("/v1/api/users/:email", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
     const { email } = req.params;
@@ -61,7 +61,7 @@ router.get("/api/users/:email", async (req, res) => {
   }
 });
 
-router.patch("/api/users/:email", async (req, res) => {
+router.patch("/v1/api/users/:email", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
     const { password, ...body } = await req.body;
@@ -88,7 +88,7 @@ router.patch("/api/users/:email", async (req, res) => {
   }
 });
 
-router.delete("/api/users/:email", async (req, res) => {
+router.delete("/v1/api/users/:email", async (req, res) => {
   // #swagger.tags = ['Users']
   try {
     const { email } = req.params;

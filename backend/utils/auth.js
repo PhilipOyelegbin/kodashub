@@ -14,7 +14,7 @@ async function verifyPassword(password, hashedPassword) {
 }
 
 async function generateToken(user) {
-  const payload = { id: user.id, role: user.role };
+  const payload = { id: user.id, email: user.email, role: user.role };
   return jwt.sign(payload, secretKey, { expiresIn: "4h" });
 }
 

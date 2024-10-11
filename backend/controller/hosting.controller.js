@@ -1,72 +1,83 @@
 const { prisma } = require("../utils/connect");
 
-const createUser = async (newData) => {
+const createHostingByUser = async (user, newData) => {
   try {
-    const users = await prisma.user.create({ data: newData });
-    return users;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const getUsers = async () => {
-  try {
-    const users = await prisma.user.findMany({
-      include: {
-        hosting: true,
-        development: true,
-        invoices: true,
+    const hosting = await prisma.hosting.create({
+      data: {
+        ...newData,
+        user: {
+          connect: { id: user?.id },
+        },
       },
     });
-    return users;
+    return hosting;
   } catch (error) {
     throw error;
   }
 };
 
-const getUserByEmail = async (email) => {
+const getHostings = async () => {
   try {
-    const users = await prisma.user.findUnique({
+    const hosting = await prisma.hosting.findMany();
+    return hosting;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUserHostings = async (email) => {
+  try {
+    const userHosting = await prisma.user.findUnique({
       where: { email },
       include: {
         hosting: true,
-        development: true,
-        invoices: true,
       },
     });
-    return users;
+    return userHosting?.hosting;
   } catch (error) {
     throw error;
   }
 };
 
-const updateUserByEmail = async (email, newData) => {
+const getHostingById = async (id) => {
   try {
-    const users = await prisma.user.update({
-      where: { email },
+    const hosting = await prisma.hosting.findUnique({
+      where: { id },
+    });
+    return hosting;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateHostingById = async (id, newData) => {
+  try {
+    const hosting = await prisma.hosting.update({
+      where: { id },
       data: { ...newData },
     });
-    return users;
+    return hosting;
   } catch (error) {
     throw error;
   }
 };
 
-const deleteUserByEmail = async (email) => {
+const deleteHostingById = async (id) => {
   try {
-    const users = await prisma.user.delete({
-      where: { email },
+    const hosting = await prisma.hosting.delete({
+      where: { id },
     });
-    return users;
+    return hosting;
   } catch (error) {
     throw error;
   }
 };
 
 module.exports = {
-  createUser,
-  getUsers,
-  getUserByEmail,
-  updateUserByEmail,
-  deleteUserByEmail,
+  createHostingByUser,
+  getHostings,
+  getUserHostings,
+  getHostingById,
+  updateHostingById,
+  deleteHostingById,
 };

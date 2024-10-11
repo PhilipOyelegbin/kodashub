@@ -1,72 +1,83 @@
 const { prisma } = require("../utils/connect");
 
-const createUser = async (newData) => {
+const createInvoiceByUser = async (user, newData) => {
   try {
-    const users = await prisma.user.create({ data: newData });
-    return users;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const getUsers = async () => {
-  try {
-    const users = await prisma.user.findMany({
-      include: {
-        hosting: true,
-        development: true,
-        invoices: true,
+    const invoice = await prisma.invoice.create({
+      data: {
+        ...newData,
+        user: {
+          connect: { id: user?.id },
+        },
       },
     });
-    return users;
+    return invoice;
   } catch (error) {
     throw error;
   }
 };
 
-const getUserByEmail = async (email) => {
+const getInvoices = async () => {
   try {
-    const users = await prisma.user.findUnique({
+    const invoice = await prisma.invoice.findMany();
+    return invoice;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUserInvoices = async (email) => {
+  try {
+    const userInvoice = await prisma.user.findUnique({
       where: { email },
       include: {
-        hosting: true,
-        development: true,
-        invoices: true,
+        invoice: true,
       },
     });
-    return users;
+    return userInvoice?.invoice;
   } catch (error) {
     throw error;
   }
 };
 
-const updateUserByEmail = async (email, newData) => {
+const getInvoiceById = async (id) => {
   try {
-    const users = await prisma.user.update({
-      where: { email },
+    const invoice = await prisma.invoice.findUnique({
+      where: { id },
+    });
+    return invoice;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateInvoiceById = async (id, newData) => {
+  try {
+    const invoice = await prisma.invoice.update({
+      where: { id },
       data: { ...newData },
     });
-    return users;
+    return invoice;
   } catch (error) {
     throw error;
   }
 };
 
-const deleteUserByEmail = async (email) => {
+const deleteInvoiceById = async (id) => {
   try {
-    const users = await prisma.user.delete({
-      where: { email },
+    const invoice = await prisma.invoice.delete({
+      where: { id },
     });
-    return users;
+    return invoice;
   } catch (error) {
     throw error;
   }
 };
 
 module.exports = {
-  createUser,
-  getUsers,
-  getUserByEmail,
-  updateUserByEmail,
-  deleteUserByEmail,
+  createInvoiceByUser,
+  getInvoices,
+  getUserInvoices,
+  getInvoiceById,
+  updateInvoiceById,
+  deleteInvoiceById,
 };
