@@ -37,7 +37,7 @@ export default function Navbar() {
             {item.label}
           </NavLink>
         ))}
-        <Link to='/auth/login' className='btn'>
+        <Link to='/login' className='btn'>
           Login
         </Link>
         <FaTimes

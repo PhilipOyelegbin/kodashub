@@ -1,7 +1,4 @@
-"use client";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 function ContactForm() {
   const [data, setData] = useState({
@@ -82,14 +79,6 @@ function ContactForm() {
         required
         placeholder='Write your meesage here...'></textarea>
       <button className='btn'>Send</button>
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </form>
   );
 }

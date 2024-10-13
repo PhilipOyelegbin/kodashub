@@ -1,12 +1,8 @@
-"use client";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Link, useNavigate } from "react-router-dom";
 
 export const RegisterForm = () => {
-  const navigate = useRouter();
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -22,13 +18,16 @@ export const RegisterForm = () => {
   const handleRegister = async (e) => {
     try {
       e.preventDefault();
-      const response = await fetch(`${process.env.API_URI}/api/users`, {
-        method: "POST",
-        body: JSON.stringify(user),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URI}/api/users`,
+        {
+          method: "POST",
+          body: JSON.stringify(user),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         setUser({
@@ -38,7 +37,7 @@ export const RegisterForm = () => {
           phone_number: "",
           password: "",
         });
-        navigate.push("/auth/login");
+        navigate("/login");
       } else {
         toast.error("An error occurred during registration.");
       }
@@ -125,13 +124,6 @@ export const RegisterForm = () => {
         </label>
       </div>
       <button className='btn'>Sign Up</button>
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </form>
   );
 };

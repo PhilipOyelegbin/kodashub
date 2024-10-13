@@ -1,12 +1,8 @@
-"use client";
-import { useRouter } from "next/navigation";
-import { useLayoutEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
-  const route = useRouter();
+  const route = useNavigate();
   const session = sessionStorage.getItem("user");
   const [user, setUser] = useState({ email: "", password: "" });
 
@@ -17,7 +13,7 @@ export const LoginForm = () => {
   const handleLogin = async (e) => {
     try {
       e.preventDefault();
-      const resp = await fetch(`${process.env.API_URI}/api/login`, {
+      const resp = await fetch(`${import.meta.env.VITE_API_URI}/api/login`, {
         method: "POST",
         body: JSON.stringify({
           email: user.email,
@@ -33,16 +29,16 @@ export const LoginForm = () => {
       } else {
         const user = await resp.json();
         sessionStorage.setItem("token", user.token);
-        route.replace("/dashboard");
+        route("/dashboard");
       }
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (session) {
-      route.replace("/dashboard");
+      route("/dashboard");
     }
   }, [session, route]);
 
@@ -83,14 +79,6 @@ export const LoginForm = () => {
           Forgot password?
         </Link>
       </div>
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </form>
   );
 };

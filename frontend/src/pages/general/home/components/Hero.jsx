@@ -20,7 +20,7 @@ function Hero() {
           Experience unparalleled web hosting and development services tailored
           to your needs. Join us and elevate your online presence.
         </h5>
-        <Button url='/auth/register' label='Get Started' />
+        <Button url='/register' label='Get Started' />
         <div className='mt-10 grid grid-cols-5 gap-10 text-3xl md:text-6xl'>
           <FaWordpress />
           <FaDrupal />
