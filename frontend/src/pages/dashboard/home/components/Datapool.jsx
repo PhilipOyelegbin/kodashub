@@ -1,5 +1,4 @@
-"use client";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   FaGlobe,
@@ -14,21 +13,19 @@ export default function Datapool() {
   const [invoices, setInvoices] = useState(0);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = sessionStorage.getItem("user");
-      fetch(`${process.env.API_URI}/api/hosting/${storedUser}`)
-        .then((resp) => resp.json())
-        .then((result) => setHostings(result.userHosting.length))
-        .catch((err) => console.log(err));
-      fetch(`${process.env.API_URI}/api/website/${storedUser}`)
-        .then((resp) => resp.json())
-        .then((result) => setWebsites(result.userWebsite.length))
-        .catch((err) => console.log(err));
-      fetch(`${process.env.API_URI}/api/invoice/${storedUser}`)
-        .then((resp) => resp.json())
-        .then((result) => setInvoices(result.userInvoice.length))
-        .catch((err) => console.log(err));
-    }
+    const storedUser = sessionStorage.getItem("user");
+    fetch(`${import.meta.env.VITE_API_URI}/api/hosting/${storedUser}`)
+      .then((resp) => resp.json())
+      .then((result) => setHostings(result.userHosting.length))
+      .catch((err) => console.log(err));
+    fetch(`${import.meta.env.VITE_API_URI}/api/website/${storedUser}`)
+      .then((resp) => resp.json())
+      .then((result) => setWebsites(result.userWebsite.length))
+      .catch((err) => console.log(err));
+    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${storedUser}`)
+      .then((resp) => resp.json())
+      .then((result) => setInvoices(result.userInvoice.length))
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -41,7 +38,7 @@ export default function Datapool() {
             <h3 className='text-lg font-bold text-blue-600 mb-2'>Hostings</h3>
             <p className='text-3xl font-bold text-gray-700'>{hostings}</p>
             <Link
-              href='/dashboard/hosting'
+              to='/dashboard/hosting'
               className='text-sm text-blue-600 hover:text-blue-700'>
               View All Hostings
             </Link>
@@ -54,7 +51,7 @@ export default function Datapool() {
             <h3 className='text-lg font-bold text-green-600 mb-2'>Domains</h3>
             <p className='text-3xl font-bold text-gray-700'>{domains}</p>
             <Link
-              href='/dashboard/domains'
+              to='/dashboard/domains'
               className='text-sm text-green-600 hover:text-green-700'>
               View All Domains
             </Link>
@@ -67,7 +64,7 @@ export default function Datapool() {
             <h3 className='text-lg font-bold text-orange-600 mb-2'>Websites</h3>
             <p className='text-3xl font-bold text-gray-700'>{websites}</p>
             <Link
-              href='/dashboard/website'
+              to='/dashboard/website'
               className='text-sm text-orange-600 hover:text-orange-700'>
               View All Website
             </Link>
@@ -80,7 +77,7 @@ export default function Datapool() {
             <h3 className='text-lg font-bold text-orange-600 mb-2'>Invoices</h3>
             <p className='text-3xl font-bold text-gray-700'>{invoices}</p>
             <Link
-              href='/dashboard/billing'
+              to='/dashboard/invoice'
               className='text-sm text-orange-600 hover:text-orange-700'>
               View All Invoices
             </Link>

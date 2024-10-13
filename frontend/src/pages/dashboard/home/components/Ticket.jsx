@@ -1,14 +1,10 @@
-"use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import support from "../../../../assets/va.png";
 
 export default function Ticket() {
-  const [authUser, setAuthUser] = useState();
   const [data, setData] = useState({
     subject: "",
-    email: authUser,
+    email: "",
     message: "",
   });
 
@@ -18,7 +14,7 @@ export default function Ticket() {
 
   const sendMail = async (e) => {
     e.preventDefault();
-    await fetch(`${process.env.API_URI}/api/supportmail`, {
+    await fetch(`${import.meta.env.VITE_API_URI}/api/supportmail`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -40,10 +36,7 @@ export default function Ticket() {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = sessionStorage.getItem("user");
-      setAuthUser(storedUser);
-    }
+    setData({ ...data, email: sessionStorage.getItem("user") });
   }, []);
 
   return (
@@ -102,22 +95,14 @@ export default function Ticket() {
       </div>
 
       <div className='hidden md:block flex-1'>
-        <Image
-          src='/va.png'
+        <img
+          src={support}
           className='object-fill w-full h-full'
           width={300}
           height={300}
           alt='banner'
         />
       </div>
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </section>
   );
 }

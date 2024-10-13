@@ -1,5 +1,4 @@
-"use client";
-import { Websites } from "../_components/Websites";
+import { Websites } from "../components/Websites";
 
 const Website = () => {
   return (

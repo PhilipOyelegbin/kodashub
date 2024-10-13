@@ -1,7 +1,4 @@
-"use client";
-import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import { FaFileInvoice } from "react-icons/fa";
 import {
   FiBriefcase,
@@ -11,25 +8,26 @@ import {
   FiServer,
   FiUser,
 } from "react-icons/fi";
+import logo from "../../../assets/logo.png";
 
 export const Sidebar = ({ toggle, handleToggle }) => {
-  const route = useRouter();
+  const route = useNavigate();
   const navigation = [
     { url: "/dashboard", title: "Dashboard", icon: <FiMonitor /> },
     {
-      url: "/dashboard/offerings",
-      title: "New Services",
+      url: "/dashboard/services",
+      title: "Services",
       icon: <FiBriefcase />,
     },
     { url: "/dashboard/hosting", title: "My Hosting", icon: <FiServer /> },
     { url: "/dashboard/website", title: "My Website", icon: <FiChrome /> },
-    { url: "/dashboard/billing", title: "My Invoice", icon: <FaFileInvoice /> },
+    { url: "/dashboard/invoice", title: "My Invoice", icon: <FaFileInvoice /> },
     { url: "/dashboard/profile", title: "Profile", icon: <FiUser /> },
   ];
 
   const handleSignOut = async () => {
     sessionStorage?.clear();
-    route.replace("/auth/login");
+    route("/login");
   };
 
   return (
@@ -39,10 +37,8 @@ export const Sidebar = ({ toggle, handleToggle }) => {
       } w-24 h-screen duration-300 ease-linear bg-white z-30`}>
       <div className='flex flex-col h-full p-5 space-y-5 relative'>
         <div className='text-center'>
-          <Image
-            src='/logo.png'
-            width={300}
-            height={300}
+          <img
+            src={logo}
             className='object-fill w-40 aspect-square'
             alt='KodasHub logo'
           />
@@ -56,7 +52,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
             {navigation.map((item, idx) => (
               <li key={idx}>
                 <Link
-                  href={item.url}
+                  to={item.url}
                   onClick={handleToggle}
                   className='relative flex items-center justify-center gap-x-2 text-gray-600 p-2 rounded-lg  hover:bg-gray-50 active:bg-gray-100 duration-150 group'>
                   <div className='text-gray-500 text-2xl'>{item.icon}</div>

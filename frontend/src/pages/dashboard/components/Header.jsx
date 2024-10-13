@@ -1,10 +1,9 @@
-"use client";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 import { FaAlignJustify, FaUserCircle } from "react-icons/fa";
 
 export const Header = ({ handleToggle }) => {
-  const path = usePathname();
-  const headerTitle = path?.split("/").splice(2);
+  const path = useLocation();
+  const headerTitle = path?.pathname.split("/").splice(0, 0);
 
   return (
     <header className='flex justify-between items-center p-5 shadow-md'>

@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const User = () => {
@@ -10,7 +9,6 @@ export const User = () => {
     email: "",
     phone_number: "",
   });
-  const [authUser, setAuthUser] = useState(null);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -19,8 +17,9 @@ export const User = () => {
   const handleUpdate = async (e) => {
     try {
       e.preventDefault();
+      const storedUser = sessionStorage?.getItem("user");
       const response = await fetch(
-        `${process.env.API_URI}/api/users/${authUser}`,
+        `${import.meta.env.VITE_API_URI}/api/users/${storedUser}`,
         {
           method: "PATCH",
           body: JSON.stringify(user),
@@ -41,23 +40,18 @@ export const User = () => {
   };
 
   useEffect(() => {
-    // const storedUser = sessionStorage?.getItem("user");
-    // if (storedUser) {
-    //   setAuthUser(storedUser);
-    // }
-    if (authUser) {
-      fetch(`${process.env.API_URI}/api/users/${authUser}`)
-        .then((resp) => resp.json())
-        .then((result) =>
-          setUser({
-            first_name: result?.existingUser.first_name,
-            last_name: result?.existingUser?.last_name,
-            email: result?.existingUser?.email,
-            phone_number: result?.existingUser?.phone_number,
-          })
-        )
-        .catch((error) => toast.error(error));
-    }
+    const storedUser = sessionStorage?.getItem("user");
+    fetch(`${import.meta.env.VITE_API_URI}/api/users/${storedUser}`)
+      .then((resp) => resp.json())
+      .then((result) =>
+        setUser({
+          first_name: result?.existingUser.first_name,
+          last_name: result?.existingUser?.last_name,
+          email: result?.existingUser?.email,
+          phone_number: result?.existingUser?.phone_number,
+        })
+      )
+      .catch((error) => toast.error(error));
   }, []);
 
   return (
@@ -116,13 +110,6 @@ export const User = () => {
       </div>
 
       <button className='btn'>Save</button>
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </form>
   );
 };

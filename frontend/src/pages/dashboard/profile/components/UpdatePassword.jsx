@@ -1,6 +1,5 @@
-"use client";
 import { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const UpdatePassword = () => {
@@ -17,7 +16,7 @@ export const UpdatePassword = () => {
     try {
       e.preventDefault();
       const response = await fetch(
-        `${process.env.API_URI}/api/users/${authUser}`,
+        `${import.meta.env.VITE_API_URI}/api/users/${authUser}`,
         {
           method: "PATCH",
           body: JSON.stringify(user),
@@ -40,12 +39,12 @@ export const UpdatePassword = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const storedUser = sessionStorage?.getItem("user");
-  //   if (storedUser) {
-  //     setAuthUser(storedUser);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const storedUser = sessionStorage?.getItem("user");
+    if (storedUser) {
+      setAuthUser(storedUser);
+    }
+  }, []);
 
   return (
     <form
@@ -66,13 +65,6 @@ export const UpdatePassword = () => {
       </div>
 
       <button className='btn'>Update</button>
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </form>
   );
 };

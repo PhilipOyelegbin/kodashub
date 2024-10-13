@@ -1,6 +1,5 @@
-"use client";
-import HostPricing from "./_components/HostPricing";
-import WebPricing from "./_components/WebPricing";
+import HostPricing from "./components/HostPricing";
+import WebPricing from "./components/WebPricing";
 
 function Service() {
   return (

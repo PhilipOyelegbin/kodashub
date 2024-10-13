@@ -1,5 +1,4 @@
-"use client";
-import { Hostings } from "../_components/Hostings";
+import { Hostings } from "../components/Hostings";
 
 const Hosting = () => {
   return (

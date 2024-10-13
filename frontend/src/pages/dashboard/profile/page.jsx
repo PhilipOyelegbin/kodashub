@@ -1,6 +1,5 @@
-"use client";
-import { UpdatePassword } from "./_components/UpdatePassword";
-import { User } from "./_components/User";
+import { UpdatePassword } from "./components/UpdatePassword";
+import { User } from "./components/User";
 
 const Profile = () => {
   return (
