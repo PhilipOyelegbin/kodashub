@@ -79,9 +79,8 @@ router.patch("/v1/api/service/:id", async (req, res) => {
     }
   */
   try {
-    const { features, ...body } = await req.body;
+    const body = await req.body;
     const { id } = req.params;
-
     if (!id) {
       return res.status(403).json({ message: "Bad request" });
     }
@@ -91,7 +90,7 @@ router.patch("/v1/api/service/:id", async (req, res) => {
       return res.status(404).json({ message: "Service does not exist" });
     }
 
-    await updateServiceById(id, { features: features?.split(","), ...body });
+    await updateServiceById(id, body);
     return res
       .status(200)
       .json({ message: "Service data updated successfully" });

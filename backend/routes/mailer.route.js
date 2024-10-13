@@ -11,7 +11,7 @@ router.post("/v1/api/servicemail", async (req, res) => {
 
     const transporter = createTransport({
       host: process.env.SMTP_HOST,
-      port: 587,
+      port: process.env.SMTP_PORT,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
@@ -24,7 +24,6 @@ router.post("/v1/api/servicemail", async (req, res) => {
       subject,
       html: message,
     };
-
     await transporter.sendMail(mailOptions);
     return res.status(200).json({ message: "Email sent successfully" });
   } catch (error) {
@@ -39,7 +38,7 @@ router.post("/v1/api/supportmail", async (req, res) => {
 
     const transporter = createTransport({
       host: process.env.SMTP_HOST,
-      port: 587,
+      port: process.env.SMTP_PORT,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,

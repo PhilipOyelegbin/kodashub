@@ -14,6 +14,7 @@ const websiteRoutes = require("./routes/website.route");
 const invoiceRoutes = require("./routes/invoice.route");
 const mailerRoutes = require("./routes/mailer.route");
 const checkoutRoutes = require("./routes/checkout.route");
+const authRoutes = require("./routes/auth.route");
 const passwordResetRoutes = require("./routes/passwordreset.route");
 
 const app = express();
@@ -21,8 +22,7 @@ const app = express();
 // middleware
 const corsOptions = {
   origin: [
-    "http://127.0.0.1:3000",
-    "http://localhost:3000",
+    "http://127.0.0.1:5173",
     "http://localhost:5173",
     "https://kodashub.com.ng",
     "https://kodashub.netlify.app",
@@ -43,6 +43,7 @@ app.use("/", websiteRoutes);
 app.use("/", invoiceRoutes);
 app.use("/", mailerRoutes);
 app.use("/", checkoutRoutes);
+app.use("/", authRoutes);
 app.use("/", passwordResetRoutes);
 
 // Swagger setup
