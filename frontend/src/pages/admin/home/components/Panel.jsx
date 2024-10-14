@@ -36,7 +36,7 @@ function Panel() {
         ]);
         if (userResponse.ok) {
           const result = await userResponse.json();
-          setUsers(result?.users.length || 0);
+          setUsers(result?.users.length - 1 || 0);
         } else {
           console.error("Error fetching users:", userResponse?.statusText);
         }
@@ -72,8 +72,6 @@ function Panel() {
       }
     };
     fetchData();
-    // const intervalId = setInterval(fetchData, 10000); // fetch data every 30 seconds
-    // return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -86,7 +84,7 @@ function Panel() {
             <h3 className='text-lg font-bold text-purple-600 mb-2'>Users</h3>
             <p className='text-3xl font-bold text-gray-700'>{users}</p>
             <Link
-              to='/admin/panel/users'
+              to='/panel/users'
               className='text-sm text-purple-600 hover:text-purple-700'>
               View All Users
             </Link>
@@ -99,7 +97,7 @@ function Panel() {
             <h3 className='text-lg font-bold text-blue-600 mb-2'>Hostings</h3>
             <p className='text-3xl font-bold text-gray-700'>{hostings}</p>
             <Link
-              to='/admin/panel/hostings'
+              to='/panel/hostings'
               className='text-sm text-blue-600 hover:text-blue-700'>
               View All Hostings
             </Link>
@@ -112,7 +110,7 @@ function Panel() {
             <h3 className='text-lg font-bold text-orange-600 mb-2'>Websites</h3>
             <p className='text-3xl font-bold text-gray-700'>{websites}</p>
             <Link
-              to='/admin/panel/websites'
+              to='/panel/websites'
               className='text-sm text-orange-600 hover:text-orange-700'>
               View All Website
             </Link>
@@ -125,7 +123,7 @@ function Panel() {
             <h3 className='text-lg font-bold text-orange-600 mb-2'>Invoices</h3>
             <p className='text-3xl font-bold text-gray-700'>{invoices}</p>
             <Link
-              to='/admin/panel/invoices'
+              to='/panel/invoices'
               className='text-sm text-orange-600 hover:text-orange-700'>
               View All Invoices
             </Link>

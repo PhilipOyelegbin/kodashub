@@ -1,13 +1,10 @@
-"use client";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, useLayoutEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function UpdateDomain() {
-  const header = usePathname();
-  const navigate = useRouter();
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     plan: "",
     price: "",
@@ -20,13 +17,13 @@ export default function UpdateDomain() {
 
   const handleSave = (e) => {
     e.preventDefault();
-    navigate.replace("/admin/panel/domains");
+    navigate("/panel/domains");
     try {
     } catch (error) {}
   };
 
-  useLayoutEffect(() => {
-    fetch(`/api/domains/${header.split("/")[4]}`)
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URI}/api/domains/${id}`)
       .then((resp) => resp.json())
       .then((result) =>
         setData({
@@ -85,21 +82,13 @@ export default function UpdateDomain() {
             </button>
 
             <Link
-              href='/admin/panel/domains'
+              to='/panel/domains'
               className='bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded'>
               Cancel
             </Link>
           </div>
         </form>
       </div>
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </section>
   );
 }

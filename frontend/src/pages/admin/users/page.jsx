@@ -62,28 +62,30 @@ function AdminUserPage() {
         <h5 className='text-center text-blue-600 mb-4'>No data to display</h5>
       ) : (
         <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-          {data.map((user) => (
-            <li className='rounded-md bg-purple-100' key={user.id}>
-              <div className='flex text-center justify-center p-4'>
-                <div className='space-y-2'>
-                  {user.email}
-                  <h4 className='text-gray-800 font-semibold'>
-                    {user.first_name} {user.last_name}
-                  </h4>
-                  <p className='text-gray-600 text-sm'>{user.phone_number}</p>
+          {data
+            .filter((list) => list.role !== "ADMIN")
+            .map((user) => (
+              <li className='rounded-md bg-purple-100' key={user.id}>
+                <div className='flex text-center justify-center p-4'>
+                  <div className='space-y-2'>
+                    {user.email}
+                    <h4 className='text-gray-800 font-semibold'>
+                      {user.first_name} {user.last_name}
+                    </h4>
+                    <p className='text-gray-600 text-sm'>{user.phone_number}</p>
+                  </div>
                 </div>
-              </div>
-              <div className='flex gap-2 text-2xl py-2 px-4 border-t-2 text-right'>
-                <Link to={`/panel/users/${user.email}`}>
-                  <FaEdit className='text-purple-500 hover:text-purple-700' />
-                </Link>
-                <FaTrash
-                  className='text-red-500 hover:text-red-700 cursor-pointer'
-                  onClick={() => handleDeleteUser(user.email)}
-                />
-              </div>
-            </li>
-          ))}
+                <div className='flex gap-2 text-2xl py-2 px-4 border-t-2 text-right'>
+                  <Link to={`/panel/users/${user.email}`}>
+                    <FaEdit className='text-purple-500 hover:text-purple-700' />
+                  </Link>
+                  <FaTrash
+                    className='text-red-500 hover:text-red-700 cursor-pointer'
+                    onClick={() => handleDeleteUser(user.email)}
+                  />
+                </div>
+              </li>
+            ))}
         </ul>
       )}
     </section>

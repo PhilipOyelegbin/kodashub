@@ -1,10 +1,8 @@
-"use client";
-import Loading from "@/app/loading";
-import Link from "next/link";
+import Loading from "../../../components/loading";
 import { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function AdminDomainPage() {
   const [data, setData] = useState(null);
@@ -12,9 +10,12 @@ function AdminDomainPage() {
 
   const handleDeleteDomain = async (id) => {
     try {
-      const response = await fetch(`/api/domain/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URI}/api/domain/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (response.ok) {
         toast.success("Deleted Successfully");
         setData((prevData) => prevData.filter((domain) => domain.id !== id));
@@ -29,7 +30,9 @@ function AdminDomainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`/api/domain`);
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URI}/api/domain`
+        );
         const result = await response.json();
         setData(result.data);
       } catch (error) {
@@ -69,7 +72,7 @@ function AdminDomainPage() {
                 <td>{domain.plan}</td>
                 <td>{domain.status}</td>
                 <td className='flex gap-2 text-2xl'>
-                  <Link href={`/admin/panel/domains/${domain.id}`}>
+                  <Link to={`/panel/domains/${domain.id}`}>
                     <FaEdit className='text-purple-500 hover:text-purple-700' />
                   </Link>
                   <FaTrash
@@ -82,14 +85,6 @@ function AdminDomainPage() {
           </tbody>
         </table>
       )}
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </section>
   );
 }
