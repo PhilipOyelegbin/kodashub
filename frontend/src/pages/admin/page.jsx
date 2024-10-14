@@ -1,22 +1,20 @@
-"use client";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { Verify } from "../utils/middleware";
+import { toast } from "react-toastify";
+import { Verify } from "../../utils/middleware";
 
 function AdminLoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useRouter();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const authenticate = Verify(username, password);
 
     if (authenticate) {
-      localStorage.setItem("ssp", process.env.SSP);
-      navigate.replace("/admin/panel");
+      localStorage.setItem("ssp", import.meta.env.VITE_SSP);
+      navigate("/admin/panel");
     } else {
       toast.error("Invalid username or password");
     }
@@ -55,14 +53,6 @@ function AdminLoginPage() {
           </button>
         </form>
       </div>
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </article>
   );
 }

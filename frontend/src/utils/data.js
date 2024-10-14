@@ -1,4 +1,5 @@
-// static data
+import male from "../assets/male.jpg";
+import female from "../assets/female.jpg";
 
 export const Courses = [
   {
@@ -98,21 +99,21 @@ export const Testimonials = [
     name: "Lomolink",
     summary:
       "I've worked with several companies in the past, but none have delivered the level of service and expertise that this company has.",
-    cover_image: "/male.jpg",
+    cover_image: male,
     rating: 5,
   },
   {
     name: "Sparklewise",
     summary:
       "I was blown away by the quality of service I received from this company. They truly exceeded my expectations!",
-    cover_image: "/female.jpg",
+    cover_image: female,
     rating: 5,
   },
   {
     name: "WAO",
     summary:
       "I was impressed by the company's attention to detail and commitment to delivering high-quality results.",
-    cover_image: "/male.jpg",
+    cover_image: male,
     rating: 5,
   },
 ];

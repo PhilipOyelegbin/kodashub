@@ -9,7 +9,7 @@ import {
 
 function Hero() {
   return (
-    <header className="flex items-center justify-center h-svh px-5 lg:px-20 bg-slate-900 bg-[url('/servers.jpg')] bg-blend-overlay bg-center bg-cover bg-no-repeat">
+    <header className="flex items-center justify-center h-svh px-5 lg:px-20 bg-slate-900 bg-[url('./assets/servers.jpg')] bg-blend-overlay bg-center bg-cover bg-no-repeat">
       <div className='flex flex-col items-center gap-5 text-center text-slate-200 md:w-2/3 xl:w-2/5'>
         <h1>
           <span className='text-purple-700'>Reliable</span> &{" "}

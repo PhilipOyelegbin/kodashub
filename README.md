@@ -1,40 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# KodasHub Application
 
-## Getting Started
+## Overview
+A backend system for a kodashub application where users can sign up, log in, create workout plans, and track their progress. The system will feature JWT authentication, CRUD operations for workouts, and generate reports on past workouts.
 
-First, run the development server:
+## Features
+- Create Workout: Allow users to create workouts composed of multiple exercises
+- Update Workout: Allow users to update workouts and add comments.
+- Delete Workout: Allow users to delete workouts.
+- Schedule Workouts: Allow users to schedule workouts for specific dates and times
+- List Workouts: List active or pending workouts sorted by date and time.
+- Generate Reports: Generate reports on past workouts and progress.
+
+## Installation
+To install and set up the KodasHub API, follow these steps:
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/PhilipOyelegbin/backend/tree/master/workout-tracker.git
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+## Usage
+After installation, you can use the following commands to manage your kodashub api:
+
+- **Start the app**:
+  ```javascript
+  npm run start
+
+  <!-- or -->
+
+   npm run swagger
+  ```
+
+## Example
+Here's an example of how to use the kodashub API:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Start the app
+npm run start
+
+# Access the url http://localhost:[port] to view the app.
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- _NB: Swagger-autogen was used for the swagegr ui (https://swagger-autogen.github.io/docs/)_
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+![preview](./preview.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Contributing
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
 
-## Learn More
+## License
+This project is licensed under the ISC License. See the [LICENSE](LICENSE) file for more details.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-- https://www.youtube.com/watch?v=_GyIjVgIwtk
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia et consequuntur, quos temporibus voluptas neque esse, ullam sapiente dolore quia culpa soluta vitae omnis odio minus repellendus quasi! Odit fugit, aspernatur tenetur nesciunt laborum optio repudiandae reprehenderit amet vero, eaque enim eligendi dolore velit libero error perspiciatis autem obcaecati quo eveniet soluta ad. Nemo aspernatur voluptatibus perferendis repellat neque aperiam ipsum nulla aut, dolore quod ut voluptate dolorem ab distinctio pariatur vitae exercitationem id repellendus facere, suscipit molestias delectus qui illo? Blanditiis et illum itaque consequuntur commodi voluptate cupiditate, a eum iure odio perferendis libero hic cum quas placeat vitae?
+## Contact
+For any questions or inquiries, please contact [info@philipoyelegbin.com.ng](mailto:info@philipoyelegbin.com.ng).
