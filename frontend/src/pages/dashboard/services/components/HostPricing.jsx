@@ -50,7 +50,7 @@ function HostPricing() {
           },
         });
         toast.success("Invoice generated.");
-        route("/dashboard/billing");
+        route("/dashboard/invoice");
       } catch (error) {
         toast.error(error);
       }

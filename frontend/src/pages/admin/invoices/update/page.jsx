@@ -8,7 +8,7 @@ export default function UpdateInvoice() {
   const [data, setData] = useState({
     name: "",
     price: "",
-    status: Boolean,
+    status: "",
   });
 
   const handleChange = (e) => {

@@ -1,12 +1,10 @@
 import { Skeleton } from "../../../components/Skeleton";
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const MyInvoices = () => {
   const [data, setData] = useState();
-  const navigate = useNavigate();
 
   const handlePayment = async (id, email, price) => {
     const payment = { id, email, price };
@@ -19,7 +17,7 @@ export const MyInvoices = () => {
         },
       })
         .then((response) => response.json())
-        .then((result) => navigate(result?.path))
+        .then((result) => (window.location.href = result?.path))
         .catch((err) => toast.error(err));
     } catch (error) {
       toast.error(error);
@@ -49,7 +47,13 @@ export const MyInvoices = () => {
               <li
                 className='rounded-md bg-purple-100 cursor-pointer'
                 key={item.id}
-                onClick={() => handlePayment(item.id, user, item.price)}>
+                onClick={() =>
+                  handlePayment(
+                    item.id,
+                    sessionStorage?.getItem("user"),
+                    item.price
+                  )
+                }>
                 <div className='flex items-start justify-between p-4'>
                   <div className='space-y-2 w-full'>
                     <span>{item.id}</span>

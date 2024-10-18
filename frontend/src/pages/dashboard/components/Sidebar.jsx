@@ -33,7 +33,7 @@ export const Sidebar = ({ toggle, handleToggle }) => {
   return (
     <aside
       className={`${
-        toggle ? "left-0 absolute md:static" : "-left-full fixed"
+        toggle ? "left-0 absolute" : "-left-full fixed"
       } w-24 h-screen duration-300 ease-linear bg-white z-30`}>
       <div className='flex flex-col h-full p-5 space-y-5 relative'>
         <div className='text-center'>

@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "../../../../components/Skeleton";
@@ -37,7 +36,7 @@ function WebPricing() {
             method: "POST",
             body: JSON.stringify(invoice),
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json;charset=UTF-8",
             },
           }
         );
@@ -49,10 +48,9 @@ function WebPricing() {
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
           },
-          s,
         });
         toast.success("Invoice generated.");
-        route("/dashboard/billing");
+        route("/dashboard/invoice");
       } catch (error) {
         toast.error(error);
       }
