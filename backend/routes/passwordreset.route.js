@@ -50,7 +50,7 @@ router.patch("/v1/api/forgotpassword", async (req, res) => {
       html: `
       <p>Hi,</p>
 
-      <p>You requested a password reset. Please click the following link to reset your password: <a href="${process.env.HOST_URI}/resetpassword/${resetToken}">Reset password</a></p>
+      <p>You requested a password reset. Please click the following link to reset your password: <a href="${process.env.FRONTEND_URI}/resetpassword/${resetToken}">Reset password</a></p>
 
       <p>It will expire within an hour. If you did not request this, please ignore this email.</p>
 
@@ -66,7 +66,6 @@ router.patch("/v1/api/forgotpassword", async (req, res) => {
       resetToken,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Error", error });
   }
 });
