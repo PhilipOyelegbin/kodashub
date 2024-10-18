@@ -3,6 +3,7 @@ const { Router } = require("express");
 const { createTransport } = require("nodemailer");
 const { getUserByEmail } = require("../controller/user.controller");
 const { hashPassword } = require("../utils/auth");
+const { prisma } = require("../utils/connect");
 const crypto = require("crypto");
 
 const router = Router();
@@ -65,6 +66,7 @@ router.patch("/v1/api/forgotpassword", async (req, res) => {
       resetToken,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Error", error });
   }
 });
