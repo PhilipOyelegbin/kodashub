@@ -3,6 +3,7 @@ const { Router } = require("express");
 const { createTransport } = require("nodemailer");
 const { getUserByEmail } = require("../controller/user.controller");
 const { hashPassword } = require("../utils/auth");
+const crypto = require("crypto");
 
 const router = Router();
 
@@ -48,7 +49,7 @@ router.patch("/v1/api/forgotpassword", async (req, res) => {
       html: `
       <p>Hi,</p>
 
-      <p>You requested a password reset. Please click the following link to reset your password: <a href="${process.env.HOST_URI}/passwordreset/updatepassword?token=${resetToken}">Reset password</a></p>
+      <p>You requested a password reset. Please click the following link to reset your password: <a href="${process.env.HOST_URI}/resetpassword/${resetToken}">Reset password</a></p>
 
       <p>It will expire within an hour. If you did not request this, please ignore this email.</p>
 
@@ -68,7 +69,7 @@ router.patch("/v1/api/forgotpassword", async (req, res) => {
   }
 });
 
-router.post("/v1/api/resetpassword/:token", async (req, res) => {
+router.patch("/v1/api/resetpassword/:token", async (req, res) => {
   // #swagger.tags = ['PasswordReset']
   try {
     const { password } = await req.body;

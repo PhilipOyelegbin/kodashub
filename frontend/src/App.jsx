@@ -28,6 +28,11 @@ const Hosting = lazy(() => import("./pages/dashboard/hosting/page"));
 const Invoice = lazy(() => import("./pages/dashboard/invoice/page"));
 const Website = lazy(() => import("./pages/dashboard/website/page"));
 const Profile = lazy(() => import("./pages/dashboard/profile/page"));
+// pasword reset
+const ResetPassword = lazy(() => import("./pages/resetpassword/page"));
+const UpdatePassword = lazy(() =>
+  import("./pages/resetpassword/updatepassword/page")
+);
 // admin routes
 const Admin = lazy(() => import("./pages/admin/page"));
 const Panel = lazy(() => import("./pages/admin/home/page"));
@@ -58,6 +63,8 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/admin' element={<Admin />} />
+          <Route path='/resetpassword' element={<ResetPassword />} />
+          <Route path='/resetpassword/:token' element={<UpdatePassword />} />
         </Route>
         <Route element={<UserProtectedRoutes />}>
           <Route element={<DashboardLayout />}>

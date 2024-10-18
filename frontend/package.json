@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://kh.philipoyelegbin.com.ng",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

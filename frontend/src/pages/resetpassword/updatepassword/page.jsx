@@ -1,24 +1,26 @@
-"use client";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
-  const route = useRouter();
-  const token = useSearchParams();
+  const route = useNavigate();
+  const { token } = useParams();
   const [formInput, setFormInput] = useState({ password: "" });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`/api/forgot-password/${token.get("token")}`, {
-        method: "PATCH",
-        body: JSON.stringify(formInput),
-      })
+      await fetch(
+        `${import.meta.env.VITE_API_URI}/api/forgot-password/${token}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(formInput),
+          headers: { "Content-Type": "application/json;charset=UTF-8" },
+        }
+      )
         .then((resp) => {
           if (resp?.ok) {
-            route.replace("/auth/login");
+            route("/login");
           } else {
             toast.error(resp.statusText);
           }
@@ -51,14 +53,6 @@ const ResetPassword = () => {
 
         <button className='btn'>Submit</button>
       </form>
-
-      <ToastContainer
-        position='top-right'
-        autoClose={2000}
-        closeOnClick
-        pauseOnFocusLoss
-        pauseOnHover
-      />
     </article>
   );
 };

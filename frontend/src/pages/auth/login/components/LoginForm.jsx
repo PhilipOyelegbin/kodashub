@@ -75,7 +75,7 @@ export const LoginForm = () => {
       <div className='flex flex-col items-center gap-5 lg:flex-row lg:justify-between'>
         <button className='btn'>Sign In</button>
         <Link
-          href='/passwordreset'
+          to='/resetpassword'
           className='text-sm text-center block underline'>
           Forgot password?
         </Link>

@@ -1,7 +1,6 @@
-"use client";
 import { useState } from "react";
 
-const PasswordReset = () => {
+const ForgotPassword = () => {
   const [formInput, setFormInput] = useState({ email: "" });
   const [feedback, setFeedback] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -9,9 +8,10 @@ const PasswordReset = () => {
   const handleSend = async (e) => {
     e.preventDefault();
     try {
-      await fetch("/api/forgot-password", {
+      await fetch(`${import.meta.env.VITE_API_URI}/api/forgotpassword`, {
         method: "PATCH",
         body: JSON.stringify(formInput),
+        headers: { "Content-Type": "application/json;charset=UTF-8" },
       })
         .then((resp) => {
           if (resp?.ok) {
@@ -58,4 +58,4 @@ const PasswordReset = () => {
   );
 };
 
-export default PasswordReset;
+export default ForgotPassword;
