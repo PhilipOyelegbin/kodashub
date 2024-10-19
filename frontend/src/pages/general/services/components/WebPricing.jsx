@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Skeleton } from "../../../../components/Skeleton";
 
 function WebPricing() {
@@ -35,6 +36,7 @@ function WebPricing() {
             body: JSON.stringify(invoice),
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -45,6 +47,7 @@ function WebPricing() {
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         });
         toast.success("Invoice generated.");

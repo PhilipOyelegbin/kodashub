@@ -14,6 +14,7 @@ function AdminServicePage() {
         `${import.meta.env.VITE_API_URI}/api/service/${id}`,
         {
           method: "DELETE",
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
       if (response.ok) {
@@ -31,7 +32,12 @@ function AdminServicePage() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URI}/api/service`
+          `${import.meta.env.VITE_API_URI}/api/service`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         const result = await response.json();
         setData(result.service);

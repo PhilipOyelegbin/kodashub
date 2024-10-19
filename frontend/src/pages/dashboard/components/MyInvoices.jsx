@@ -14,6 +14,7 @@ export const MyInvoices = () => {
         body: JSON.stringify(payment),
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
         },
       })
         .then((response) => response.json())
@@ -26,7 +27,9 @@ export const MyInvoices = () => {
 
   useEffect(() => {
     const user = sessionStorage?.getItem("user");
-    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${user}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${user}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) => setData(result.userInvoice))
       .catch((error) => toast.error(error));

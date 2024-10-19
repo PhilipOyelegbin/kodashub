@@ -22,6 +22,7 @@ export const UpdatePassword = () => {
           body: JSON.stringify(user),
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );

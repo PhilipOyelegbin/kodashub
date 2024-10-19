@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { prisma } = require("./connect");
 
 exports.authenticated = async (req, res, next) => {
   const authHeader = req.headers.authorization || req.headers.Authorization;
@@ -24,12 +25,12 @@ exports.authenticated = async (req, res, next) => {
   return next();
 };
 
-exports.authorized = (role) => {
-  return async (req, res, next) => {
-    if (!req?.user || req?.user?.role !== role) {
-      return res.status(403).json({
-        message: `You are not authorized to perform this action`,
-      });
+exports.authorized = (...role) => {
+  return (req, res, next) => {
+    if (!role?.includes(req.user.role)) {
+      return res
+        .status(403)
+        .send({ message: "You are not authorized to perform this action" });
     }
     next();
   };

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { Router } = require("express");
 const { createTransport } = require("nodemailer");
+const { authenticated } = require("../utils/middleware");
 
 const router = Router();
 

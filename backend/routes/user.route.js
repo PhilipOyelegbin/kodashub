@@ -57,7 +57,7 @@ router.post("/v1/api/users", async (req, res) => {
 router.get(
   "/v1/api/users/:email",
   authenticated,
-  authorized("ADMIN" || "USER"),
+  authorized("ADMIN", "USER"),
   async (req, res) => {
     /*
       #swagger.tags = ['Users']
@@ -85,7 +85,7 @@ router.get(
 router.patch(
   "/v1/api/users/:email",
   authenticated,
-  authorized("ADMIN" || "USER"),
+  authorized("ADMIN", "USER"),
   async (req, res) => {
     /*
       #swagger.tags = ['Users']

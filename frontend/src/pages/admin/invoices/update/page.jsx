@@ -23,6 +23,7 @@ export default function UpdateInvoice() {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
         .then((resp) => {
@@ -39,7 +40,9 @@ export default function UpdateInvoice() {
   };
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${id}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) =>
         setData({

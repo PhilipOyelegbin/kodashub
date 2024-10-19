@@ -37,6 +37,7 @@ function HostPricing() {
             body: JSON.stringify(invoice),
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
             },
           }
         );
@@ -47,6 +48,7 @@ function HostPricing() {
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json;charset=UTF-8",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         });
         toast.success("Invoice generated.");

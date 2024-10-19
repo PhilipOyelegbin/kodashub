@@ -24,6 +24,7 @@ export default function UpdateWebsite() {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
         .then((resp) => {
@@ -40,7 +41,9 @@ export default function UpdateWebsite() {
   };
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URI}/api/website/${id}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/website/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) =>
         setData({

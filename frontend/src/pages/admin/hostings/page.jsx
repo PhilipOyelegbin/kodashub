@@ -15,6 +15,7 @@ function AdminHostingPage() {
         `${import.meta.env.VITE_API_URI}/api/hosting/${id}`,
         {
           method: "DELETE",
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
       if (response.ok) {

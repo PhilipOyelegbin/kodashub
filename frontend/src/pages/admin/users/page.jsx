@@ -15,6 +15,7 @@ function AdminUserPage() {
         `${import.meta.env.VITE_API_URI}/api/users/${email}`,
         {
           method: "DELETE",
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       );
       if (response.ok) {

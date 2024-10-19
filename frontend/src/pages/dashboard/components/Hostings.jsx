@@ -8,7 +8,9 @@ export const Hostings = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
-    fetch(`${import.meta.env.VITE_API_URI}/api/hosting/${user}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/hosting/${user}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) => setData(result.userHosting))
       .catch((error) => toast.error(error));

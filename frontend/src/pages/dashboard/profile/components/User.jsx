@@ -25,6 +25,7 @@ export const User = () => {
           body: JSON.stringify(user),
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
           },
         }
       );
@@ -41,7 +42,9 @@ export const User = () => {
 
   useEffect(() => {
     const storedUser = sessionStorage?.getItem("user");
-    fetch(`${import.meta.env.VITE_API_URI}/api/users/${storedUser}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/users/${storedUser}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) =>
         setUser({

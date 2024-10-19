@@ -14,15 +14,21 @@ export default function Datapool() {
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem("user");
-    fetch(`${import.meta.env.VITE_API_URI}/api/hosting/${storedUser}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/hosting/${storedUser}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) => setHostings(result.userHosting.length))
       .catch((err) => console.log(err));
-    fetch(`${import.meta.env.VITE_API_URI}/api/website/${storedUser}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/website/${storedUser}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) => setWebsites(result.userWebsite.length))
       .catch((err) => console.log(err));
-    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${storedUser}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${storedUser}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) => setInvoices(result.userInvoice.length))
       .catch((err) => console.log(err));

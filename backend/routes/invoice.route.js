@@ -15,7 +15,7 @@ const router = Router();
 router.post(
   "/v1/api/invoice/:email",
   authenticated,
-  authorized("ADMIN" || "USER"),
+  authorized("ADMIN", "USER"),
   async (req, res) => {
     /*
       #swagger.tags = ['Invoice']

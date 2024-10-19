@@ -24,6 +24,7 @@ export default function UpdateUser() {
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
         .then((resp) => {
@@ -40,7 +41,9 @@ export default function UpdateUser() {
   };
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URI}/api/users/${email}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/users/${email}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) =>
         setData({

@@ -31,6 +31,7 @@ export default function UpdateDomain() {
         }),
         headers: {
           "Content-Type": "application/json;charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
         .then((resp) => {
@@ -47,7 +48,9 @@ export default function UpdateDomain() {
   };
 
   useLayoutEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URI}/api/service/${id}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/service/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) =>
         setData({

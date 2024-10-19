@@ -8,7 +8,9 @@ export const Websites = () => {
 
   useEffect(() => {
     const user = sessionStorage.getItem("user");
-    fetch(`${import.meta.env.VITE_API_URI}/api/website/${user}`)
+    fetch(`${import.meta.env.VITE_API_URI}/api/website/${user}`, {
+      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
+    })
       .then((resp) => resp.json())
       .then((result) => setData(result.userWebsite))
       .catch((error) => toast.error(error));
