@@ -11,7 +11,7 @@ const ResetPassword = () => {
     e.preventDefault();
     try {
       await fetch(
-        `${import.meta.env.VITE_API_URI}/api/forgot-password/${token}`,
+        `${import.meta.env.VITE_API_URI}/api/resetpassword/${token}`,
         {
           method: "PATCH",
           body: JSON.stringify(formInput),
@@ -20,6 +20,7 @@ const ResetPassword = () => {
       )
         .then((resp) => {
           if (resp?.ok) {
+            toast.success("Password updated");
             route("/login");
           } else {
             toast.error(resp.statusText);

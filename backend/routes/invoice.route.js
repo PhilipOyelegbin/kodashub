@@ -8,61 +8,76 @@ const {
   deleteInvoiceById,
 } = require("../controller/invoice.controller");
 const { getUserByEmail } = require("../controller/user.controller");
+const { authenticated, authorized } = require("../utils/middleware");
+
 const router = Router();
 
-router.post("/v1/api/invoice/:email", async (req, res) => {
-  /*
-    #swagger.tags = ['Invoice']
-    #swagger.security = [{"bearerAuth": []}]
-    #swagger.parameters['body'] = {
-      in: 'body',
-      description: 'Invoice data to be created.',
-      required: true,
-      schema: {
-        name: "string",
-        price: "string",
+router.post(
+  "/v1/api/invoice/:email",
+  authenticated,
+  authorized("ADMIN" || "USER"),
+  async (req, res) => {
+    /*
+      #swagger.tags = ['Invoice']
+      #swagger.security = [{"bearerAuth": []}]
+      #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Invoice data to be created.',
+        required: true,
+        schema: {
+          name: "string",
+          price: "string",
+        }
       }
-    }
-  */
-  try {
-    const { name, price } = await req.body;
-    const { email } = req.params;
-    if (!name || !price) {
-      return res.status(400).json({ error: "All fields are required" });
-    }
-    if (!email) {
-      return res.status(403).json({ error: "Bad request" });
-    }
+    */
+    try {
+      const { name, price } = await req.body;
+      const { email } = req.params;
+      if (!name || !price) {
+        return res.status(400).json({ error: "All fields are required" });
+      }
+      if (!email) {
+        return res.status(403).json({ error: "Bad request" });
+      }
 
-    const existingUser = await getUserByEmail(email);
-    if (!existingUser) {
-      return res.status(404).json({ message: "User not found" });
+      const existingUser = await getUserByEmail(email);
+      if (!existingUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      const invoice = await createInvoiceByUser(existingUser, {
+        name,
+        price: parseInt(price),
+      });
+      return res
+        .status(200)
+        .json({ message: "Invoice data saved successfully", invoice });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
-    const invoice = await createInvoiceByUser(existingUser, {
-      name,
-      price: parseInt(price),
-    });
-    return res
-      .status(200)
-      .json({ message: "Invoice data saved successfully", invoice });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
   }
-});
+);
 
-router.get("/v1/api/invoice", async (req, res) => {
-  // #swagger.tags = ['Invoice']
-  try {
-    const invoice = await getInvoices();
-    return res
-      .status(200)
-      .json({ message: "All invoice received successfully", invoice });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+router.get(
+  "/v1/api/invoice",
+  authenticated,
+  authorized("ADMIN"),
+  async (req, res) => {
+    /*
+      #swagger.tags = ['Invoice']
+      #swagger.security = [{"bearerAuth": []}]
+    */
+    try {
+      const invoice = await getInvoices();
+      return res
+        .status(200)
+        .json({ message: "All invoice received successfully", invoice });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
-});
+);
 
-router.get("/v1/api/invoice/:slug", async (req, res) => {
+router.get("/v1/api/invoice/:slug", authenticated, async (req, res) => {
   /*
     #swagger.tags = ['Invoice']
     #swagger.security = [{"bearerAuth": []}]
@@ -95,66 +110,76 @@ router.get("/v1/api/invoice/:slug", async (req, res) => {
   }
 });
 
-router.patch("/v1/api/invoice/:id", async (req, res) => {
-  /*
-    #swagger.tags = ['Invoice']
-    #swagger.security = [{"bearerAuth": []}]
-    #swagger.parameters['body'] = {
-      in: 'body',
-      description: 'Invoice data to be updated.',
-      required: false,
-      schema: {
-        name: "string",
-        price: 0,
-        status: false
+router.patch(
+  "/v1/api/invoice/:id",
+  authenticated,
+  authorized("ADMIN"),
+  async (req, res) => {
+    /*
+      #swagger.tags = ['Invoice']
+      #swagger.security = [{"bearerAuth": []}]
+      #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Invoice data to be updated.',
+        required: false,
+        schema: {
+          name: "string",
+          price: 0,
+          status: false
+        }
       }
-    }
-  */
-  try {
-    const { status, body } = await req.body;
-    const { id } = req.params;
-    if (!id) {
-      return res.status(403).json({ message: "Bad request" });
-    }
+    */
+    try {
+      const { status, body } = await req.body;
+      const { id } = req.params;
+      if (!id) {
+        return res.status(403).json({ message: "Bad request" });
+      }
 
-    const existingInvoice = await getInvoiceById(id);
-    if (!existingInvoice) {
-      return res.status(404).json({ message: "Invoice does not exist" });
-    }
+      const existingInvoice = await getInvoiceById(id);
+      if (!existingInvoice) {
+        return res.status(404).json({ message: "Invoice does not exist" });
+      }
 
-    await updateInvoiceById(id, {
-      status: JSON.parse(status),
-      ...body,
-    });
-    return res
-      .status(200)
-      .json({ message: "Invoice data updated successfully" });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
+      await updateInvoiceById(id, {
+        status: JSON.parse(status),
+        ...body,
+      });
+      return res
+        .status(200)
+        .json({ message: "Invoice data updated successfully" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
   }
-});
+);
 
-router.delete("/v1/api/invoice/:id", async (req, res) => {
-  /*
-    #swagger.tags = ['Invoice']
-    #swagger.security = [{"bearerAuth": []}]
-  */
-  try {
-    const { id } = req.params;
-    if (!id) {
-      return res.status(403).json({ message: "Bad request" });
+router.delete(
+  "/v1/api/invoice/:id",
+  authenticated,
+  authorized("ADMIN"),
+  async (req, res) => {
+    /*
+      #swagger.tags = ['Invoice']
+      #swagger.security = [{"bearerAuth": []}]
+    */
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(403).json({ message: "Bad request" });
+      }
+
+      const existingInvoice = await getInvoiceById(id);
+      if (!existingInvoice) {
+        return res.status(404).json({ message: "Invoice does not exist" });
+      }
+
+      await deleteInvoiceById(id);
+      return res.status(200).json({ message: "Invoice deleted successfully" });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
     }
-
-    const existingInvoice = await getInvoiceById(id);
-    if (!existingInvoice) {
-      return res.status(404).json({ message: "Invoice does not exist" });
-    }
-
-    await deleteInvoiceById(id);
-    return res.status(200).json({ message: "Invoice deleted successfully" });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
   }
-});
+);
 
 module.exports = router;
