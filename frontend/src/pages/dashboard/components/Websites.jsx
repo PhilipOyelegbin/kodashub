@@ -1,7 +1,7 @@
 import { Skeleton } from "../../../components/Skeleton";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export const Websites = () => {
   const [data, setData] = useState();
@@ -45,6 +45,13 @@ export const Websites = () => {
                   </span>
                   <span>{item.updatedAt.split("T")[0] || "undefined"}</span>
                 </div>
+                {item.url !== " " && (
+                  <Link
+                    href={item.url || "/"}
+                    className='block px-3 py-3 mb-2 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700'>
+                    Preview
+                  </Link>
+                )}
               </li>
             ))}
       </ul>

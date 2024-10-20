@@ -6,6 +6,7 @@ import {
   FaMoneyBillWave,
   FaServer,
 } from "react-icons/fa";
+import { getHosting, getInvoice, getWebsite } from "../../components/action";
 
 export default function Datapool() {
   const [hostings, setHostings] = useState(0);
@@ -13,25 +14,42 @@ export default function Datapool() {
   const [invoices, setInvoices] = useState(0);
 
   useEffect(() => {
-    const storedUser = sessionStorage.getItem("user");
-    fetch(`${import.meta.env.VITE_API_URI}/api/hosting/${storedUser}`, {
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((result) => setHostings(result.userHosting.length))
-      .catch((err) => console.log(err));
-    fetch(`${import.meta.env.VITE_API_URI}/api/website/${storedUser}`, {
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((result) => setWebsites(result.userWebsite.length))
-      .catch((err) => console.log(err));
-    fetch(`${import.meta.env.VITE_API_URI}/api/invoice/${storedUser}`, {
-      headers: { Authorization: `Bearer ${sessionStorage.getItem("token")}` },
-    })
-      .then((resp) => resp.json())
-      .then((result) => setInvoices(result.userInvoice.length))
-      .catch((err) => console.log(err));
+    const fetchData = async () => {
+      try {
+        const [hostingResponse, websiteResponse, invoiceResponse] =
+          await Promise.all([getHosting(), getWebsite(), getInvoice()]);
+        if (hostingResponse.ok) {
+          const result = await hostingResponse.json();
+          setHostings(result?.userHosting.length || 0);
+        } else {
+          console.error(
+            "Error fetching hostings:",
+            hostingResponse?.statusText
+          );
+        }
+        if (websiteResponse.ok) {
+          const result = await websiteResponse.json();
+          setWebsites(result?.userWebsite.length || 0);
+        } else {
+          console.error(
+            "Error fetching websites:",
+            websiteResponse?.statusText
+          );
+        }
+        if (invoiceResponse.ok) {
+          const result = await invoiceResponse.json();
+          setInvoices(result?.userInvoice.length || 0);
+        } else {
+          console.error(
+            "Error fetching invoices:",
+            invoiceResponse?.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import { Skeleton } from "../../../components/Skeleton";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 export const MyInvoices = () => {
   const [data, setData] = useState();
@@ -18,7 +17,7 @@ export const MyInvoices = () => {
         },
       })
         .then((response) => response.json())
-        .then((result) => (window.location.href = result?.path))
+        .then((result) => (window.location.href = result?.path || "/dashboard"))
         .catch((err) => toast.error(err));
     } catch (error) {
       toast.error(error);
@@ -49,14 +48,7 @@ export const MyInvoices = () => {
           : data?.map((item) => (
               <li
                 className='rounded-md bg-purple-100 cursor-pointer'
-                key={item.id}
-                onClick={() =>
-                  handlePayment(
-                    item.id,
-                    sessionStorage?.getItem("user"),
-                    item.price
-                  )
-                }>
+                key={item.id}>
                 <div className='flex items-start justify-between p-4'>
                   <div className='space-y-2 w-full'>
                     <span>{item.id}</span>
@@ -73,6 +65,17 @@ export const MyInvoices = () => {
                   </span>
                   <span>{item?.updatedAt.split("T")[0]}</span>
                 </div>
+                <button
+                  className='px-3 py-3 mb-2 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700'
+                  onClick={() =>
+                    handlePayment(
+                      item.id,
+                      sessionStorage?.getItem("user"),
+                      item.price
+                    )
+                  }>
+                  Pay now
+                </button>
               </li>
             ))}
       </ul>

@@ -9,7 +9,7 @@ export default function UpdateWebsite() {
     name: "",
     price: "",
     url: "",
-    status: Boolean,
+    status: "",
   });
 
   const handleChange = (e) => {

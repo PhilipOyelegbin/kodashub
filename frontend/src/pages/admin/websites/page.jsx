@@ -76,7 +76,7 @@ function AdminWebsitePage() {
                     className={`text-xs font-bold ${
                       item.status ? "text-lime-500" : "text-red-500"
                     }`}>
-                    {item.status ? "Active" : "Inactive"}
+                    {item.status ? "Completed" : "In Progress"}
                   </span>
                   <h4 className='text-gray-800 font-semibold'>{item.name}</h4>
                   <p className='text-gray-600 text-sm'>₦{item.price}</p>
