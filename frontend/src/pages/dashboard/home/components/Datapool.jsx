@@ -49,7 +49,9 @@ export default function Datapool() {
         console.error("Error fetching data:", error);
       }
     };
-    fetchData();
+    setTimeout(() => {
+      fetchData();
+    }, 500);
   }, []);
 
   return (

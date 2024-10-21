@@ -9,6 +9,7 @@ export default function UpdateHosting() {
     name: "",
     price: "",
     url: "",
+    expiration: "",
     status: "",
   });
 
@@ -50,6 +51,7 @@ export default function UpdateHosting() {
           name: result?.hosting.name,
           price: result?.hosting.price,
           url: result?.hosting.url,
+          expiration: result?.hosting.expiration,
           status: result?.hosting.status,
         })
       )
@@ -92,6 +94,17 @@ export default function UpdateHosting() {
               value={data.url}
               onChange={handleChange}
               className='w-full p-2 pl-10 text-sm text-gray-700 border border-gray-400 rounded-md outline-none'
+            />
+          </label>
+          <label className='block mb-2'>
+            <span className='text-gray-700'>Expiration Date</span>
+            <input
+              type='text'
+              name='expiration'
+              value={data.expiration}
+              onChange={handleChange}
+              className='w-full p-2 pl-10 text-sm text-gray-700 border border-gray-400 rounded-md outline-none'
+              placeholder='yy/mm/dd'
             />
           </label>
           <label className='block mb-2'>

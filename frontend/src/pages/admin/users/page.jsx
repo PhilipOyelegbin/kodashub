@@ -62,32 +62,42 @@ function AdminUserPage() {
       {data.length === 0 ? (
         <h5 className='text-center text-blue-600 mb-4'>No data to display</h5>
       ) : (
-        <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-          {data
-            .filter((list) => list.role !== "ADMIN")
-            .map((user) => (
-              <li className='rounded-md bg-purple-100' key={user.id}>
-                <div className='flex text-center justify-center p-4'>
-                  <div className='space-y-2'>
-                    {user.email}
-                    <h4 className='text-gray-800 font-semibold'>
-                      {user.first_name} {user.last_name}
-                    </h4>
-                    <p className='text-gray-600 text-sm'>{user.phone_number}</p>
-                  </div>
-                </div>
-                <div className='flex gap-2 text-2xl py-2 px-4 border-t-2 text-right'>
-                  <Link to={`/panel/users/${user.email}`}>
-                    <FaEdit className='text-purple-500 hover:text-purple-700' />
-                  </Link>
-                  <FaTrash
-                    className='text-red-500 hover:text-red-700 cursor-pointer'
-                    onClick={() => handleDeleteUser(user.email)}
-                  />
-                </div>
-              </li>
-            ))}
-        </ul>
+        <div className='overflow-x-auto'>
+          <table className='min-w-full bg-white border border-gray-300'>
+            <thead>
+              <tr className='bg-gray-200'>
+                <th className='py-2 px-4 border-b'>ID</th>
+                <th className='py-2 px-4 border-b'>Email</th>
+                <th className='py-2 px-4 border-b'>Phone</th>
+                <th className='py-2 px-4 border-b'>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data
+                ?.filter((list) => list.role !== "ADMIN")
+                ?.map((item) => (
+                  <tr
+                    key={item.id}
+                    className='text-sm border-b hover:bg-gray-100'>
+                    <td className='py-1 px-2'>{item.id.split("-")[0]}...</td>
+                    <td className='py-1 px-2'>{item.email}</td>
+                    <td className='py-1 px-2'>{item.phone_number}</td>
+                    <td className='py-2 px-2'>
+                      <div className='flex gap-2 text-2xl'>
+                        <Link to={`/panel/users/${item.email}`}>
+                          <FaEdit className='text-purple-500 hover:text-purple-700' />
+                        </Link>
+                        <FaTrash
+                          className='text-red-500 hover:text-red-700 cursor-pointer'
+                          onClick={() => handleDeleteUser(item.email)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </section>
   );

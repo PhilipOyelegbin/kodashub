@@ -34,51 +34,59 @@ export const MyInvoices = () => {
       .catch((error) => toast.error(error));
   }, []);
 
+  if (!data) {
+    return <Skeleton />;
+  }
+
   return (
     <div className='text-center p-5 bg-white rounded-md'>
       <h3>My Invoices</h3>
 
-      {data?.length <= 0 && <p>No invoice found</p>}
+      {data?.length <= 0 && <p className='text-blue-500'>No invoice found</p>}
 
-      <ul className='relative grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 mt-3'>
-        {!data
-          ? Array(6)
-              .fill(0)
-              .map((d, index) => <Skeleton key={index} />)
-          : data?.map((item) => (
-              <li
-                className='rounded-md bg-purple-100 cursor-pointer'
-                key={item.id}>
-                <div className='flex items-start justify-between p-4'>
-                  <div className='space-y-2 w-full'>
-                    <span>{item.id}</span>
-                    <h4 className='text-gray-800 font-semibold'>{item.name}</h4>
-                    <p className='text-gray-600'>₦{item.price}</p>
-                  </div>
-                </div>
-                <div className='flex justify-between py-2 px-4 border-t text-right'>
-                  <span
-                    className={`text-sm w-fit px-2 py-1 text-white rounded-lg ${
-                      item.status ? "bg-lime-500" : "bg-red-500"
-                    }`}>
-                    {item.status == false ? "Unpaid" : "Paid"}
-                  </span>
-                  <span>{item?.updatedAt.split("T")[0]}</span>
-                </div>
-                <button
-                  className='px-3 py-3 mb-2 rounded-lg w-full font-semibold text-sm duration-150 text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700'
-                  onClick={() =>
-                    handlePayment(
-                      item.id,
-                      sessionStorage?.getItem("user"),
-                      item.price
-                    )
-                  }>
-                  Pay now
-                </button>
-              </li>
+      <div className='overflow-x-auto'>
+        <table className='min-w-full bg-white border border-gray-300'>
+          <thead>
+            <tr className='bg-gray-200'>
+              <th className='py-2 px-4 border-b'>ID</th>
+              <th className='py-2 px-4 border-b'>Name</th>
+              <th className='py-2 px-4 border-b'>Status</th>
+              <th className='py-2 px-4 border-b'>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((item) => (
+              <tr key={item.id} className='text-sm hover:bg-gray-100'>
+                <td className='py-1 px-2 border-b'>
+                  {item.id.split("-")[0]}...
+                </td>
+                <td className='py-1 px-2 border-b'>
+                  {item.name} (₦{item.price})
+                </td>
+                <td
+                  className={`py-1 px-2 border-b ${
+                    item.status ? "text-lime-500" : "text-red-500"
+                  }`}>
+                  {item.status == false ? "Unpaid" : "Paid"}
+                </td>
+                <td className='py-1 px-2 border-b'>
+                  <button
+                    className='px-4 py-2 rounded-lg w-fit h-fit font-semibold duration-150 text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700'
+                    onClick={() =>
+                      handlePayment(
+                        item.id,
+                        sessionStorage?.getItem("user"),
+                        item.price
+                      )
+                    }>
+                    Pay now
+                  </button>
+                </td>
+              </tr>
             ))}
-      </ul>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
