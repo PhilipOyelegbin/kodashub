@@ -72,7 +72,7 @@ function AdminInvoicePage() {
             <thead>
               <tr className='bg-gray-200'>
                 <th className='py-2 px-4 border-b'>ID</th>
-                <th className='py-2 px-4 border-b'>Name</th>
+                <th className='py-2 px-4 border-b'>Details</th>
                 <th className='py-2 px-4 border-b'>Status</th>
                 <th className='py-2 px-4 border-b'>Action</th>
               </tr>
