@@ -1,13 +1,18 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreatePaymentDto } from './dto/payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from '../cart/entities/cart.entity';
 import { Domain } from '../domain/entities/domain.entity';
+import { DomainService } from '../domain/domain.service';
 
 @Injectable()
 export class PaymentService {
-  constructor(@InjectRepository(Cart) private readonly cartRepo: Repository<Cart>, @InjectRepository(Domain) private readonly domainRepo: Repository<Domain>) { }
+  constructor(
+    @InjectRepository(Cart) private readonly cartRepo: Repository<Cart>,
+    @InjectRepository(Domain) private readonly domainRepo: Repository<Domain>,
+    private domainService: DomainService
+  ) { }
 
   async create(dto: CreatePaymentDto) {
     try {
@@ -135,22 +140,38 @@ export class PaymentService {
 
     switch (payload.event) {
       case 'charge.success':
-        await this.domainRepo.save(successfulPayment);
+        await Promise.all([
+          this.domainRepo.save(successfulPayment),
+          this.domainService.register({ name: existingOrder.name, regPeriod: existingOrder.registrationPeriod.toString() }, existingOrder.user.id),
+        ]);
         break;
       case 'transfer.success':
-        await this.domainRepo.save(successfulPayment);
+        await Promise.all([
+          this.domainRepo.save(successfulPayment),
+          this.domainService.register({ name: existingOrder.name, regPeriod: existingOrder.registrationPeriod.toString() }, existingOrder.user.id),
+        ]);
         break;
       case 'paymentrequest.success':
-        await this.domainRepo.save(successfulPayment);
+        await Promise.all([
+          this.domainRepo.save(successfulPayment),
+          this.domainService.register({ name: existingOrder.name, regPeriod: existingOrder.registrationPeriod.toString() }, existingOrder.user.id),
+        ]);
         break;
       case 'transfer.failed':
-        await this.domainRepo.save(failedPayment);
+        await Promise.all([
+          this.domainRepo.save(failedPayment),
+          this.domainService.register({ name: existingOrder.name, regPeriod: existingOrder.registrationPeriod.toString(), status: 'failed' }, existingOrder.user.id),
+        ]);
         break;
       case 'transfer.reversed':
-        await this.domainRepo.save(failedPayment);
+        await Promise.all([
+          this.domainRepo.save(failedPayment),
+          this.domainService.register({ name: existingOrder.name, regPeriod: existingOrder.registrationPeriod.toString(), status: 'failed' }, existingOrder.user.id),
+        ]);
         break;
       default:
         console.log(`Unhandled event type: ${payload.event}`);
+        throw new BadRequestException(`Unhandled event type: ${payload.event}`);
     }
   }
 }

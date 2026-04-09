@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsArray, IsDecimal, IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsArray, IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class SearchDomainDto {
     @ApiProperty({ description: "Domain name to search", example: "google.com" })
@@ -9,10 +9,10 @@ export class SearchDomainDto {
 }
 
 export class OrderDomainDto extends SearchDomainDto {
-    @ApiProperty({ description: "Domain registration period", example: "1" })
-    @IsString()
+    @ApiProperty({ description: "Domain registration period", example: 1 })
+    @IsNumber()
     @IsNotEmpty()
-    regperiod: string;
+    regPeriod: number;
 
     @ApiProperty({ description: "Domain price", example: 14800.00 })
     @IsDecimal()
@@ -20,14 +20,29 @@ export class OrderDomainDto extends SearchDomainDto {
     price: number
 }
 
-export class RegisterDomainDto extends SearchDomainDto {
-    @ApiProperty({ description: "Domain registration period", example: "1" })
+export class UpdateNameserverDto {
+    @ApiProperty({ description: "Domain ID", example: "6ebac467-7340-45f3-90fc-9f59eb0c217a" })
     @IsString()
     @IsNotEmpty()
-    regperiod: string;
+    domainId: string
 
-    @ApiProperty({ description: "Domain nameservers", example: ["nsa.whogohost.com", "nsb.whogohost.com"] })
-    @IsArray()
+    @ApiProperty({ description: "Nameserver 1", example: "ns1.google.com" })
+    @IsString()
     @IsNotEmpty()
-    nameservers: string[];
+    nameserver1: string;
+
+    @ApiProperty({ description: "Nameserver 2", example: "ns2.google.com" })
+    @IsString()
+    @IsNotEmpty()
+    nameserver2: string;
+
+    @ApiPropertyOptional({ description: "Nameserver 3", example: "ns3.google.com" })
+    @IsString()
+    @IsOptional()
+    nameserver3?: string;
+
+    @ApiPropertyOptional({ description: "Nameserver 4", example: "ns4.google.com" })
+    @IsString()
+    @IsOptional()
+    nameserver4?: string;
 }

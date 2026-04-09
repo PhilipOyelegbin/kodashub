@@ -1,7 +1,7 @@
 import { Controller, Post, Body, HttpCode, HttpStatus, Req, UseGuards, Get, ForbiddenException, Param } from '@nestjs/common';
 import { DomainService } from './domain.service';
-import { RegisterDomainDto, SearchDomainDto } from './dto/domain.dto';
-import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { SearchDomainDto, UpdateNameserverDto } from './dto/domain.dto';
+import { ApiBearerAuth, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { JwtGuard } from '../auth/jwt.guard';
 
 @ApiInternalServerErrorResponse({ description: "Internal server error" })
@@ -30,15 +30,15 @@ export class DomainController {
     return this.domainService.search(dto);
   }
 
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Register a domain', description: 'Register a domain' })
-  @ApiCreatedResponse({ description: "Domain registered successfully" })
-  @ApiUnauthorizedResponse({ description: "Unauthorized" })
-  @UseGuards(JwtGuard)
-  @Post("register")
-  register(@Body() dto: RegisterDomainDto, @Req() req: any) {
-    return this.domainService.register(dto, req.user.id);
-  }
+  // @ApiBearerAuth()
+  // @ApiOperation({ summary: 'Register a domain', description: 'Register a domain' })
+  // @ApiCreatedResponse({ description: "Domain registered successfully" })
+  // @ApiUnauthorizedResponse({ description: "Unauthorized" })
+  // @UseGuards(JwtGuard)
+  // @Post("register")
+  // register(@Body() dto: RegisterDomainDto, @Req() req: any) {
+  //   return this.domainService.register(dto, req.user.id);
+  // }
 
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Find all domains', description: 'Retrieve all domains' })
@@ -56,6 +56,16 @@ export class DomainController {
   @Get(":id")
   findOneDomain(@Param("id") domainId: string) {
     return this.domainService.findOneDomain(domainId);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update nameservers', description: 'Update nameservers' })
+  @ApiOkResponse({ description: "Nameservers updated successfully" })
+  @UseGuards(JwtGuard)
+  @Post('update-nameservers')
+  @HttpCode(HttpStatus.OK)
+  updateNameservers(@Body() dto: UpdateNameserverDto) {
+    return this.domainService.updateNameservers(dto);
   }
 
   // @ApiBearerAuth()

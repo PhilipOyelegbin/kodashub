@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { OrderDomainDto, RegisterDomainDto, SearchDomainDto } from './dto/domain.dto';
+import { SearchDomainDto, UpdateNameserverDto } from './dto/domain.dto';
 import { createHmac } from 'node:crypto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -65,27 +65,7 @@ export class DomainService {
     }
   }
 
-  async orderDomain(dto: OrderDomainDto, userId: string) {
-    try {
-      if (!userId) throw new BadRequestException("User ID is required")
-
-      const user = await this.userRepo.findOne({ where: { id: userId } })
-      if (!user) throw new NotFoundException("User not found")
-
-      const newOrder = this.domainRepo.create({
-        name: dto.name,
-        user: { id: userId },
-        registrationPeriod: parseInt(dto.regperiod),
-        registrationPrice: dto.price,
-      })
-      const result = await this.domainRepo.save(newOrder)
-      return { message: "Domain registered successfully", result }
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async register(dto: RegisterDomainDto, userId: string) {
+  async register(dto: { name: string, regPeriod: string, status?: string }, userId: string) {
     try {
       if (!userId) throw new BadRequestException("User ID is required")
 
@@ -96,7 +76,7 @@ export class DomainService {
 
       const urlencoded = new URLSearchParams();
       urlencoded.append("domain", dto.name);
-      urlencoded.append("regperiod", dto.regperiod);
+      urlencoded.append("regperiod", dto.regPeriod);
       urlencoded.append("nameservers[ns1]", "ns1.google.com");
       urlencoded.append("nameservers[ns2]", "ns2.google.com");
       urlencoded.append("contacts[registrant][firstname]", user.firstName);
@@ -156,11 +136,11 @@ export class DomainService {
       await this.domainRepo.save({
         name: dto.name,
         user: { id: userId },
-        registrationPeriod: parseInt(dto.regperiod),
+        registrationPeriod: parseInt(dto.regPeriod),
         registrationPrice: result.order?.totalamount ?? 0,
         expiryDate: result.order?.expirydate ?? null,
         checkOutUrl: "",
-        status: 'active',
+        status: dto.status || 'active',
       })
       return { message: "Domain registered successfully", result }
     } catch (error) {
@@ -200,12 +180,14 @@ export class DomainService {
   //   }
   // }
 
-  async updateNameservers(domainId: string) {
+  async updateNameservers(dto: UpdateNameserverDto) {
     try {
-      const url = `${process.env.GO54_ENDPOINT}/domains/${domainId}/nameservers`;
+      const url = `${process.env.GO54_ENDPOINT}/domains/${dto.domainId}/nameservers`;
       const urlencoded = new URLSearchParams();
-      urlencoded.append("ns1", "nsa.whogohost.com");
-      urlencoded.append("ns2", "nsb.whogohost.com");
+      urlencoded.append("ns1", dto.nameserver1);
+      urlencoded.append("ns2", dto.nameserver2);
+      if (dto.nameserver3) urlencoded.append("ns3", dto.nameserver3);
+      if (dto.nameserver4) urlencoded.append("ns4", dto.nameserver4);
 
       const response = await fetch(url, {
         method: 'POST',
