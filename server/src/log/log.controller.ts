@@ -1,6 +1,6 @@
 import { Controller, Get, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { LogService } from './log.service';
-import { JwtGuard } from 'src/auth/jwt.guard';
+import { JwtGuard } from '../auth/jwt.guard';
 import { ApiBearerAuth, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @ApiBearerAuth()

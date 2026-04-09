@@ -4,8 +4,8 @@ import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
 import { JwtStrategy } from './jwt.strategy';
-import { LogService } from 'src/log/log.service';
-import { Log } from 'src/log/entities/log.entity';
+import { LogService } from '../log/log.service';
+import { Log } from '../log/entities/log.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Log])],

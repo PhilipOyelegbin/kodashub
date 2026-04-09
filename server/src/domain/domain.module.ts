@@ -3,7 +3,7 @@ import { DomainService } from './domain.service';
 import { DomainController } from './domain.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Domain } from './entities/domain.entity';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Domain, User])],

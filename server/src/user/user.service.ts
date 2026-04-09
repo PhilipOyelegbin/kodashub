@@ -4,9 +4,9 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateAdminDto, UpdatePasswordDto, UpdateUserDto } from './dto/user.dto';
 import * as argon from "argon2";
-import { Otp } from 'src/utils/otp';
-import { Mail } from 'src/utils/mail';
-import { LogService } from 'src/log/log.service';
+import { Otp } from '../utils/otp';
+import { Mail } from '../utils/mail';
+import { LogService } from '../log/log.service';
 import { Request } from 'express';
 
 @Injectable()

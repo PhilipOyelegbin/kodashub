@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UnauthorizedExc
 import { CartService } from './cart.service';
 import { CreateCartDto, UpdateCartDto } from './dto/cart.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/jwt.guard';
+import { JwtGuard } from '../auth/jwt.guard';
 
 @ApiBearerAuth()
 @ApiInternalServerErrorResponse({ description: 'Internal server error' })

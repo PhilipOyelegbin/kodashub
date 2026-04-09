@@ -2,12 +2,12 @@ import { BadRequestException, Injectable, NotFoundException, UnauthorizedExcepti
 import { LogInUserDto, RegisterUserDto, ResetPasswordDto } from './dto/auth.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import * as argon from "argon2";
-import { Otp } from 'src/utils/otp';
+import { Otp } from '../utils/otp';
 import * as jwt from "jsonwebtoken";
-import { Mail } from 'src/utils/mail';
-import { LogService } from 'src/log/log.service';
+import { Mail } from '../utils/mail';
+import { LogService } from '../log/log.service';
 import { Request } from 'express';
 
 @Injectable()

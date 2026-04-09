@@ -2,8 +2,8 @@ import { Injectable, InternalServerErrorException, NotFoundException } from '@ne
 import { CreatePaymentDto } from './dto/payment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Cart } from 'src/cart/entities/cart.entity';
-import { Domain } from 'src/domain/entities/domain.entity';
+import { Cart } from '../cart/entities/cart.entity';
+import { Domain } from '../domain/entities/domain.entity';
 
 @Injectable()
 export class PaymentService {

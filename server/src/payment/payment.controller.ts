@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Unauthori
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/payment.dto';
 import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/jwt.guard';
+import { JwtGuard } from '../auth/jwt.guard';
 import { createHmac } from 'crypto';
 
 @ApiInternalServerErrorResponse({ description: 'Internal server error' })

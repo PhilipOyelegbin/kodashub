@@ -2,7 +2,7 @@ import { Controller, Post, Body, HttpCode, HttpStatus, Req, UseGuards, Get, Forb
 import { DomainService } from './domain.service';
 import { RegisterDomainDto, SearchDomainDto } from './dto/domain.dto';
 import { ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/jwt.guard';
+import { JwtGuard } from '../auth/jwt.guard';
 
 @ApiInternalServerErrorResponse({ description: "Internal server error" })
 @Controller('domain')

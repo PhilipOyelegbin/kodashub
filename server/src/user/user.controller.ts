@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Forb
 import { UserService } from './user.service';
 import { CreateAdminDto, UpdatePasswordDto, UpdateUserDto } from './dto/user.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { JwtGuard } from 'src/auth/jwt.guard';
+import { JwtGuard } from '../auth/jwt.guard';
 
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: "You are not logged in" })
