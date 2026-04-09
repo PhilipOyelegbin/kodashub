@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { IsNotEmpty, IsString, Matches, MinLength } from "class-validator";
-import { RegisterUserDto } from "src/auth/dto/auth.dto";
+import { RegisterUserDto } from "../../auth/dto/auth.dto";
 
 export class CreateAdminDto extends RegisterUserDto { }
 

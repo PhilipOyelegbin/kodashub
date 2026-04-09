@@ -1,6 +1,6 @@
-import { Cart } from "src/cart/entities/cart.entity";
-import { Domain } from "src/domain/entities/domain.entity";
-import { Log } from "src/log/entities/log.entity";
+import { Cart } from "../../cart/entities/cart.entity";
+import { Domain } from "../../domain/entities/domain.entity";
+import { Log } from "../../log/entities/log.entity";
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('users')
