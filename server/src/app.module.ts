@@ -24,7 +24,6 @@ import { PaymentModule } from './payment/payment.module';
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
       autoLoadEntities: true,
-      // synchronize should NEVER be true in production — use migrations instead
       synchronize: process.env.NODE_ENV !== 'production',
     }),
     ThrottlerModule.forRootAsync({
