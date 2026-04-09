@@ -33,6 +33,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .addServer(`http://localhost:${process.env.PORT || 4001}`, 'Local')
+    .addServer('https://kodashub.vercel.app', 'Staging')
     .addServer('https://api.kodashub.com.ng', 'Production')
     .build();
 
