@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
-import { SearchDomainDto, UpdateNameserverDto } from './dto/domain.dto';
+import { SearchDomainDto, UpdateContactDetailsDto, UpdateDomainStatusDto, UpdateNameserverDto } from './dto/domain.dto';
 import { createHmac } from 'node:crypto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -131,6 +131,7 @@ export class DomainService {
         redirect: 'follow'
       })
       const result = await response.json()
+      console.log(result)
       if (result.error) throw new BadRequestException(result.error)
 
       await this.domainRepo.save({
@@ -171,18 +172,218 @@ export class DomainService {
     }
   }
 
-  // async renew(dto: SearchDomainDto) {
-  //   try {
-  //     const price = await this.getPrice(dto.name)
-  //     return { message: "Renewal price", result: { domain: dto.name, price: price.renewalPrice } }
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+  async renew(domainId: string, regPeriod: string, idProtection: boolean) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: domainId } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/order/domains/renew`;
+      const urlencoded = new URLSearchParams();
+      urlencoded.append("domain", domain.name);
+      urlencoded.append("regperiod", regPeriod);
+      urlencoded.append("addons[dnsmanagement]", "0");
+      urlencoded.append("addons[emailforwarding]", "1");
+      urlencoded.append("addons[idprotection]", idProtection ? "1" : "0");
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.constructHeader(),
+        body: urlencoded,
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      await this.domainRepo.update(domainId, {
+        status: "active",
+        registrationPeriod: parseInt(regPeriod),
+        registrationPrice: result.order?.totalamount ?? 0,
+        expiryDate: result.order?.expirydate ?? null,
+      })
+
+      return { message: "Domain renewed successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getEppCode(domainId: string, userId: string) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: domainId, user: { id: userId } } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/eppcode`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.constructHeader(),
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      return { message: "EPP code retrieved successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getLockStatus(domainId: string, userId: string) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: domainId, user: { id: userId } } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/lock`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.constructHeader(),
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      return { message: "Lock status retrieved successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateLockStatus(domainId: string, status: string) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: domainId } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/lock`;
+      var urlencoded = new URLSearchParams();
+      urlencoded.append("lockstatus", status);
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.constructHeader(),
+        body: urlencoded,
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      return { message: "Lock status retrieved successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getContactDetails(domainId: string, userId: string) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: domainId, user: { id: userId } } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/contact`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.constructHeader(),
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      return { message: "Contact details retrieved successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateContactDetails(dto: UpdateContactDetailsDto) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: dto.domainId } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/contact`;
+      const urlencoded = new URLSearchParams();
+      urlencoded.append("contactdetails[registrant][firstname]", dto.firstName);
+      urlencoded.append("contactdetails[registrant][lastname]", dto.lastName);
+      urlencoded.append("contactdetails[registrant][fullname]", `${dto.firstName} ${dto.lastName}`);
+      urlencoded.append("contactdetails[registrant][companyname]", dto.companyName);
+      urlencoded.append("contactdetails[registrant][email]", dto.email);
+      urlencoded.append("contactdetails[registrant][address1]", dto.address);
+      urlencoded.append("contactdetails[registrant][city]", dto.city);
+      urlencoded.append("contactdetails[registrant][state]", dto.state);
+      urlencoded.append("contactdetails[registrant][zipcode]", dto.zipCode);
+      urlencoded.append("contactdetails[registrant][country]", dto.country);
+      urlencoded.append("contactdetails[registrant][phonenumber]", dto.phoneNumber);
+      urlencoded.append("contactdetails[admin][firstname]", dto.firstName);
+      urlencoded.append("contactdetails[admin][lastname]", dto.lastName);
+      urlencoded.append("contactdetails[admin][fullname]", `${dto.firstName} ${dto.lastName}`);
+      urlencoded.append("contactdetails[admin][companyname]", dto.companyName);
+      urlencoded.append("contactdetails[admin][email]", dto.email);
+      urlencoded.append("contactdetails[admin][address1]", dto.address);
+      urlencoded.append("contactdetails[admin][city]", dto.city);
+      urlencoded.append("contactdetails[admin][state]", dto.state);
+      urlencoded.append("contactdetails[admin][zipcode]", dto.zipCode);
+      urlencoded.append("contactdetails[admin][country]", dto.country);
+      urlencoded.append("contactdetails[admin][phonenumber]", dto.phoneNumber);
+      urlencoded.append("contactdetails[billing][firstname]", dto.firstName);
+      urlencoded.append("contactdetails[billing][lastname]", dto.lastName);
+      urlencoded.append("contactdetails[billing][fullname]", `${dto.firstName} ${dto.lastName}`);
+      urlencoded.append("contactdetails[billing][companyname]", dto.companyName);
+      urlencoded.append("contactdetails[billing][email]", dto.email);
+      urlencoded.append("contactdetails[billing][address1]", dto.address);
+      urlencoded.append("contactdetails[billing][city]", dto.city);
+      urlencoded.append("contactdetails[billing][state]", dto.state);
+      urlencoded.append("contactdetails[billing][zipcode]", dto.zipCode);
+      urlencoded.append("contactdetails[billing][country]", dto.country);
+      urlencoded.append("contactdetails[billing][phonenumber]", dto.phoneNumber);
+      urlencoded.append("contactdetails[tech][firstname]", dto.firstName);
+      urlencoded.append("contactdetails[tech][lastname]", dto.lastName);
+      urlencoded.append("contactdetails[tech][fullname]", `${dto.firstName} ${dto.lastName}`);
+      urlencoded.append("contactdetails[tech][companyname]", dto.companyName);
+      urlencoded.append("contactdetails[tech][email]", dto.email);
+      urlencoded.append("contactdetails[tech][address1]", dto.address);
+      urlencoded.append("contactdetails[tech][city]", dto.city);
+      urlencoded.append("contactdetails[tech][state]", dto.state);
+      urlencoded.append("contactdetails[tech][zipcode]", dto.zipCode);
+      urlencoded.append("contactdetails[tech][country]", dto.country);
+      urlencoded.append("contactdetails[tech][phonenumber]", dto.phoneNumber);
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: this.constructHeader(),
+        body: urlencoded,
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      return { message: "Contact details updated successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getNameservers(domainId: string, userId: string) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: domainId, user: { id: userId } } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/nameservers`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.constructHeader(),
+        redirect: 'follow'
+      })
+      const result = await response.json()
+      if (result.error) throw new BadRequestException(result.error)
+
+      return { message: "Nameservers retrieved successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
 
   async updateNameservers(dto: UpdateNameserverDto) {
     try {
-      const url = `${process.env.GO54_ENDPOINT}/domains/${dto.domainId}/nameservers`;
+      const domain = await this.domainRepo.findOne({ where: { id: dto.domainId } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      const url = `${process.env.GO54_ENDPOINT}/domains/${domain.name}/nameservers`;
       const urlencoded = new URLSearchParams();
       urlencoded.append("ns1", dto.nameserver1);
       urlencoded.append("ns2", dto.nameserver2);
@@ -199,6 +400,20 @@ export class DomainService {
       if (result.error) throw new BadRequestException(result.error)
 
       return { message: "Nameservers updated successfully", result }
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async updateDomainStatus(dto: UpdateDomainStatusDto) {
+    try {
+      const domain = await this.domainRepo.findOne({ where: { id: dto.domainId } })
+      if (!domain) throw new NotFoundException("Domain not found")
+
+      domain.status = dto.status
+      if (dto.expiryDate) domain.expiryDate = dto.expiryDate
+      await this.domainRepo.save(domain)
+      return { message: "Domain status updated successfully" }
     } catch (error) {
       throw error
     }

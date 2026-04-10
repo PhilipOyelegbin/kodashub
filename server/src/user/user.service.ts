@@ -20,6 +20,7 @@ export class UserService {
       const user = await this.userRepo.findOne({ where: { email: dto.email } })
       if (user) throw new BadRequestException("User already exists")
 
+      dto.email = dto.email.toLowerCase()
       const hashedPassword = await argon.hash(dto.password)
       const otp = new Otp().generateOTP()
       const createdUser = await this.userRepo.save({ ...dto, password: hashedPassword, role: "admin", verificationCode: otp.token, verificationTime: otp.expiration })

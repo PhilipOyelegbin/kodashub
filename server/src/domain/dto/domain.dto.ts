@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { IsArray, IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsDate, IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class SearchDomainDto {
     @ApiProperty({ description: "Domain name to search", example: "google.com" })
@@ -45,4 +45,78 @@ export class UpdateNameserverDto {
     @IsString()
     @IsOptional()
     nameserver4?: string;
+}
+
+export class UpdateContactDetailsDto {
+    @ApiProperty({ description: "Domain ID", example: "6ebac467-7340-45f3-90fc-9f59eb0c217a" })
+    @IsString()
+    @IsNotEmpty()
+    domainId: string
+
+    @ApiProperty({ description: "First Name", example: "John" })
+    @IsString()
+    @IsNotEmpty()
+    firstName: string;
+
+    @ApiProperty({ description: "Last Name", example: "Doe" })
+    @IsString()
+    @IsNotEmpty()
+    lastName: string;
+
+    @ApiProperty({ description: "Company Name", example: "Kodashub" })
+    @IsString()
+    @IsNotEmpty()
+    companyName: string;
+
+    @ApiProperty({ description: "Email", example: "jd@xample.com" })
+    @IsString()
+    @IsNotEmpty()
+    email: string;
+
+    @ApiProperty({ description: "Address", example: "123 Main St" })
+    @IsString()
+    @IsNotEmpty()
+    address: string;
+
+    @ApiProperty({ description: "City", example: "Ketu" })
+    @IsString()
+    @IsNotEmpty()
+    city: string;
+
+    @ApiProperty({ description: "State", example: "Lagos" })
+    @IsString()
+    @IsNotEmpty()
+    state: string;
+
+    @ApiProperty({ description: "Zip Code", example: "12345" })
+    @IsString()
+    @IsNotEmpty()
+    zipCode: string;
+
+    @ApiProperty({ description: "Country", example: "NG" })
+    @IsString()
+    @IsNotEmpty()
+    country: string;
+
+    @ApiProperty({ description: "Phone Number", example: "+2348034567890" })
+    @IsString()
+    @IsNotEmpty()
+    phoneNumber: string;
+}
+
+export class UpdateDomainStatusDto {
+    @ApiProperty({ description: "Domain ID", example: "6ebac467-7340-45f3-90fc-9f59eb0c217a" })
+    @IsString()
+    @IsNotEmpty()
+    domainId: string
+
+    @ApiProperty({ description: "Domain status", example: "failed" })
+    @IsString()
+    @IsNotEmpty()
+    status: string;
+
+    @ApiPropertyOptional({ description: "Domain expiry date", example: "2026-12-31" })
+    @IsDate()
+    @IsOptional()
+    expiryDate?: Date;
 }

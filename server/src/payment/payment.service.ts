@@ -14,7 +14,7 @@ export class PaymentService {
     private domainService: DomainService
   ) { }
 
-  async create(dto: CreatePaymentDto) {
+  async initializePayment(dto: CreatePaymentDto) {
     try {
       const cartItem = await this.cartRepo.findOne({
         where: { id: dto.cartId },
@@ -73,13 +73,6 @@ export class PaymentService {
       throw error
     }
   }
-
-  // async findAll() {
-  //   const payments = await this.paymentRepo.find({
-  //     relations: ['user', 'order'],
-  //   });
-  //   return { message: 'Payments fetched successfully', data: payments };
-  // }
 
   async listTransactions(perPage: number, page: number) {
     const response = await fetch(

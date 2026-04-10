@@ -17,11 +17,12 @@ export class AuthService {
 
   async createUser(dto: RegisterUserDto) {
     try {
-      const user = await this.usersRepo.findOne({ where: { email: dto.email } });
+      const user = await this.usersRepo.findOne({ where: { email: dto.email.toLowerCase() } });
       if (user) {
         throw new BadRequestException('User already exists');
       }
 
+      dto.email = dto.email.toLowerCase();
       const hashedPassword = await argon.hash(dto.password);
       const otp = new Otp().generateOTP();
       const newUser = this.usersRepo.create({ ...dto, password: hashedPassword, verificationCode: otp.token, verificationTime: otp.expiration });
@@ -45,7 +46,7 @@ export class AuthService {
 
   async resendVerificationCode(email: string) {
     try {
-      const user = await this.usersRepo.findOne({ where: { email } });
+      const user = await this.usersRepo.findOne({ where: { email: email.toLowerCase() } });
       if (!user) {
         throw new NotFoundException('User not found');
       }
@@ -100,7 +101,7 @@ export class AuthService {
 
   async loginUser(dto: LogInUserDto, req: Request) {
     try {
-      const user = await this.usersRepo.findOne({ where: { email: dto.email } });
+      const user = await this.usersRepo.findOne({ where: { email: dto.email.toLowerCase() } });
       if (!user) {
         throw new UnauthorizedException('Invalid credentials');
       }
@@ -129,7 +130,7 @@ export class AuthService {
     try {
       if (!email) throw new BadRequestException("Email is required")
 
-      const user = await this.usersRepo.findOne({ where: { email } });
+      const user = await this.usersRepo.findOne({ where: { email: email.toLowerCase() } });
       if (!user) throw new NotFoundException('User not found');
 
       if (user.isDeleted) throw new NotFoundException('User not found, contact admin');

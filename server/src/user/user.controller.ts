@@ -12,7 +12,7 @@ import { JwtGuard } from '../auth/jwt.guard';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
-  @ApiOperation({ summary: "Create admin", description: "Create admin user" })
+  @ApiOperation({ summary: "Create admin", description: "Create admin user (super admin only)" })
   @ApiCreatedResponse({ description: "Admin created successfully" })
   @ApiBadRequestResponse({ description: "Bad request sent" })
   @ApiForbiddenResponse({ description: "You are not authorized to create admin" })
@@ -24,7 +24,7 @@ export class UserController {
     return this.userService.createAdmin(dto);
   }
 
-  @ApiOperation({ summary: "Get all users", description: "Get all users" })
+  @ApiOperation({ summary: "Get all users", description: "Get all users (admin only)" })
   @ApiOkResponse({ description: "Users retrieved successfully" })
   @ApiForbiddenResponse({ description: "You are not authorized to view all user" })
   @Get()
@@ -78,7 +78,7 @@ export class UserController {
     return this.userService.softDelete(req.user.id, req);
   }
 
-  @ApiOperation({ summary: "Delete user", description: "Delete user" })
+  @ApiOperation({ summary: "Delete user", description: "Delete user (admin only)" })
   @ApiOkResponse({ description: "User deleted successfully" })
   @ApiBadRequestResponse({ description: "Bad request sent" })
   @ApiForbiddenResponse({ description: "You are not authorized to delete user" })
@@ -90,7 +90,7 @@ export class UserController {
     return this.userService.delete(id);
   }
 
-  @ApiOperation({ summary: "Restore user", description: "Restore user" })
+  @ApiOperation({ summary: "Restore user", description: "Restore user (admin only)" })
   @ApiOkResponse({ description: "User restored successfully" })
   @ApiBadRequestResponse({ description: "Bad request sent" })
   @ApiForbiddenResponse({ description: "You are not authorized to restore user" })
