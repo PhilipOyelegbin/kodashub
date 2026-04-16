@@ -12,6 +12,7 @@ import { User } from './user/entities/user.entity';
 import { LogModule } from './log/log.module';
 import { CartModule } from './cart/cart.module';
 import { PaymentModule } from './payment/payment.module';
+import { ToolModule } from './tool/tool.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { PaymentModule } from './payment/payment.module';
     LogModule,
     CartModule,
     PaymentModule,
+    ToolModule,
   ],
   controllers: [AppController],
   providers: [AppService],

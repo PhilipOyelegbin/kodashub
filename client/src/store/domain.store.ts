@@ -1,29 +1,30 @@
-import { checkDomain } from "@/app/api/domain";
+import { searchDomain } from "@/api/domain";
 import { DomainItem, DomainState } from "@/utils/interface";
 import { create } from "zustand";
 
 export const useDomainStore = create<DomainState>((set) => ({
-    domain: "",
+    domain: [],
     domainStatus: "",
     loading: false,
     message: "",
     error: "",
 
     action: {
-        checkDomain: async (item: DomainItem) => {
-            set({ loading: true, error: "" });
+        searchDomain: async (item: DomainItem) => {
+            set({ loading: true, error: "", message: "" });
             try {
-                const response = await checkDomain(item.name);
-                if (response.success) {
-                    set({ domain: response.domain, domainStatus: response.status, loading: false });
+                const response = await searchDomain(item);
+                if (!response.error) {
+                    set({ domain: response.result, message: response.message, loading: false });
                 } else {
-                    set({ domain: "", domainStatus: "", loading: false, error: response.message });
+                    set({ domain: [], message: "", loading: false, error: response.error });
                 }
             } catch (err: any) {
-                set({ domain: "", domainStatus: "", loading: false, error: err.message });
+                set({ domain: [], message: "", loading: false, error: err.message });
             }
         },
-        clearDomain: () => set({ domain: "", domainStatus: "", loading: false, error: "" }),
+
+        clearDomain: () => set({ domain: [], domainStatus: "", message: "", loading: false, error: "" }),
     }
 }));
 

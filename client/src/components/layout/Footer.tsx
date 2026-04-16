@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -7,7 +8,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
         <div className="flex flex-col gap-2 relative">
           <Link href="/" className="flex items-center gap-2 group justify-center md:justify-start">
-            <svg
+            <Image src="/kh_dark_logo.png" className="w-[100px] md:w-[200px]" alt="Kodashub Logo" width={100} height={100} />
+            {/* <svg
               width="32"
               height="32"
               viewBox="0 0 64 64"
@@ -28,7 +30,7 @@ export default function Footer() {
             </svg>
             <span className="text-xl font-bold tracking-wide text-brand-gray opacity-80">
               Kodas<span className="text-brand-blue">Hub</span>
-            </span>
+            </span> */}
           </Link>
           <p className="text-sm max-w-sm mt-2">
             Innovate. Deploy. Succeed. The ultimate digital solutions platform for developers and businesses.

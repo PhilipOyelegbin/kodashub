@@ -3,45 +3,44 @@
 import React, { useState } from "react";
 import { useAppStore } from "@/store/store";
 import { useDomainAction, useDomainStore } from "@/store/domain.store";
-import { DomainResult } from "@/utils/interface";
+import toast from "react-hot-toast";
+
 export default function DomainSearch() {
   const [query, setQuery] = useState("");
-  const { domain, domainStatus, loading, message, error } = useDomainStore(state => state)
-  const { checkDomain } = useDomainAction
+  const { domain: domainResult, domainStatus, loading, message, error } = useDomainStore(state => state)
+  const { searchDomain } = useDomainAction
   const addToCart = useAppStore(state => state.addToCart);
 
-  const searchDomain = async (e: React.FormEvent) => {
+  const handleSearchDomain = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!query) return;
     const searchString = query.toLowerCase().replace(/\\s+/g, "");
     const finalQuery = searchString.includes(".") ? searchString : `${searchString}.com`;
 
     try {
-      const response = checkDomain({ name: finalQuery })
-      console.log(response)
+      searchDomain({ name: finalQuery })
+      toast.success(message)
     } catch (err) {
-      setError("An error occurred while verifying the domain. Please try again.");
-    } finally {
-      setLoading(false);
+      toast.error("An error occurred while verifying the domain. Please try again.");
     }
   };
 
   const handleAdd = () => {
-    if (domain && domainStatus === "success" && domain.price) {
+    if (domainResult && domainResult?.price) {
       addToCart({
-        id: domain.name,
-        name: domain,
-        price: domain.price
+        id: domainResult?.domain,
+        name: domainResult?.domain,
+        price: domainResult?.total
       });
       // Optionally reset the search here visually to indicate success
       setQuery("");
-      alert(`${domain} added to cart!`);
+      toast.success(`${domainResult?.domain} added to cart!`);
     }
-  };
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <form onSubmit={searchDomain} className="relative flex items-center shadow-2xl rounded-full overflow-hidden bg-[#172347] border border-white/10 group focus-within:border-brand-blue transition-colors">
+      <form onSubmit={handleSearchDomain} className="relative flex items-center shadow-2xl rounded-full overflow-hidden bg-[#172347] border border-white/10 group focus-within:border-brand-blue transition-colors">
         <div className="absolute left-6 text-brand-gray/50 group-focus-within:text-brand-blue transition-colors">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -74,11 +73,11 @@ export default function DomainSearch() {
         </div>
       )}
 
-      {result && (
-        <div className={`mt-8 p-6 rounded-2xl border flex flex-col md:flex-row items-center justify-between shadow-xl transition-all ${result.available ? 'bg-[#121D3B] border-brand-teal/30' : 'bg-[#121D3B] border-red-500/20'} animate-in fade-in slide-in-from-bottom-4 duration-500`}>
+      {domainResult && (
+        <div className={`mt-8 p-6 rounded-2xl border flex flex-col md:flex-row items-center justify-between shadow-xl transition-all ${domainResult ? 'bg-[#121D3B] border-brand-teal/30' : 'bg-[#121D3B] border-red-500/20'} animate-in fade-in slide-in-from-bottom-4 duration-500`}>
           <div className="flex items-center gap-4">
-            <div className={`p-3 rounded-full ${result.available ? 'bg-brand-teal/10 text-brand-teal' : 'bg-red-500/10 text-red-500'}`}>
-              {result.available ? (
+            <div className={`p-3 rounded-full ${domainResult?.domain ? 'bg-brand-teal/10 text-brand-teal' : 'bg-red-500/10 text-red-500'}`}>
+              {domainResult?.domain ? (
                 <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -89,26 +88,26 @@ export default function DomainSearch() {
               )}
             </div>
             <div>
-              <p className="text-2xl font-bold text-white">{result.domain}</p>
-              <p className={result.available ? "text-brand-teal/80" : "text-red-400/80"}>
-                {result.message}
+              <p className="text-2xl font-bold text-white">{domainResult?.domain}</p>
+              <p className={domainResult ? "text-brand-teal/80" : "text-red-400/80"}>
+                {message}
               </p>
             </div>
           </div>
 
           <div className="mt-4 md:mt-0 flex items-center gap-6">
-            {result.available && (
-              <span className="text-3xl font-extrabold text-white">${result.price}/yr</span>
+            {domainResult && (
+              <span className="text-3xl font-extrabold text-white">₦{domainResult?.price}/yr</span>
             )}
             <button
-              className={`px-8 py-3 rounded-xl font-bold text-lg transition-all ${result.available
+              className={`px-8 py-3 rounded-xl font-bold text-lg transition-all ${domainResult
                 ? 'bg-brand-teal text-brand-navy shadow-[0_0_15px_rgba(19,200,184,0.3)] hover:scale-105'
                 : 'bg-brand-gray/10 text-brand-gray/50 cursor-not-allowed'
                 }`}
-              disabled={!result.available}
+              disabled={!domainResult}
               onClick={handleAdd}
             >
-              {result.available ? "Add to Cart" : "Unavailable"}
+              {domainResult ? "Add to Cart" : "Unavailable"}
             </button>
           </div>
         </div>
