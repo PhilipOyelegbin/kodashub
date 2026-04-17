@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 export default function DomainSearch() {
   const [query, setQuery] = useState("");
-  const { domain: domainResult, domainStatus, loading, message, error } = useDomainStore(state => state)
+  const { domain: domainResult, loading, message, error } = useDomainStore(state => state)
   const { searchDomain } = useDomainAction
   const addToCart = useAppStore(state => state.addToCart);
 
@@ -73,7 +73,7 @@ export default function DomainSearch() {
         </div>
       )}
 
-      {domainResult && (
+      {domainResult?.domain && (
         <div className={`mt-8 p-6 rounded-2xl border flex flex-col md:flex-row items-center justify-between shadow-xl transition-all ${domainResult ? 'bg-[#121D3B] border-brand-teal/30' : 'bg-[#121D3B] border-red-500/20'} animate-in fade-in slide-in-from-bottom-4 duration-500`}>
           <div className="flex items-center gap-4">
             <div className={`p-3 rounded-full ${domainResult?.domain ? 'bg-brand-teal/10 text-brand-teal' : 'bg-red-500/10 text-red-500'}`}>

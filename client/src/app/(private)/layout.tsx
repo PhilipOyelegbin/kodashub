@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { useUserStore, useUserAction } from "@/store/user.store";
+import { Toaster } from "react-hot-toast";
 
 export default function PrivateLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -11,12 +12,12 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
   const token = useUserStore((state) => state.token);
   const loading = useUserStore((state) => state.loading);
   const currentUser = useUserStore((state) => state.currentUser);
-  
+
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
-    
+
     // Auth guard
     if (!token && !sessionStorage.getItem("token")) {
       router.push("/account");
@@ -50,7 +51,7 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
         <div className="p-6 border-b border-white/5">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 bg-gradient-to-br from-brand-blue to-brand-teal rounded-lg flex items-center justify-center transform group-hover:rotate-12 transition-all">
-               <span className="text-white font-bold text-xl leading-none">K</span>
+              <span className="text-white font-bold text-xl leading-none">K</span>
             </div>
             <span className="text-2xl font-bold text-white tracking-widest">KODAS<span className="text-brand-gray/60 font-light">HUB</span></span>
           </Link>
@@ -60,19 +61,19 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
           <p className="text-xs font-bold text-brand-gray/40 uppercase tracking-wider mb-4 px-2">Menu</p>
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => {
-               const isActive = pathname === link.href;
-               return (
-                 <Link 
-                   key={link.name} 
-                   href={link.href}
-                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive ? "bg-brand-blue/10 text-brand-teal font-bold border border-brand-blue/20" : "text-brand-gray/70 hover:bg-white/5 hover:text-white"}`}
-                 >
-                    <svg className={`w-5 h-5 ${isActive ? "text-brand-blue" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={link.icon} />
-                    </svg>
-                    {link.name}
-                 </Link>
-               );
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive ? "bg-brand-blue/10 text-brand-teal font-bold border border-brand-blue/20" : "text-brand-gray/70 hover:bg-white/5 hover:text-white"}`}
+                >
+                  <svg className={`w-5 h-5 ${isActive ? "text-brand-blue" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={link.icon} />
+                  </svg>
+                  {link.name}
+                </Link>
+              );
             })}
           </nav>
         </div>
@@ -80,17 +81,17 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
         <div className="p-6 border-t border-white/5">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-full bg-brand-blue/20 border border-brand-blue/50 flex items-center justify-center text-brand-blue font-bold">
-               {/* @ts-ignore */}
-               {currentUser?.firstName?.[0] || "U"}
+              {/* @ts-ignore */}
+              {currentUser?.firstName?.[0] || "U"}
             </div>
             <div className="flex-1 overflow-hidden">
-               {/* @ts-ignore */}
-               <p className="text-sm font-bold text-white truncate">{currentUser?.firstName || "User"}</p>
-               {/* @ts-ignore */}
-               <p className="text-xs text-brand-gray/60 truncate">{currentUser?.email || "user@example.com"}</p>
+              {/* @ts-ignore */}
+              <p className="text-sm font-bold text-white truncate">{currentUser?.firstName || "User"}</p>
+              {/* @ts-ignore */}
+              <p className="text-xs text-brand-gray/60 truncate">{currentUser?.email || "user@example.com"}</p>
             </div>
           </div>
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full py-2.5 rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 font-medium transition-colors flex items-center justify-center gap-2"
           >
@@ -106,24 +107,28 @@ export default function PrivateLayout({ children }: { children: React.ReactNode 
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         {/* Subtle background glow */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/10 rounded-full mix-blend-screen filter blur-[150px] pointer-events-none"></div>
-        
+
         <header className="h-20 border-b border-white/5 flex items-center justify-between px-8 bg-[#0F172A]/80 backdrop-blur-md z-10">
-           <h1 className="text-xl font-bold text-white tracking-wide">
-             {navLinks.find(l => l.href === pathname)?.name || "Dashboard"}
-           </h1>
-           <div className="flex items-center gap-4">
-              <button className="relative p-2 text-brand-gray/60 hover:text-white transition-colors">
-                 <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-blue rounded-full"></span>
-                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                 </svg>
-              </button>
-           </div>
+          <h1 className="text-xl font-bold text-white tracking-wide">
+            {navLinks.find(l => l.href === pathname)?.name || "Dashboard"}
+          </h1>
+          <div className="flex items-center gap-4">
+            <button className="relative p-2 text-brand-gray/60 hover:text-white transition-colors">
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-blue rounded-full"></span>
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+            </button>
+          </div>
         </header>
 
         <div className="flex-1 overflow-y-auto p-8 custom-scrollbar z-10">
           {children}
         </div>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
       </main>
     </div>
   );

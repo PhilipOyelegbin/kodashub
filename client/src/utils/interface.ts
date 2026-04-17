@@ -70,7 +70,7 @@ export interface UserState {
 }
 
 export interface DomainState {
-    domain: string[];
+    domain: any;
     domainStatus: string;
     loading: boolean;
     message: string;
@@ -106,14 +106,5 @@ export interface LogState {
     action: {
         getLog: () => void;
         clearLog: () => void;
-    }
-}
-
-export interface DomainResult {
-    message: string;
-    result: {
-        name: string;
-        price: number;
-        available: boolean;
     }
 }
