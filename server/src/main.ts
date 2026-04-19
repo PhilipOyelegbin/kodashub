@@ -1,14 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger"
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     rawBody: true,
     bodyParser: true,
     cors: {
-      origin: "*",
+      origin: '*',
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
       credentials: true,
@@ -33,7 +33,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addBearerAuth()
     .addServer(`http://localhost:${process.env.PORT || 4001}`, 'Local')
-    .addServer('https://kodashub.vercel.app', 'Staging')
+    .addServer('https://api-kodashub.vercel.app', 'Staging')
     .addServer('https://api.kodashub.com.ng', 'Production')
     .build();
 
