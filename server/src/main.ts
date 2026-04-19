@@ -8,7 +8,7 @@ async function bootstrap() {
     rawBody: true,
     bodyParser: true,
     cors: {
-      origin: ['http://localhost:3000', 'https://kodashub.netlify.app', 'https://kodashub.com.ng', 'https://kodashub.com', 'https://www.kodashub.com.ng', 'https://www.kodashub.com'],
+      origin: "*",
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
       allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
       credentials: true,
