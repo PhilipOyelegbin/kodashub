@@ -7,16 +7,14 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     rawBody: true,
     bodyParser: true,
-    cors: {
-      origin: '*',
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-      allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-      credentials: true,
-      preflightContinue: false,
-      optionsSuccessStatus: 204,
-    },
   });
 
+  app.enableCors({
+    origin: ['http://localhost:3000', 'https://kodshub.netlify.app', 'https://kodashub.vercel.app'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+    credentials: true,
+  });
   app.setGlobalPrefix('/api');
   app.enableVersioning({
     type: VersioningType.URI,
