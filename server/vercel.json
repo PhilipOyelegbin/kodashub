@@ -15,13 +15,9 @@
         "POST",
         "PUT",
         "PATCH",
-        "DELETE"
+        "DELETE",
+	"OPTIONS"
       ]
-    },
-    {
-      "src": "/api/(.*)",
-      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-      "dest": "/api"
     }
   ],
   "outputDirectory": "dist"
