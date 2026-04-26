@@ -10,7 +10,7 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://kodshub.netlify.app', 'https://kodashub.vercel.app'],
+    origin: ['http://localhost:3000', 'https://kodashub.netlify.app', 'https://kodashub.vercel.app/'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     credentials: true,
