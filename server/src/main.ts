@@ -20,6 +20,12 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: '1'
   });
+  app.use((req, res, next) => {
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+    next();
+  });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   // setting up swagger ui documentation
