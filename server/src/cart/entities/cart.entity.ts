@@ -1,20 +1,38 @@
-import { User } from "../../user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from '../../user/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity("cart")
+/**
+ * Generic cart item for any service type
+ * - serviceType: 'domain', 'hosting', 'ssl', 'email', etc.
+ * - metadata: Service-specific configuration
+ */
+@Entity('cart')
 export class Cart {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ type: 'jsonb', nullable: false })
-    product: { name: string, price: number, regPeriod: number, nameservers: string[] };
+  @Column({ nullable: false })
+  serviceType: string; // 'domain', 'hosting', 'ssl', 'email', etc.
 
-    @ManyToOne(() => User, (user) => user.cart, { onDelete: 'CASCADE' })
-    user: User;
+  @Column({ nullable: false })
+  price: number; // Amount in NGN (not cents)
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @Column({ type: 'jsonb', nullable: false })
+  metadata: Record<string, any>; // Service-specific data (name, regPeriod, etc.)
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @ManyToOne(() => User, (user) => user.cart, { onDelete: 'CASCADE' })
+  user: User;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

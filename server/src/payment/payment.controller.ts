@@ -1,28 +1,90 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UnauthorizedException, Req, Res, HttpStatus, RawBodyRequest, ForbiddenException, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  UnauthorizedException,
+  Req,
+  Res,
+  HttpStatus,
+  RawBodyRequest,
+  ForbiddenException,
+  BadRequestException,
+} from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/payment.dto';
-import { ApiBearerAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { JwtGuard } from '../auth/jwt.guard';
 import { createHmac } from 'crypto';
 
 @ApiInternalServerErrorResponse({ description: 'Internal server error' })
 @Controller('payment')
 export class PaymentController {
-  constructor(private readonly paymentService: PaymentService) { }
+  constructor(private readonly paymentService: PaymentService) {}
 
+  /**
+   * Generic payment initialization endpoint for any service type
+   * The service type is determined from the cart's serviceType field
+   *
+   * USAGE for different services:
+   * - Domain: Create cart with serviceType='domain', then call this endpoint
+   * - Hosting: Create cart with serviceType='hosting', then call this endpoint
+   * - SSL: Create cart with serviceType='ssl', then call this endpoint
+   * - Email: Create cart with serviceType='email', then call this endpoint
+   *
+   * The fulfillment handler is automatically selected based on cart.serviceType
+   */
   @ApiOperation({
-    summary: 'Initialize a new payment',
-    description: 'Initialize a payment transaction for a cart item',
+    summary: 'Initialize a payment for any service type',
+    description:
+      'Initialize a payment transaction for a cart. Works with domain, hosting, ssl, email, or any registered service type. ' +
+      'The service type is determined from cart.serviceType.',
+  })
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: 'Payment initialized. Returns Paystack checkout link.',
+  })
+  @UseGuards(JwtGuard)
+  @Post('initialize')
+  async initializePaymentGeneric(
+    @Req() req: any,
+    @Body() dto: CreatePaymentDto,
+  ) {
+    if (!req.user || !req.user.id) {
+      throw new UnauthorizedException('Unauthorized user');
+    }
+    return this.paymentService.initializePayment(dto, req.user.id);
+  }
+
+  /**
+   * DEPRECATED: Use POST /payment/initialize instead
+   * Kept for backward compatibility with domain-specific payment flow
+   */
+  @ApiOperation({
+    summary: '[DEPRECATED] Initialize a domain payment',
+    description:
+      'Use POST /payment/initialize instead. This endpoint is kept for backward compatibility.',
   })
   @ApiBearerAuth()
   @ApiCreatedResponse({ description: 'Created' })
   @UseGuards(JwtGuard)
   @Post('domain')
-  initializePayment(@Req() req: any, @Body() dto: CreatePaymentDto) {
+  async initializePaymentDomain(
+    @Req() req: any,
+    @Body() dto: CreatePaymentDto,
+  ) {
     if (!req.user || !req.user.id) {
       throw new UnauthorizedException('Unauthorized user');
     }
-    return this.paymentService.initializePayment(dto);
+    return this.paymentService.initializePayment(dto, req.user.id);
   }
 
   @ApiOperation({
@@ -45,42 +107,99 @@ export class PaymentController {
   }
 
   @ApiOperation({
-    summary: 'Confirm a payment',
-    description: 'Confirm the status of a payment by its order ID (admin only)',
+    summary: 'Verify a payment',
+    description:
+      'Verify the status of a payment by its transaction reference (admin only). ' +
+      'For completed payments, this also triggers fulfillment of the associated service.',
   })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'OK' })
   @UseGuards(JwtGuard)
-  @Get('verify/:order_id')
-  confirmPayment(@Req() req: any, @Param('order_id') order_id: string) {
+  @Get('verify/:transactionRef')
+  async verifyPayment(
+    @Req() req: any,
+    @Param('transactionRef') transactionRef: string,
+  ) {
     if (!['admin', 'super_admin'].includes(req.user.role)) {
-      throw new ForbiddenException('You are not authorized to restore user');
+      throw new ForbiddenException('You are not authorized to verify payments');
     }
-    if (!order_id) {
-      throw new BadRequestException('Order ID is required');
+    if (!transactionRef) {
+      throw new BadRequestException('Transaction reference is required');
     }
-    return this.paymentService.confirmPayment(order_id);
+    return this.paymentService.confirmPayment(transactionRef);
   }
 
+  /**
+   * Webhook handler for Paystack payment events
+   *
+   * Security:
+   * - Validates HMAC-SHA512 signature from Paystack
+   * - Rejects requests with invalid or missing signatures (403)
+   * - Uses raw request body for signature verification
+   *
+   * Processing:
+   * - Deduplicates events using PaymentEvent.paystackEventId
+   * - Marks completed payments for fulfillment
+   * - Calls fulfillService() to provision the service
+   *
+   * Handled events:
+   * - charge.success: Marks payment as paid, triggers fulfillment
+   * - charge.failed: Marks payment as failed, logs issue
+   * - Other events: Logged but not processed
+   */
   @ApiOperation({
     summary: 'Handle Paystack webhook events',
-    description: 'Process incoming webhook events from Paystack',
+    description:
+      'Process incoming webhook events from Paystack. Validates signature, deduplicates events, ' +
+      'marks payments, and triggers service fulfillment.',
   })
   @ApiOkResponse({ description: 'OK' })
   @Post('webhook')
   async webhookHandler(@Req() req: RawBodyRequest<Request>, @Res() res: any) {
     const secret = process.env.PAYSTACK_SECRET_KEY ?? '';
-    // Use the raw body buffer for HMAC to match Paystack's exact byte sequence
-    const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
-    const hash = createHmac('sha512', secret)
-      .update(rawBody)
-      .digest('hex');
 
-    if (hash === (req.headers as any)['x-paystack-signature']) {
-      const event = req.body;
-      await this.paymentService.processWebhookEvent(event);
+    if (!secret) {
+      console.error('PAYSTACK_SECRET_KEY is not configured');
+      return res
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .send({ message: 'Configuration error' });
     }
 
-    res.status(HttpStatus.OK).send({ message: 'Webhook received' });
+    // Use the raw body buffer for HMAC to match Paystack's exact byte sequence
+    const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
+    const signature = (req.headers as any)['x-paystack-signature'];
+
+    if (!signature) {
+      console.warn('Webhook request missing paystack header');
+      return res
+        .status(HttpStatus.FORBIDDEN)
+        .send({ message: 'Unauthorized: missing signature' });
+    }
+
+    // Verify signature
+    const hash = createHmac('sha512', secret).update(rawBody).digest('hex');
+
+    if (hash !== signature) {
+      console.warn(
+        `Webhook signature mismatch. Expected: ${hash}, Got: ${signature}`,
+      );
+      return res
+        .status(HttpStatus.FORBIDDEN)
+        .send({ message: 'Unauthorized: invalid signature' });
+    }
+
+    // Signature valid, process event
+    try {
+      const event = req.body;
+      const result = await this.paymentService.processWebhookEvent(event);
+      return res.status(HttpStatus.OK).send(result);
+    } catch (error) {
+      console.error('Webhook processing error:', error);
+      // Still return 200 to prevent Paystack retries for handling errors
+      return res.status(HttpStatus.OK).send({
+        message: 'Webhook received (processing error)',
+        error: error.message,
+      });
+    }
   }
 }

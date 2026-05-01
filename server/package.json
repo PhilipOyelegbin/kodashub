@@ -18,6 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "docker:up": "sudo docker compose up -d",
+    "docker:down": "sudo docker compose down -v",
     "proxy:lt": "pnpm lt --port 4001",
     "proxy:ping": "ssh -p 443 -R0:localhost:4001 a.pinggy.io"
   },

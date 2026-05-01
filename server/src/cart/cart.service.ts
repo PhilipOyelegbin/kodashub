@@ -1,20 +1,49 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCartDto, UpdateCartDto } from './dto/cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cart } from './entities/cart.entity';
+import { User } from './../user/entities/user.entity';
 
 @Injectable()
 export class CartService {
-  constructor(@InjectRepository(Cart) private cartRepo: Repository<Cart>) { }
+  constructor(
+    @InjectRepository(Cart) private cartRepo: Repository<Cart>,
+    @InjectRepository(User) private userRepo: Repository<User>,
+  ) {}
 
   async create(dto: CreateCartDto, userId: string) {
     if (!userId) throw new BadRequestException('User id is required');
 
+    const profile = await this.userRepo.findOne({
+      where: { id: userId },
+    });
+    if (
+      !profile?.companyName ||
+      !profile?.address ||
+      !profile?.phoneNumber ||
+      !profile?.city ||
+      !profile?.state ||
+      !profile?.country ||
+      !profile?.zipCode
+    ) {
+      throw new BadRequestException(
+        'Profile is incomplete, update your account',
+      );
+    }
+
     const newCart = this.cartRepo.create({
       ...dto,
+      price: Math.round(
+        dto?.metadata?.regPeriod
+          ? dto?.metadata.regPeriod * dto.price + (dto.price * 7.5) / 100
+          : dto.price + (dto.price * 7.5) / 100,
+      ), // Add 7.5% tax
       user: { id: userId },
-      product: { name: dto.name, price: dto.price * dto.regPeriod, regPeriod: dto.regPeriod, nameservers: dto.nameservers || [] },
     });
     const result = await this.cartRepo.save(newCart);
     return { message: 'Cart created successfully', result };
@@ -28,7 +57,7 @@ export class CartService {
     });
     return {
       message: 'Carts fetched successfully',
-      result
+      result,
     };
   }
 
@@ -56,17 +85,33 @@ export class CartService {
       throw new NotFoundException('Cart not found');
     }
 
-    // Derive the unit price dynamically based on existing data if a new price is not provided
-    const basePrice = dto.price ?? (existingCart.product.price / existingCart.product.regPeriod);
+    // Handle service type update
+    if (dto.serviceType) {
+      existingCart.serviceType = dto.serviceType;
+    }
 
-    // Safely construct the updated product JSON
-    existingCart.product = {
-      ...existingCart.product,
-      name: dto.name ?? existingCart.product.name,
-      regPeriod: dto.regPeriod ?? existingCart.product.regPeriod,
-      nameservers: dto.nameservers ?? existingCart.product.nameservers,
-      price: basePrice * (dto.regPeriod ?? existingCart.product.regPeriod),
-    };
+    // Handle price update or regPeriod change
+    if (
+      dto.price !== undefined ||
+      (dto.metadata && dto.metadata.regPeriod !== undefined)
+    ) {
+      const taxRate = 0.075; // 7.5%
+      const oldRegPeriod = existingCart.metadata?.regPeriod ?? 1;
+      const newRegPeriod = dto.metadata?.regPeriod ?? oldRegPeriod;
+
+      let unitPrice: number;
+      if (dto.price !== undefined) {
+        unitPrice = dto.price;
+      } else {
+        unitPrice = existingCart.price / (oldRegPeriod + taxRate);
+      }
+      existingCart.price = Math.round(unitPrice * (newRegPeriod + taxRate));
+    }
+
+    // Handle metadata update (merge with existing)
+    if (dto.metadata !== undefined) {
+      existingCart.metadata = { ...existingCart.metadata, ...dto.metadata };
+    }
 
     const result = await this.cartRepo.save(existingCart);
     return { message: 'Cart updated successfully', result };

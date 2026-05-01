@@ -7,40 +7,33 @@ import { Request } from 'express';
 
 @Injectable()
 export class LogService {
-  constructor(@InjectRepository(Log) private logRepo: Repository<Log>) { }
+  constructor(@InjectRepository(Log) private logRepo: Repository<Log>) {}
 
   async create(dto: CreateLogDto, userId: string, req: Request) {
-    try {
-      if (!userId) {
-        throw new BadRequestException("User id is required");
-      }
-
-      const ipAddress = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-      const userAgent = req.headers['user-agent'] || "Unknown";
-      const newLog = this.logRepo.create({
-        ...dto,
-        user: { id: userId },
-        ipAddress: ipAddress as string,
-        userAgent
-      });
-
-      await this.logRepo.save(newLog);
-      return { message: "Log created successfully", result: newLog };
-    } catch (error) {
-      throw error;
+    if (!userId) {
+      throw new BadRequestException('User id is required');
     }
+
+    const ipAddress =
+      req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const userAgent = req.headers['user-agent'] || 'Unknown';
+    const newLog = this.logRepo.create({
+      ...dto,
+      user: { id: userId },
+      ipAddress: ipAddress as string,
+      userAgent,
+    });
+
+    await this.logRepo.save(newLog);
+    return { message: 'Log created successfully', result: newLog };
   }
 
   async findAll(userId: string) {
-    try {
-      if (!userId) {
-        throw new BadRequestException("User id is required")
-      }
-
-      const logs = await this.logRepo.find({ where: { user: { id: userId } } })
-      return { message: "Logs retrieved successfully", result: logs };
-    } catch (error) {
-      throw error
+    if (!userId) {
+      throw new BadRequestException('User id is required');
     }
+
+    const logs = await this.logRepo.find({ where: { user: { id: userId } } });
+    return { message: 'Logs retrieved successfully', result: logs };
   }
 }

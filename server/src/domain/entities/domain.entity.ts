@@ -1,41 +1,58 @@
-import { User } from "../../user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { User } from '../../user/entities/user.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  Index,
+} from 'typeorm';
 
-@Entity("domain")
+@Entity('domain')
+@Index(['name', 'user'], { unique: true })
 export class Domain {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ unique: false })
-    name: string;
+  @Column({ nullable: false })
+  name: string;
 
-    @Column({ nullable: false })
-    registrationPeriod: number;
+  @Column({ nullable: false })
+  registrationPeriod: number;
 
-    @Column({ nullable: false })
-    registrationPrice: number;
+  @Column({ nullable: false })
+  registrationPrice: number;
 
-    @Column({ nullable: true })
-    renewalPrice?: number;
+  @Column({ nullable: true })
+  renewalPrice?: number;
 
-    @Column({ enum: ["pending", "active", "failed", "suspended", "grace", "redemption", "expired", "cancelled"], default: "pending" })
-    status: string;
+  @Column({
+    enum: [
+      'active',
+      'failed',
+      'suspended',
+      'grace',
+      'redemption',
+      'expired',
+      'cancelled',
+    ],
+    default: 'active',
+  })
+  status: string;
 
-    @Column({ nullable: true })
-    transactionRef?: string;
+  @Column({ nullable: true })
+  registrarOrderId?: string; // Go54 or provider order ID for tracking
 
-    @Column({ nullable: true })
-    checkOutUrl?: string;
+  @Column({ nullable: true })
+  expiryDate?: Date;
 
-    @ManyToOne(() => User, (user) => user.domains, { onDelete: 'CASCADE' })
-    user: User;
+  @ManyToOne(() => User, (user) => user.domains, { onDelete: 'CASCADE' })
+  user: User;
 
-    @Column({ nullable: true })
-    expiryDate?: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

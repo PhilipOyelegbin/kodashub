@@ -10,4 +10,4 @@ import { User } from '../user/entities/user.entity';
   controllers: [DomainController],
   providers: [DomainService],
 })
-export class DomainModule { }
+export class DomainModule {}

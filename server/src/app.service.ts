@@ -6,9 +6,7 @@ import { User } from './user/entities/user.entity';
 
 @Injectable()
 export class AppService {
-  constructor(
-    @InjectRepository(User) private userRepo: Repository<User>,
-  ) { }
+  constructor(@InjectRepository(User) private userRepo: Repository<User>) {}
 
   async onModuleInit() {
     await new Seed(this.userRepo).seedUsers();

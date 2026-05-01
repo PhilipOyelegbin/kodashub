@@ -11,4 +11,4 @@ import { Log } from '../log/entities/log.entity';
   controllers: [UserController],
   providers: [UserService, LogService],
 })
-export class UserModule { }
+export class UserModule {}

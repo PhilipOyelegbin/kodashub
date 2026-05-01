@@ -1,32 +1,44 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { StorageSyncDto, VoltCalcToolDto } from './dto/tool.dto';
 import { v2 as cloudinary } from 'cloudinary';
-import { GetObjectCommand, ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import {
+  GetObjectCommand,
+  ListObjectsV2Command,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 
 const FETCH_TIMEOUT_MS = 30_000; // 30 seconds per file fetch
-const UPLOAD_BATCH_SIZE = 10;    // concurrent uploads per page
+const UPLOAD_BATCH_SIZE = 10; // concurrent uploads per page
 
 @Injectable()
 export class ToolService {
   private readonly logger = new Logger(ToolService.name);
 
-  async calculateVoltUsage(dto: VoltCalcToolDto) {
-    try {
-      if (dto.currentReading < dto.previousReading) {
-        throw new BadRequestException("Current reading cannot be less than previous reading.");
-      }
-
-      const consumption = dto.currentReading - dto.previousReading;
-      const selectedBand = this.TARIFF_BANDS.find((band) => band.name === dto.tariffBand);
-      if (!selectedBand) {
-        throw new BadRequestException("Invalid tariff band.");
-      }
-      const cost = Math.round(consumption * selectedBand.rate + (consumption * selectedBand.rate * (7.5 / 100)));
-      return { message: "Electricity usage calculated successfully", result: { consumption, cost, band: selectedBand } };
-    } catch (error) {
-      throw error;
+  calculateVoltUsage(dto: VoltCalcToolDto) {
+    if (dto.currentReading < dto.previousReading) {
+      throw new BadRequestException(
+        'Current reading cannot be less than previous reading.',
+      );
     }
+
+    const consumption = dto.currentReading - dto.previousReading;
+    const selectedBand = this.TARIFF_BANDS.find(
+      (band) => band.name === dto.tariffBand,
+    );
+    if (!selectedBand) {
+      throw new BadRequestException('Invalid tariff band.');
+    }
+    const cost = Math.round(
+      consumption * selectedBand.rate +
+        consumption * selectedBand.rate * (7.5 / 100),
+    );
+    return {
+      message: 'Electricity usage calculated successfully',
+      result: { consumption, cost, band: selectedBand },
+    };
   }
 
   async cloudinaryS3Sync(dto: StorageSyncDto) {
@@ -57,7 +69,7 @@ export class ToolService {
         const result = await cloudinary.api.resources({
           max_results: 500,
           next_cursor: nextCursor,
-          type: "upload",
+          type: 'upload',
           resource_type: dto.fileType,
         });
 
@@ -65,7 +77,9 @@ export class ToolService {
         for (let i = 0; i < result.resources.length; i += UPLOAD_BATCH_SIZE) {
           const batch = result.resources.slice(i, i + UPLOAD_BATCH_SIZE);
           const batchResults = await Promise.allSettled(
-            batch.map((resource) => this.uploadResourceToS3(resource, s3Client, dto.newStorageName)),
+            batch.map((resource) =>
+              this.uploadResourceToS3(resource, s3Client, dto.newStorageName),
+            ),
           );
 
           for (const outcome of batchResults) {
@@ -80,11 +94,17 @@ export class ToolService {
         nextCursor = result.next_cursor ?? null;
       } while (nextCursor);
 
-      this.logger.log(`Migration completed. ✅ ${totalMigrated} succeeded, ❌ ${totalFailed} failed.`);
+      this.logger.log(
+        `Migration completed. ✅ ${totalMigrated} succeeded, ❌ ${totalFailed} failed.`,
+      );
       // ── Verification Phase ───────────────────────────────────────────────────
-      return await this.verifyCloudinaryMigration(dto, s3Client, dto.newStorageName);
+      return await this.verifyCloudinaryMigration(
+        dto,
+        s3Client,
+        dto.newStorageName,
+      );
     } catch (error) {
-      this.logger.error("Migration failed:", error);
+      this.logger.error('Migration failed:', error);
       throw error;
     }
   }
@@ -109,7 +129,6 @@ export class ToolService {
         secretAccessKey: dto.newSecretKey,
       },
     });
-    console.log("Storage connected...")
 
     let nextCursor: string | undefined = undefined;
     let totalMigrated = 0;
@@ -124,7 +143,7 @@ export class ToolService {
           ContinuationToken: nextCursor,
         });
 
-        const resp = await cloudflare.send(command) as any;
+        const resp = (await cloudflare.send(command)) as any;
         const objects = resp.Contents ?? [];
 
         // Process in batches
@@ -132,7 +151,9 @@ export class ToolService {
           const batch = objects.slice(i, i + UPLOAD_BATCH_SIZE);
 
           const batchResults = await Promise.allSettled(
-            batch.map((obj) => this.migrateSingleObject(obj, cloudflare, s3Client, dto))
+            batch.map((obj) =>
+              this.migrateSingleObject(obj, cloudflare, s3Client, dto),
+            ),
           );
 
           for (const outcome of batchResults) {
@@ -140,7 +161,9 @@ export class ToolService {
               totalMigrated++;
             } else {
               totalFailed++;
-              this.logger.error(`Migration failed for an item: ${outcome.reason}`);
+              this.logger.error(
+                `Migration failed for an item: ${outcome.reason}`,
+              );
             }
           }
         }
@@ -148,15 +171,19 @@ export class ToolService {
         nextCursor = resp.NextContinuationToken;
       } while (nextCursor);
 
-      this.logger.log(`Migration completed. ✅ ${totalMigrated} succeeded, ❌ ${totalFailed} failed.`);
-      return await this.verifyCloudflareMigration(dto, s3Client, dto.newStorageName);
-
+      this.logger.log(
+        `Migration completed. ✅ ${totalMigrated} succeeded, ❌ ${totalFailed} failed.`,
+      );
+      return await this.verifyCloudflareMigration(
+        dto,
+        s3Client,
+        dto.newStorageName,
+      );
     } catch (error) {
       this.logger.error(`Migration Process Error: ${error.message}`);
       throw error;
     }
   }
-
 
   /**
    * Downloads a single Cloudinary resource and uploads it to S3.
@@ -177,7 +204,7 @@ export class ToolService {
     let response: Response;
     try {
       response = await fetch(resource.secure_url, {
-        method: "GET",
+        method: 'GET',
         signal: controller.signal,
       });
     } finally {
@@ -185,7 +212,9 @@ export class ToolService {
     }
 
     if (!response.ok) {
-      throw new Error(`Failed to fetch ${resource.public_id}: HTTP ${response.status}`);
+      throw new Error(
+        `Failed to fetch ${resource.public_id}: HTTP ${response.status}`,
+      );
     }
 
     // Stream the response body directly — avoids loading the whole file into memory
@@ -197,13 +226,15 @@ export class ToolService {
         Body: response.body as any, // ReadableStream → passed directly to AWS SDK
         ContentType: `${resource.resource_type}/${resource.format}`,
       },
-      queueSize: 4,               // concurrent multipart parts
-      partSize: 1024 * 1024 * 5,  // 5 MB per part
-      leavePartsOnError: false,    // auto-clean failed multipart uploads
+      queueSize: 4, // concurrent multipart parts
+      partSize: 1024 * 1024 * 5, // 5 MB per part
+      leavePartsOnError: false, // auto-clean failed multipart uploads
     });
 
-    upload.on("httpUploadProgress", (progress) => {
-      this.logger.debug(`${resource.public_id}: ${progress.loaded} bytes uploaded`);
+    upload.on('httpUploadProgress', (progress) => {
+      this.logger.debug(
+        `${resource.public_id}: ${progress.loaded} bytes uploaded`,
+      );
     });
 
     await upload.done();
@@ -218,8 +249,13 @@ export class ToolService {
     dto: StorageSyncDto,
     s3Client: S3Client,
     bucketName: string,
-  ): Promise<{ message: string; cloudinaryCount: number; s3Count: number; success: boolean }> {
-    this.logger.log("--- Starting Verification ---");
+  ): Promise<{
+    message: string;
+    cloudinaryCount: number;
+    s3Count: number;
+    success: boolean;
+  }> {
+    this.logger.log('--- Starting Verification ---');
 
     // 1. Count Cloudinary assets
     let cloudinaryCount = 0;
@@ -229,14 +265,14 @@ export class ToolService {
         const result = await cloudinary.api.resources({
           max_results: 500,
           next_cursor: cursor,
-          type: "upload",
+          type: 'upload',
           resource_type: dto.fileType,
         });
         cloudinaryCount += result.resources.length;
         cursor = result.next_cursor ?? null;
       } while (cursor);
     } catch (err) {
-      this.logger.error("Error counting Cloudinary assets:", err.message);
+      this.logger.error('Error counting Cloudinary assets:', err.message);
     }
 
     // 2. Count S3 objects (scoped to migrated prefix to avoid false mismatches)
@@ -249,12 +285,12 @@ export class ToolService {
           Prefix: dto.newStorageName ? `${dto.newStorageName}/` : undefined,
           ContinuationToken: continuationToken,
         });
-        const response = await s3Client.send(command) as any;
+        const response = (await s3Client.send(command)) as any;
         s3Count += response.KeyCount || 0;
         continuationToken = response.NextContinuationToken;
       } while (continuationToken);
     } catch (err) {
-      this.logger.error("Error counting S3 objects:", err.message);
+      this.logger.error('Error counting S3 objects:', err.message);
     }
 
     // 3. Compare
@@ -262,9 +298,11 @@ export class ToolService {
     this.logger.log(`S3 Objects:        ${s3Count}`);
     const success = cloudinaryCount === s3Count;
     if (success) {
-      this.logger.log("✅ SUCCESS: File counts match perfectly.");
+      this.logger.log('✅ SUCCESS: File counts match perfectly.');
     } else {
-      this.logger.warn("⚠️ WARNING: File counts do not match. Some files may have failed.");
+      this.logger.warn(
+        '⚠️ WARNING: File counts do not match. Some files may have failed.',
+      );
     }
 
     return {
@@ -285,8 +323,13 @@ export class ToolService {
     dto: StorageSyncDto,
     s3Client: S3Client,
     bucketName: string,
-  ): Promise<{ message: string; cloudflareCount: number; s3Count: number; success: boolean }> {
-    this.logger.log("--- Starting Cloudflare to S3 Verification ---");
+  ): Promise<{
+    message: string;
+    cloudflareCount: number;
+    s3Count: number;
+    success: boolean;
+  }> {
+    this.logger.log('--- Starting Cloudflare to S3 Verification ---');
 
     // 1. Initialize Cloudflare Source Client
     const cloudflareClient = new S3Client({
@@ -307,7 +350,7 @@ export class ToolService {
           Bucket: dto.prevStorageName,
           ContinuationToken: cfContinuationToken,
         });
-        const resp = await cloudflareClient.send(command) as any;
+        const resp = (await cloudflareClient.send(command)) as any;
         // Use KeyCount or length of Contents array
         cloudflareCount += resp.Contents?.length || 0;
         cfContinuationToken = resp.NextContinuationToken;
@@ -326,7 +369,7 @@ export class ToolService {
           Bucket: bucketName,
           ContinuationToken: s3ContinuationToken,
         });
-        const response = await s3Client.send(command) as any;
+        const response = (await s3Client.send(command)) as any;
         s3Count += response.Contents?.length || 0;
         s3ContinuationToken = response.NextContinuationToken;
       } while (s3ContinuationToken);
@@ -341,9 +384,11 @@ export class ToolService {
 
     const success = cloudflareCount === s3Count;
     if (success) {
-      this.logger.log("✅ SUCCESS: Cloudflare and S3 object counts match.");
+      this.logger.log('✅ SUCCESS: Cloudflare and S3 object counts match.');
     } else {
-      this.logger.warn(`⚠️ WARNING: Mismatch detected! Difference: ${Math.abs(cloudflareCount - s3Count)} files.`);
+      this.logger.warn(
+        `⚠️ WARNING: Mismatch detected! Difference: ${Math.abs(cloudflareCount - s3Count)} files.`,
+      );
     }
 
     return {
@@ -357,11 +402,19 @@ export class ToolService {
   }
 
   // Helper method to handle the actual Stream/Buffer transfer
-  private async migrateSingleObject(obj: any, source: S3Client, dest: S3Client, dto: StorageSyncDto) {
+  private async migrateSingleObject(
+    obj: any,
+    source: S3Client,
+    dest: S3Client,
+    dto: StorageSyncDto,
+  ) {
     if (!obj.Key) return;
 
     // 1. Get from Source
-    const getCommand = new GetObjectCommand({ Bucket: dto.prevStorageName, Key: obj.Key });
+    const getCommand = new GetObjectCommand({
+      Bucket: dto.prevStorageName,
+      Key: obj.Key,
+    });
     const { Body, ContentType } = await source.send(getCommand);
 
     // 2. Upload to Destination
@@ -381,39 +434,39 @@ export class ToolService {
   // Tariff plans based on typical Nigerian electricity distribution company offerings
   private readonly TARIFF_BANDS = [
     {
-      id: "A",
-      name: "Band A",
+      id: 'A',
+      name: 'Band A',
       rate: 209.5,
-      description: "Premium Service",
-      hours: "20+ hours/day",
+      description: 'Premium Service',
+      hours: '20+ hours/day',
     },
     {
-      id: "B",
-      name: "Band B",
+      id: 'B',
+      name: 'Band B',
       rate: 69.75,
-      description: "Standard Plus",
-      hours: "16-20 hours/day",
+      description: 'Standard Plus',
+      hours: '16-20 hours/day',
     },
     {
-      id: "C",
-      name: "Band C",
+      id: 'C',
+      name: 'Band C',
       rate: 53.41,
-      description: "Standard",
-      hours: "12-16 hours/day",
+      description: 'Standard',
+      hours: '12-16 hours/day',
     },
     {
-      id: "D",
-      name: "Band D",
+      id: 'D',
+      name: 'Band D',
       rate: 45.29,
-      description: "Basic Plus",
-      hours: "8-12 hours/day",
+      description: 'Basic Plus',
+      hours: '8-12 hours/day',
     },
     {
-      id: "E",
-      name: "Band E",
+      id: 'E',
+      name: 'Band E',
       rate: 45.29,
-      description: "Basic",
-      hours: "4-8 hours/day",
+      description: 'Basic',
+      hours: '4-8 hours/day',
     },
   ];
 }

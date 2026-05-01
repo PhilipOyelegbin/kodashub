@@ -1,79 +1,90 @@
-import { Cart } from "../../cart/entities/cart.entity";
-import { Domain } from "../../domain/entities/domain.entity";
-import { Log } from "../../log/entities/log.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Cart } from '../../cart/entities/cart.entity';
+import { Domain } from '../../domain/entities/domain.entity';
+import { Log } from '../../log/entities/log.entity';
+import { Payment } from '../../payment/entities/payment.entity';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({ nullable: false })
-    firstName: string;
+  @Column({ nullable: false })
+  firstName: string;
 
-    @Column({ nullable: false })
-    lastName: string;
+  @Column({ nullable: false })
+  lastName: string;
 
-    @Column({ nullable: false })
-    companyName: string;
+  @Column({ nullable: true })
+  companyName?: string;
 
-    @Column({ nullable: false, unique: true })
-    email: string;
+  @Column({ nullable: false, unique: true })
+  email: string;
 
-    @Column({ nullable: false })
-    address: string;
+  @Column({ nullable: true })
+  address?: string;
 
-    @Column({ nullable: false })
-    phoneNumber: string;
+  @Column({ nullable: true })
+  phoneNumber?: string;
 
-    @Column({ nullable: false })
-    city: string;
+  @Column({ nullable: true })
+  city?: string;
 
-    @Column({ nullable: false })
-    state: string;
+  @Column({ nullable: false })
+  state?: string;
 
-    @Column({ nullable: false })
-    country: string;
+  @Column({ nullable: true })
+  country?: string;
 
-    @Column({ nullable: false })
-    zipCode: string;
+  @Column({ nullable: true })
+  zipCode?: string;
 
-    @Column({ nullable: false })
-    password: string;
+  @Column({ nullable: false })
+  password: string;
 
-    @Column({ enum: ['super_admin', 'admin', 'user'], default: 'user' })
-    role: string;
+  @Column({ enum: ['super_admin', 'admin', 'user'], default: 'user' })
+  role: string;
 
-    @Column({ nullable: true })
-    verificationCode?: string;
+  @Column({ nullable: true })
+  verificationCode?: string;
 
-    @Column({ nullable: true })
-    verificationTime?: Date;
+  @Column({ nullable: true })
+  verificationTime?: Date;
 
-    @Column({ nullable: true })
-    resetPasswordCode?: string;
+  @Column({ nullable: true })
+  resetPasswordCode?: string;
 
-    @Column({ nullable: true })
-    resetPasswordTime?: Date;
+  @Column({ nullable: true })
+  resetPasswordTime?: Date;
 
-    @Column({ default: false })
-    isVerified: boolean;
+  @Column({ default: false })
+  isVerified: boolean;
 
-    @Column({ default: false })
-    isDeleted: boolean;
+  @Column({ default: false })
+  isDeleted: boolean;
 
-    @OneToMany(() => Cart, (cart) => cart.user, { cascade: true })
-    cart: Cart[];
+  @OneToMany(() => Cart, (cart) => cart.user, { cascade: true })
+  cart: Cart[];
 
-    @OneToMany(() => Domain, (domain) => domain.user, { cascade: true })
-    domains: Domain[];
+  @OneToMany(() => Domain, (domain) => domain.user, { cascade: true })
+  domains: Domain[];
 
-    @OneToMany(() => Log, (log) => log.user, { cascade: true })
-    logs: Log[];
+  @OneToMany(() => Payment, (payment) => payment.user, { cascade: true })
+  payments: Payment[];
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @OneToMany(() => Log, (log) => log.user, { cascade: true })
+  logs: Log[];
 
-    @UpdateDateColumn()
-    updatedAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

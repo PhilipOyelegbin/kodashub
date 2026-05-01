@@ -9,4 +9,4 @@ import { Log } from './entities/log.entity';
   controllers: [LogController],
   providers: [LogService],
 })
-export class LogModule { }
+export class LogModule {}

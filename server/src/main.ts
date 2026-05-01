@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { exit } from 'process';
+import { NextFunction, Request, Response } from 'express';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -9,8 +11,17 @@ async function bootstrap() {
     bodyParser: true,
   });
 
+  const allowedCors: string[] = process.env.ALLOWED_CORS
+    ? process.env.ALLOWED_CORS.split(',').map((origin) => origin.trim())
+    : [];
+  if (!allowedCors || allowedCors.length === 0) {
+    console.warn(
+      'ALLOWED_CORS environment variable is not set. CORS will be enabled for all origins.',
+    );
+    exit(1);
+  }
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://kodashub.netlify.app', 'https://kodashub.vercel.app/'],
+    origin: allowedCors.length > 0 ? allowedCors : '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     credentials: true,
@@ -18,9 +29,9 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
   app.enableVersioning({
     type: VersioningType.URI,
-    defaultVersion: '1'
+    defaultVersion: '1',
   });
-  app.use((req, res, next) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     if (req.method === 'OPTIONS') {
       return res.sendStatus(204);
     }
@@ -67,8 +78,7 @@ async function bootstrap() {
     ],
   });
 
-  await app.listen(process.env.PORT ?? 3001, '0.0.0.0', async () => {
-    console.log(`Application is running on: ${await app.getUrl()}`);
-  });
+  await app.listen(process.env.PORT ?? 3001, '0.0.0.0');
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

@@ -12,4 +12,4 @@ import { Log } from '../log/entities/log.entity';
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, LogService],
 })
-export class AuthModule { }
+export class AuthModule {}
