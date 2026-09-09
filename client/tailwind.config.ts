@@ -1,25 +1,29 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
       colors: {
         brand: {
-          blue: "#2979F2",
-          teal: "#13C8B8",
-          navy: "#121D3B",
-          gray: "#F3F4F6",
+          cyan: "#00B4D8",
+          blue: "#0052D4",
+          navy: "#0B132B",
+          bg: "#F8FAFC",
+          pure: "#FFFFFF",
+          gray: "#E2E8F0",
+          emerald: "#10B981",
+          amber: "#F59E0B",
         },
-        background: "#121D3B",
-        foreground: "#F3F4F6",
       },
       fontFamily: {
-        sans: ["var(--font-montserrat)", "sans-serif"],
+        sans: ["var(--font-plus-jakarta)", "sans-serif"],
+        mono: ["var(--font-jetbrains-mono)", "monospace"],
       },
     },
   },
