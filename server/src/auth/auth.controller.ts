@@ -78,4 +78,22 @@ export class AuthController {
   resetPassword(@Body() dto: ResetPasswordDto, @Req() req: any) {
     return this.authService.resetPassword(dto, req);
   }
+
+  // @ApiOkResponse({ description: 'User authenticated' })
+  // @ApiBadRequestResponse({ description: 'Bad request' })
+  // @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  // @Post('google')
+  // @HttpCode(HttpStatus.OK)
+  // googleAuth(@Body() dto: LogInUserDto, @Req() req: any) {
+  //   return this.authService.googleAuth(dto.idToken, req);
+  // }
+
+  // @ApiOkResponse({ description: 'User authenticated' })
+  // @ApiBadRequestResponse({ description: 'Bad request' })
+  // @ApiUnauthorizedResponse({ description: 'Invalid credentials' })
+  // @Post('apple')
+  // @HttpCode(HttpStatus.OK)
+  // appleAuth(@Body() dto: LogInUserDto, @Req() req: any) {
+  //   return this.authService.appleAuth(dto, req);
+  // }
 }

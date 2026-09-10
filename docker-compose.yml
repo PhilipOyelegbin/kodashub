@@ -1,7 +1,7 @@
 ---
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:17
     container_name: postgres_local
     environment:
       - POSTGRES_USER=kodashub_user
@@ -14,7 +14,7 @@ services:
     restart: on-failure
 
   redis_cache:
-    image: redis:latest
+    image: redis:7-alpine
     container_name: redis_local
     ports:
       - "6379:6379"

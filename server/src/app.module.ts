@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DomainModule } from './domain/domain.module';
 import { HealthModule } from './health/health.module';
@@ -13,10 +12,11 @@ import { LogModule } from './log/log.module';
 import { CartModule } from './cart/cart.module';
 import { PaymentModule } from './payment/payment.module';
 import { ToolModule } from './tool/tool.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, expandVariables: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DATABASE_HOST,
@@ -44,8 +44,9 @@ import { ToolModule } from './tool/tool.module';
     CartModule,
     PaymentModule,
     ToolModule,
+    NotificationModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [AppService],
 })
 export class AppModule {}

@@ -10,13 +10,13 @@ const faqs = [
   {
     question: "Do you offer custom SLA agreements for enterprise hosting?",
     answer:
-      "Yes. We provide tailored Service Level Agreements for VPS, dedicated servers, and domain resellers requiring guaranteed uptime, 15-minute response windows, and dedicated account management.",
+      "Yes. We provide tailored Service Level Agreements for VPS, dedicated servers, and domain registration requiring guaranteed uptime, 15-minute response windows, and dedicated account management.",
   },
-  {
-    question: "Can KodasHub help with website migrations from other hosts?",
-    answer:
-      "Absolutely. All our Managed Shared Hosting and VPS plans include free website migration with zero downtime. Simply contact sales or request a migration after signing up.",
-  },
+  // {
+  //   question: "Can KodasHub help with website migrations from other hosts?",
+  //   answer:
+  //     "Absolutely. All our Managed Shared Hosting and VPS plans include free website migration with zero downtime. Simply contact sales or request a migration after signing up.",
+  // },
   {
     question: "How does billing work for one-time troubleshooting services?",
     answer:

@@ -24,7 +24,7 @@ export default function ContactPage() {
               </h1>
               <p className="mt-4 text-slate-300 text-lg leading-relaxed">
                 Connect with our team for hosting inquiries, technical support,
-                domain reseller partnerships, or sales questions.
+                domain registration, or hosting questions.
               </p>
             </div>
           </div>

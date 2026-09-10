@@ -16,9 +16,12 @@ import {
 import { PaymentService } from './payment.service';
 import { CreatePaymentDto } from './dto/payment.dto';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
+  ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -64,27 +67,21 @@ export class PaymentController {
     return this.paymentService.initializePayment(dto, req.user.id);
   }
 
-  /**
-   * DEPRECATED: Use POST /payment/initialize instead
-   * Kept for backward compatibility with domain-specific payment flow
-   */
   @ApiOperation({
-    summary: '[DEPRECATED] Initialize a domain payment',
-    description:
-      'Use POST /payment/initialize instead. This endpoint is kept for backward compatibility.',
+    summary: 'Retrieve all saved transactions',
+    description: 'Retrieve all saved transactions (admin only)',
   })
   @ApiBearerAuth()
-  @ApiCreatedResponse({ description: 'Created' })
+  @ApiOkResponse({ description: 'OK' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiNotFoundResponse({ description: 'Not Found' })
   @UseGuards(JwtGuard)
-  @Post('domain')
-  async initializePaymentDomain(
-    @Req() req: any,
-    @Body() dto: CreatePaymentDto,
-  ) {
-    if (!req.user || !req.user.id) {
-      throw new UnauthorizedException('Unauthorized user');
+  @Get('all/:userId')
+  getAllPayments(@Req() req: any, @Param('userId') userId: string) {
+    if (!['admin', 'super_admin'].includes(req.user.role)) {
+      throw new ForbiddenException('You are not authorized to restore user');
     }
-    return this.paymentService.initializePayment(dto, req.user.id);
+    return this.paymentService.getAllPayments(userId);
   }
 
   @ApiOperation({
@@ -93,6 +90,7 @@ export class PaymentController {
   })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'OK' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   @UseGuards(JwtGuard)
   @Get('list/:page/:perPage')
   listTransactions(
@@ -114,6 +112,8 @@ export class PaymentController {
   })
   @ApiBearerAuth()
   @ApiOkResponse({ description: 'OK' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
   @UseGuards(JwtGuard)
   @Get('verify/:transactionRef')
   async verifyPayment(
@@ -157,7 +157,6 @@ export class PaymentController {
   @Post('webhook')
   async webhookHandler(@Req() req: RawBodyRequest<Request>, @Res() res: any) {
     const secret = process.env.PAYSTACK_SECRET_KEY ?? '';
-
     if (!secret) {
       console.error('PAYSTACK_SECRET_KEY is not configured');
       return res
@@ -168,7 +167,6 @@ export class PaymentController {
     // Use the raw body buffer for HMAC to match Paystack's exact byte sequence
     const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(req.body));
     const signature = (req.headers as any)['x-paystack-signature'];
-
     if (!signature) {
       console.warn('Webhook request missing paystack header');
       return res
@@ -178,7 +176,6 @@ export class PaymentController {
 
     // Verify signature
     const hash = createHmac('sha512', secret).update(rawBody).digest('hex');
-
     if (hash !== signature) {
       console.warn(
         `Webhook signature mismatch. Expected: ${hash}, Got: ${signature}`,

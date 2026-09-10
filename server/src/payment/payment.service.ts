@@ -12,6 +12,7 @@ import { Cart } from '../cart/entities/cart.entity';
 import { Payment } from './entities/payment.entity';
 import { PaymentEvent } from './entities/payment-event.entity';
 import { FulfillmentHandlerRegistry } from './registry/fulfillment-handler.registry';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class PaymentService {
@@ -41,83 +42,104 @@ export class PaymentService {
     await queryRunner.startTransaction();
 
     try {
-      const cartItem = await queryRunner.manager.findOne(Cart, {
-        where: { id: dto.cartId },
+      const cartItems = await queryRunner.manager.find(Cart, {
+        where: { user: { id: userId } },
         relations: ['user'],
       });
 
-      if (!cartItem) {
+      if (!cartItems || cartItems.length === 0) {
         throw new NotFoundException('Cart not found');
       }
 
-      if (cartItem.user.id !== userId) {
-        throw new BadRequestException('Cart does not belong to this user');
+      // Validate cart prices before creating the single checkout payment
+      if (!cartItems.every((c) => typeof c.price === 'number' && c.price > 0)) {
+        throw new BadRequestException('All cart items must have a valid price');
       }
 
-      // Generate stable idempotency key
-      const idempotencyKey =
-        dto.idempotencyKey || `${dto.cartId}-${userId}-${Date.now()}`;
+      const totalPrice = this.calculateTotalPrice(cartItems);
+      if (totalPrice <= 0) {
+        throw new BadRequestException('Cart price must be greater than zero');
+      }
 
-      // Check if payment already exists (idempotency: retry case)
-      let existingPayment = await queryRunner.manager.findOne(Payment, {
+      const cartItemsSnapshot = cartItems.map((cartItem) => ({
+        id: cartItem.id,
+        serviceType: cartItem.serviceType,
+        price: cartItem.price,
+        metadata: cartItem.metadata,
+      }));
+
+      const idempotencySeed = `${userId}:${cartItemsSnapshot
+        .map((item) => item.id)
+        .sort()
+        .join(',')}:${totalPrice}`;
+      const idempotencyKey = createHash('sha256')
+        .update(idempotencySeed)
+        .digest('hex');
+
+      const existingPayment = await queryRunner.manager.findOne(Payment, {
         where: { idempotencyKey },
       });
 
-      if (existingPayment && existingPayment.status === 'pending') {
+      if (existingPayment) {
         this.logger.log(
-          `Payment already initiated with key ${idempotencyKey}, returning existing authorization URL`,
+          `Payment already initialized for cart checkout with key ${idempotencyKey}`,
         );
         await queryRunner.rollbackTransaction();
         return {
           message: 'Payment already initialized',
-          data: {
+          result: {
             reference: existingPayment.transactionRef,
             authorization_url: existingPayment.authorizationUrl,
+            paymentId: existingPayment.id,
           },
           isRetry: true,
         };
       }
 
-      // Call Paystack to get authorization URL
       const paystackResponse = await this.initializePaystackTransaction(
-        cartItem.user.email,
-        cartItem.price,
+        cartItems[0].user.email,
+        totalPrice,
         idempotencyKey,
-        cartItem.id,
         userId,
         dto.method,
+        cartItemsSnapshot,
       );
 
-      // Create payment record in transaction
       const newPayment = queryRunner.manager.create(Payment, {
         idempotencyKey,
-        amount: cartItem.price * 100, // Convert to cents
+        amount: totalPrice,
         currency: 'NGN',
-        serviceType: cartItem.serviceType, // Track which service is being paid for
+        serviceType: 'cart_checkout',
         status: 'pending',
         transactionRef: paystackResponse.data.reference,
         authorizationUrl: paystackResponse.data.authorization_url,
         paystackResponse: JSON.stringify(paystackResponse.data),
-        metadata: cartItem.metadata, // Store service-specific data for fulfillment
-        cart: cartItem,
-        user: cartItem.user,
+        metadata: {
+          cartCount: cartItems.length,
+          totalPrice,
+          cartIds: cartItemsSnapshot.map((item) => item.id),
+          cartItems: cartItemsSnapshot,
+          method: dto.method,
+        },
+        cartItemsSnapshot,
+        cartCount: cartItems.length,
+        user: cartItems[0].user,
       });
 
       await queryRunner.manager.save(newPayment);
 
-      // Mark cart as reserved (don't delete it yet)
-      cartItem.updatedAt = new Date();
-      await queryRunner.manager.save(cartItem);
+      for (const cartItem of cartItems) {
+        cartItem.updatedAt = new Date();
+        await queryRunner.manager.save(cartItem);
+      }
 
       await queryRunner.commitTransaction();
 
-      this.logger.log(
-        `Payment initialized: ${newPayment.id} for user ${userId}`,
-      );
+      this.logger.log(`Payments initialized for user ${userId}`);
 
       return {
         message: 'Payment initialized successfully',
-        data: paystackResponse.data,
+        result: paystackResponse.data,
         paymentId: newPayment.id,
       };
     } catch (error: unknown) {
@@ -134,15 +156,31 @@ export class PaymentService {
   }
 
   /**
+   * Calculate total price for the cart array items with VAT of 7.5%.
+   */
+  private calculateTotalPrice(cartItems: Cart[]) {
+    let total = 0;
+    for (const item of cartItems) {
+      total += item.price;
+    }
+    return Math.round(total * 1.075); // Add 7.5% VAT
+  }
+
+  /**
    * Private helper: Initialize transaction with Paystack API.
    */
   private async initializePaystackTransaction(
     email: string,
     amount: number,
     idempotencyKey: string,
-    cartId: string,
     userId: string,
     method: string,
+    cartItems: Array<{
+      id: string;
+      serviceType: string;
+      price: number;
+      metadata: Record<string, any>;
+    }>,
   ) {
     const response = await fetch(
       'https://api.paystack.co/transaction/initialize',
@@ -151,17 +189,19 @@ export class PaymentService {
         headers: {
           Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
           'Content-Type': 'application/json',
-          'Idempotency-Key': idempotencyKey, // Paystack also uses idempotency keys
+          'Idempotency-Key': idempotencyKey,
         },
         body: JSON.stringify({
           email,
-          amount: amount * 100, // Paystack expects amount in cents
-          reference: `${cartId}-${Date.now()}`,
+          amount: amount * 100, // Convert to cents
+          reference: `checkout-${userId}-${Date.now()}`,
           currency: 'NGN',
           channels: [method.toLowerCase()],
-          callback_url: process.env.PAYSTACK_CALLBACK_URL,
+          callback_url: process.env.PAYSTACK_CALLBACK_URL ?? '',
           metadata: {
-            cartId,
+            cartCount: cartItems.length,
+            cartIds: cartItems.map((item) => item.id),
+            cartItems,
             userId,
             idempotencyKey,
           },
@@ -180,6 +220,19 @@ export class PaymentService {
     }
 
     return result;
+  }
+
+  async getAllPayments(userId: string) {
+    const payments = await this.paymentRepo.find({
+      where: { user: { id: userId } },
+      relations: ['user', 'cart'],
+      order: { createdAt: 'DESC' },
+    });
+    if (!payments || payments.length === 0) {
+      throw new NotFoundException('No payments found for this user');
+    }
+
+    return { message: 'User payments rerieved successfully', result: payments };
   }
 
   /**
@@ -209,7 +262,6 @@ export class PaymentService {
    * Called both by webhook and by manual verification endpoint.
    */
   async verifyPayment(transactionRef: string) {
-    // Check if payment exists
     const payment = await this.paymentRepo.findOne({
       where: { transactionRef },
       relations: ['cart', 'user'],
@@ -417,15 +469,20 @@ export class PaymentService {
    * - Handles errors gracefully (keeps payment in "paid" state if fulfillment fails)
    */
   private async fulfillService(payment: Payment) {
-    // Ensure cart is loaded
-    if (!payment.cart) {
+    const cartItemsSnapshot =
+      payment.cartItemsSnapshot ||
+      (payment.metadata?.cartItems as Payment['cartItemsSnapshot']) ||
+      [];
+
+    // Backward compatibility for older single-cart payments.
+    if (!cartItemsSnapshot.length && payment.cart) {
       payment.cart =
         (await this.cartRepo.findOne({
-          where: { id: (payment.cart as any)?.id },
+          where: { id: payment.cart.id },
         })) || undefined;
     }
 
-    if (!payment.cart) {
+    if (!cartItemsSnapshot.length && !payment.cart) {
       throw new NotFoundException('Cart not found for payment fulfillment');
     }
 
@@ -450,56 +507,104 @@ export class PaymentService {
     fresh.status = 'fulfilling';
     await this.paymentRepo.save(fresh);
 
-    // Get the appropriate fulfillment handler for this service type
-    const handler = this.fulfillmentRegistry.getHandler(payment.serviceType);
-
     try {
-      this.logger.log(
-        `Fulfilling ${payment.serviceType} for payment ${payment.id}`,
-      );
+      this.logger.log(`Fulfilling payment ${payment.id}`);
 
-      // Use metadata from payment if available, otherwise use cart metadata
-      const fulfillmentData =
-        fresh.metadata || payment.metadata || payment.cart.metadata;
-      const fulfillmentResult = await handler.fulfill(
-        fulfillmentData,
-        payment.user.id,
-      );
+      const fulfillmentResults: Array<{
+        serviceType: string;
+        result: unknown;
+      }> = [];
+
+      if (cartItemsSnapshot.length > 0) {
+        for (const cartItem of cartItemsSnapshot) {
+          const handler = this.fulfillmentRegistry.getHandler(
+            cartItem.serviceType,
+          );
+          const fulfillmentResult = await handler.fulfill(
+            cartItem.metadata,
+            payment.user.id,
+          );
+          fulfillmentResults.push({
+            serviceType: cartItem.serviceType,
+            result: fulfillmentResult,
+          });
+        }
+      } else {
+        const handler = this.fulfillmentRegistry.getHandler(
+          payment.serviceType,
+        );
+        const fulfillmentData =
+          fresh.metadata || payment.metadata || payment.cart?.metadata;
+        const fulfillmentResult = await handler.fulfill(
+          fulfillmentData,
+          payment.user.id,
+        );
+        fulfillmentResults.push({
+          serviceType: payment.serviceType,
+          result: fulfillmentResult,
+        });
+      }
 
       // Mark payment as fulfilled
       fresh.status = 'fulfilled';
       fresh.fulfilledAt = new Date();
       await this.paymentRepo.save(fresh);
 
-      // Delete cart only after successful fulfillment
+      // Delete carts only after successful fulfillment
       try {
-        if (payment.cart) await this.cartRepo.remove(payment.cart);
+        if (cartItemsSnapshot.length > 0) {
+          const cartIds = cartItemsSnapshot.map((item) => item.id);
+          const cartsToRemove = await this.cartRepo.find({
+            where: cartIds.map((id) => ({ id })),
+          });
+          if (cartsToRemove.length > 0) {
+            await this.cartRepo.remove(cartsToRemove);
+          }
+        } else if (payment.cart) {
+          await this.cartRepo.remove(payment.cart);
+        }
       } catch (removeErr) {
         this.logger.warn(
           `Failed to remove cart for payment ${payment.id}: ${String(removeErr)}`,
         );
       }
 
-      this.logger.log(
-        `${payment.serviceType} fulfilled and payment completed: ${payment.id}`,
-      );
+      this.logger.log(`Payment fulfilled and completed: ${payment.id}`);
 
       return {
         message: 'Payment fulfilled successfully',
         service: payment.serviceType,
-        result: fulfillmentResult,
+        result: fulfillmentResults,
       };
     } catch (error: unknown) {
       const err = error instanceof Error ? error : new Error(String(error));
 
       // Attempt to handle failure via service handler
       try {
-        if (handler.handleFailure) {
-          await handler.handleFailure(
-            fresh.metadata || payment.metadata || payment.cart.metadata,
-            payment.user.id,
-            err.message,
+        if (cartItemsSnapshot.length > 0) {
+          for (const cartItem of cartItemsSnapshot) {
+            const handler = this.fulfillmentRegistry.getHandler(
+              cartItem.serviceType,
+            );
+            if (handler.handleFailure) {
+              await handler.handleFailure(
+                cartItem.metadata,
+                payment.user.id,
+                err.message,
+              );
+            }
+          }
+        } else {
+          const handler = this.fulfillmentRegistry.getHandler(
+            payment.serviceType,
           );
+          if (handler.handleFailure) {
+            await handler.handleFailure(
+              fresh.metadata || payment.metadata || payment.cart?.metadata,
+              payment.user.id,
+              err.message,
+            );
+          }
         }
       } catch (handlerError: unknown) {
         const he =

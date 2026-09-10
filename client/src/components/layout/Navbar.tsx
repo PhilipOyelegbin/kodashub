@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 import { LinkBtn } from "@/components/ui/LinkBtn";
+import { Logo_Light } from "@/components/ui/Logo";
 
 const navLinks = [
   { label: "Home", path: "/" },
@@ -19,13 +19,7 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/kh_light.png"
-              alt="KodasHub Light Logo"
-              className="w-32 aspect-video"
-              width={32}
-              height={32}
-            />
+            <Logo_Light />
           </Link>
 
           {/* Desktop Navigation */}

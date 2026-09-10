@@ -21,7 +21,7 @@ export class Payment {
   id: string;
 
   @Column({ unique: true })
-  idempotencyKey: string; // cartId-userId-timestamp for retry safety
+  idempotencyKey: string;
 
   @Column({ nullable: false })
   amount: number; // in cents (e.g., 50000 for ₦500)
@@ -49,6 +49,17 @@ export class Payment {
 
   @Column({ type: 'jsonb', nullable: true })
   metadata?: Record<string, any>; // Service-specific metadata for fulfillment
+
+  @Column({ type: 'jsonb', nullable: true })
+  cartItemsSnapshot?: Array<{
+    id: string;
+    serviceType: string;
+    price: number;
+    metadata: Record<string, any>;
+  }>;
+
+  @Column({ type: 'int', nullable: true })
+  cartCount?: number;
 
   @Column({ nullable: true })
   failureReason?: string; // Reason if payment failed

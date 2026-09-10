@@ -13,7 +13,7 @@ const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_HOST_URI || "http://localhost:3000",
   ),

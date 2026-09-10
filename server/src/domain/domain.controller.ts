@@ -14,15 +14,17 @@ import {
 } from '@nestjs/common';
 import { DomainService } from './domain.service';
 import {
-  SearchDomainDto,
+  CheckDomainDto,
   UpdateContactDetailsDto,
   UpdateDomainStatusDto,
   UpdateNameserverDto,
 } from './dto/domain.dto';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiForbiddenResponse,
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
@@ -50,25 +52,41 @@ export class DomainController {
   }
 
   @ApiOperation({
-    summary: 'Search for a domain',
-    description: 'Search for a domain',
+    summary: 'Check for domain availability',
+    description: 'Check for domain availability',
   })
   @ApiOkResponse({ description: 'Domain retrieved successfully' })
-  @Post('search')
+  @Post('check')
   @HttpCode(HttpStatus.OK)
-  search(@Body() dto: SearchDomainDto) {
-    return this.domainService.search(dto);
+  whoisChecker(@Body() dto: CheckDomainDto) {
+    return this.domainService.whoisChecker(dto);
   }
 
-  // @ApiBearerAuth()
-  // @ApiOperation({ summary: 'Register a domain', description: 'Register a domain' })
-  // @ApiCreatedResponse({ description: "Domain registered successfully" })
-  // @ApiUnauthorizedResponse({ description: "Unauthorized" })
-  // @UseGuards(JwtGuard)
-  // @Post("register")
-  // register(@Body() dto: RegisterDomainDto, @Req() req: any) {
-  //   return this.domainService.register(dto, req.user.id);
-  // }
+  @ApiOperation({
+    summary: 'Search for a registered domain',
+    description: 'Search for a registered domain',
+  })
+  @ApiOkResponse({ description: 'Domain retrieved successfully' })
+  @ApiBadRequestResponse({ description: 'Bad request' })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @Get('search')
+  search(@Query('domain') domain: string) {
+    return this.domainService.search(domain);
+  }
+
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Register a domain',
+    description: 'Register a domain',
+  })
+  @UseGuards(JwtGuard)
+  @Post('register')
+  register(
+    @Body() dto: { name: string; regPeriod: string; status?: string },
+    @Req() req: any,
+  ) {
+    return this.domainService.register(dto, req.user.id);
+  }
 
   @ApiBearerAuth()
   @ApiOperation({

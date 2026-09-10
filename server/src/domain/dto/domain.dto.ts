@@ -8,6 +8,18 @@ import {
   IsString,
 } from 'class-validator';
 
+export class CheckDomainDto {
+  @ApiProperty({ description: 'Domain name to check', example: 'google' })
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty({ description: 'Domain tld to check', example: '.com' })
+  @IsString()
+  @IsNotEmpty()
+  tld: string;
+}
+
 export class SearchDomainDto {
   @ApiProperty({ description: 'Domain name to search', example: 'google.com' })
   @IsString()

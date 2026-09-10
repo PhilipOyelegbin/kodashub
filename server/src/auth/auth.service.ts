@@ -216,4 +216,147 @@ export class AuthService {
     );
     return { message: 'Password reset successfully' };
   }
+
+  // async googleAuth(idToken: string, req: Request) {
+  //   if (!idToken) throw new BadRequestException('idToken is required');
+
+  //   let decodedToken: any;
+  //   let newUser: any;
+
+  //   try {
+  //     decodedToken = await admin.auth().verifyIdToken(idToken);
+
+  //     const { uid, email, name = '', email_verified } = decodedToken;
+  //     if (!email) {
+  //       throw new BadRequestException('Google account has no email');
+  //     }
+
+  //     let user = await this.usersRepo.findOne({ where: { email } });
+  //     if (!user) {
+  //       newUser = this.usersRepo.create({
+  //         firstName: name.split(' ')[0] || '',
+  //         lastName: name.split(' ').slice(1).join(' ') || '',
+  //         email,
+  //         googleId: uid || undefined,
+  //         firebaseUid: uid || undefined,
+  //         role: 'user',
+  //         isVerified: email_verified ?? true,
+  //       });
+
+  //       await this.usersRepo.save(newUser);
+  //       user = newUser;
+  //     }
+
+  //     await this.logService.create(
+  //       {
+  //         action: 'login',
+  //         description: 'User logged in successfully via google',
+  //       },
+  //       user.id,
+  //       req,
+  //     );
+  //     const token = jwt.sign(
+  //       { sub: user.id, email: user.email },
+  //       process.env.JWT_SECRET_KEY,
+  //       { expiresIn: process.env.JWT_EXPIRATION_TIME || '1h' },
+  //     );
+
+  //     return {
+  //       message: 'Authentication successful',
+  //       result: { token, user },
+  //     };
+  //   } catch (error) {
+  //     console.error('Google auth error:', error);
+  //     if (newUser?.id) {
+  //       await this.usersRepo.delete(newUser.id);
+  //       console.log('Rolled back partially created Google user');
+  //     }
+  //     throw error;
+  //   }
+  // }
+
+  // async appleAuth(dto: object, req: Request) {
+  //   const { identityToken, fullName, email: emailFromClient } = dto;
+
+  //   if (!identityToken) {
+  //     throw new BadRequestException('identityToken is required');
+  //   }
+
+  //   let decodedToken: any;
+  //   let newUser: any;
+
+  //   try {
+  //     decodedToken = await verifyAppleIdentityToken(identityToken);
+
+  //     const { sub: appleId, email: emailFromApple } = decodedToken;
+  //     const email = emailFromApple || emailFromClient || null;
+
+  //     let user = await this.usersRepo.findOne({ where: { appleId } });
+
+  //     if (!user) {
+  //       if (!email) {
+  //         throw new BadRequestException(
+  //           'Apple sign-in did not provide an email. Please re-authenticate and allow email sharing.',
+  //         );
+  //       }
+
+  //       // Link by email if user exists
+  //       user = await this.usersRepo.findOne({ where: { email } });
+
+  //       if (user) {
+  //         if (user.appleId && user.appleId !== appleId) {
+  //           throw new ConflictException(
+  //             'This email is already linked to another Apple account.',
+  //             'APPLE_ACCOUNT_CONFLICT',
+  //           );
+  //         }
+
+  //         if (!user.appleId) {
+  //           user.appleId = appleId;
+  //           await this.usersRepo.save(user);
+  //         }
+  //       }
+  //     }
+
+  //     if (!user) {
+  //       newUser = this.usersRepo.create({
+  //         firstName: fullName?.givenName || '',
+  //         lastName: fullName?.familyName || '',
+  //         email,
+  //         appleId,
+  //         role: 'user',
+  //         isVerified: true,
+  //       });
+
+  //       await this.usersRepo.save(newUser);
+  //       user = newUser;
+  //     }
+
+  //     await this.logService.create(
+  //       {
+  //         action: 'login',
+  //         description: 'User logged in successfully via apple',
+  //       },
+  //       user.id,
+  //       req,
+  //     );
+  //     const token = jwt.sign(
+  //       { sub: user.id, email: user.email },
+  //       process.env.JWT_SECRET_KEY,
+  //       { expiresIn: process.env.JWT_EXPIRATION_TIME || '1h' },
+  //     );
+
+  //     return {
+  //       message: 'Authentication successful',
+  //       result: { token, user },
+  //     };
+  //   } catch (error) {
+  //     console.error('Apple auth error:', error);
+  //     if (newUser?._id) {
+  //       await this.usersRepo.delete(newUser._id);
+  //     }
+
+  //     throw new UnauthorizedException('Invalid Apple token');
+  //   }
+  // }
 }

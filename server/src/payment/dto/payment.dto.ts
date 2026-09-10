@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreatePaymentDto {
   @ApiProperty({
@@ -10,22 +10,6 @@ export class CreatePaymentDto {
   @IsNotEmpty()
   @IsEnum(['card', 'bank_transfer', 'apple_pay', 'ussd', 'qr'])
   method: 'card' | 'bank_transfer' | 'apple_pay' | 'ussd' | 'qr';
-
-  @ApiProperty({
-    example: 'ae028d5b-0b72-4b81-89f4-ccfb8801acd4',
-    description: 'The cart ID',
-  })
-  @IsNotEmpty()
-  @IsString()
-  cartId: string;
-
-  @ApiProperty({
-    example: 'ae028d5b-0b72-4b81-89f4-ccfb8801acd4-1234567890',
-    description: 'Idempotency key for retry safety (generated if not provided)',
-  })
-  @IsOptional()
-  @IsString()
-  idempotencyKey?: string;
 }
 
 export class VerifyPaymentDto {

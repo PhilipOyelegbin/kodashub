@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import {
-  SearchDomainDto,
+  CheckDomainDto,
   UpdateContactDetailsDto,
   UpdateDomainStatusDto,
   UpdateNameserverDto,
@@ -28,65 +28,50 @@ export class DomainService {
     return { message: 'Domains retrieved successfully', result: domains };
   }
 
-  async search(dto: SearchDomainDto) {
-    try {
-      const url = 'https://www.whoisxmlapi.com/whoisserver/WhoisService';
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          domainName: dto.name,
-          apiKey: process.env.WHOIS_API_KEY,
-          outputFormat: 'JSON',
-          da: 1,
-        }),
-      };
+  async whoisChecker(dto: CheckDomainDto) {
+    const url = `https://domaincheck.httpapi.com/api/domains/available.json?auth-userid=${process.env.WHOIS_ID}&api-key=${process.env.WHOIS_KEY}&domain-name=${dto.name}&tlds=${dto.tld}`;
+    const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+    if (!response.ok)
+      throw new InternalServerErrorException('WHOIS API request failed');
 
-      const response = await fetch(url, options);
+    const result = await response.json();
+    if (result[dto.name + '.' + dto.tld].status !== 'available') {
+      const url = `https://domain-availability.whoisxmlapi.com/api/v1?apiKey=${process.env.WHOIS_API_KEY}&domainName=${dto.name}.${dto.tld}&credits=DA`;
+      const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
       const result = await response.json();
-      if (result.WhoisRecord.domainAvailability === 'AVAILABLE') {
-        const tld = dto.name.split('.')[1];
-        const pricingUrl = `${process.env.GO54_ENDPOINT}/tlds/pricing?lockstatus=true`;
-
-        const pricingResponse = await fetch(pricingUrl, {
-          method: 'GET',
-          headers: this.constructHeader(),
-          redirect: 'follow',
-        });
-        const data = await pricingResponse.json();
-        if (data.error) throw new BadRequestException(data.error);
-
-        const price = data.find(
-          (item: any) => item.tld === `.${tld}` && item.currencyCode === 'NGN',
-        );
-        if (!price)
-          throw new BadRequestException(
-            `TLD '.${tld}' is not supported or has no NGN pricing`,
-          );
-        const vat = (parseFloat(price.registrationPrice) * 7.5) / 100;
-        return {
-          status: true,
-          message: 'Domain is available',
-          result: {
-            domain: result.WhoisRecord.domainName,
-            price: price.registrationPrice,
-            total: parseFloat(price.registrationPrice) + vat,
-          },
-        };
-      }
-
-      if (result.WhoisRecord.domainAvailability === 'UNAVAILABLE') {
+      if (
+        !result.DomainInfo?.domainAvailability ||
+        result.DomainInfo?.domainAvailability !== 'AVAILABLE'
+      ) {
         return { status: false, message: 'Domain is taken', result };
       }
 
-      return { status: false, message: 'Domain is undetermined', result };
-    } catch (error) {
-      throw new InternalServerErrorException(
-        `WHOIS lookup failed: ${error.message}`,
-      );
+      // Get pricing for available domain
+      return await this.getPricing(dto.tld, result.DomainInfo.domainName);
     }
+
+    // Get pricing for available domain
+    return await this.getPricing(dto.tld, dto.name + '.' + dto.tld);
+  }
+
+  async search(domain: string) {
+    if (!domain) throw new BadRequestException('Domain query is required');
+
+    const domainName = await this.domainRepo.findOne({
+      where: { name: domain },
+      select: [
+        'id',
+        'name',
+        'status',
+        'user',
+        'registrationPeriod',
+        'registrationPrice',
+        'expiryDate',
+      ],
+    });
+    if (!domainName) throw new NotFoundException('Domain not found');
+
+    return { message: 'Domain retrieved successfully', result: domainName };
   }
 
   async register(
@@ -114,90 +99,55 @@ export class DomainService {
       );
     }
 
-    const url = `${process.env.GO54_ENDPOINT}/order/domains/register`;
+    const tld = this.tldIdentifier(dto.name);
+    if (tld != 'ng' && tld != 'com.ng' && tld != 'org.ng' && tld != 'name.ng') {
+      const result = await this.registerViaRC(
+        dto.name,
+        parseInt(dto.regPeriod),
+        userId,
+      );
+      console.log('Domain registration failed', result);
+      if (!result) {
+        throw new BadRequestException('Domain registration failed');
+      }
 
-    const urlencoded = new URLSearchParams();
-    urlencoded.append('domain', dto.name);
-    urlencoded.append('regperiod', dto.regPeriod);
-    urlencoded.append('nameservers[ns1]', 'ns1.google.com');
-    urlencoded.append('nameservers[ns2]', 'ns2.google.com');
-    urlencoded.append('contacts[registrant][firstname]', user.firstName);
-    urlencoded.append('contacts[registrant][lastname]', user.lastName);
-    urlencoded.append(
-      'contacts[registrant][fullname]',
-      `${user.firstName} ${user.lastName}`,
-    );
-    urlencoded.append('contacts[registrant][companyname]', user.companyName);
-    urlencoded.append('contacts[registrant][email]', user.email);
-    urlencoded.append('contacts[registrant][address1]', user.address);
-    urlencoded.append('contacts[registrant][city]', user.city);
-    urlencoded.append('contacts[registrant][state]', user.state);
-    urlencoded.append('contacts[registrant][zipcode]', user.zipCode);
-    urlencoded.append('contacts[registrant][country]', user.country);
-    urlencoded.append('contacts[registrant][phonenumber]', user.phoneNumber);
-    urlencoded.append('contacts[admin][firstname]', user.firstName);
-    urlencoded.append('contacts[admin][lastname]', user.lastName);
-    urlencoded.append(
-      'contacts[admin][fullname]',
-      `${user.firstName} ${user.lastName}`,
-    );
-    urlencoded.append('contacts[admin][companyname]', user.companyName);
-    urlencoded.append('contacts[admin][email]', user.email);
-    urlencoded.append('contacts[admin][address1]', user.address);
-    urlencoded.append('contacts[admin][city]', user.city);
-    urlencoded.append('contacts[admin][state]', user.state);
-    urlencoded.append('contacts[admin][zipcode]', user.zipCode);
-    urlencoded.append('contacts[admin][country]', user.country);
-    urlencoded.append('contacts[admin][phonenumber]', user.phoneNumber);
-    urlencoded.append('contacts[billing][firstname]', user.firstName);
-    urlencoded.append('contacts[billing][lastname]', user.lastName);
-    urlencoded.append(
-      'contacts[billing][fullname]',
-      `${user.firstName} ${user.lastName}`,
-    );
-    urlencoded.append('contacts[billing][companyname]', user.companyName);
-    urlencoded.append('contacts[billing][email]', user.email);
-    urlencoded.append('contacts[billing][address1]', user.address);
-    urlencoded.append('contacts[billing][city]', user.city);
-    urlencoded.append('contacts[billing][state]', user.state);
-    urlencoded.append('contacts[billing][zipcode]', user.zipCode);
-    urlencoded.append('contacts[billing][country]', user.country);
-    urlencoded.append('contacts[billing][phonenumber]', user.phoneNumber);
-    urlencoded.append('contacts[tech][firstname]', user.firstName);
-    urlencoded.append('contacts[tech][lastname]', user.lastName);
-    urlencoded.append(
-      'contacts[tech][fullname]',
-      `${user.firstName} ${user.lastName}`,
-    );
-    urlencoded.append('contacts[tech][companyname]', user.companyName);
-    urlencoded.append('contacts[tech][email]', user.email);
-    urlencoded.append('contacts[tech][address1]', user.address);
-    urlencoded.append('contacts[tech][city]', user.city);
-    urlencoded.append('contacts[tech][state]', user.state);
-    urlencoded.append('contacts[tech][zipcode]', user.zipCode);
-    urlencoded.append('contacts[tech][country]', user.country);
-    urlencoded.append('contacts[tech][phonenumber]', user.phoneNumber);
+      // await this.domainRepo.save({
+      //   name: dto.name,
+      //   user: { id: userId },
+      //   registrationPeriod: parseInt(dto.regPeriod),
+      //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      //   registrationPrice: Number((result as any)?.order?.totalamount) || 0,
+      //   expiryDate: new Date(),
+      //   checkOutUrl: '',
+      //   status: dto.status || 'active',
+      // });
+      return {
+        message: 'Domain registered successfully',
+        result: { id: '<DOMAIN_ID>' },
+      };
+    }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: this.constructHeader(),
-      body: urlencoded,
-      redirect: 'follow',
-    });
-    const result = await response.json();
-    console.log(result);
-    if (result.error) throw new BadRequestException(result.error);
+    // const result = await this.registerViaGO54(
+    //   dto.name,
+    //   parseInt(dto.regPeriod),
+    //   user,
+    // );
+    // if (result?.status != 'success')
+    //   throw new BadRequestException(result.error);
 
-    await this.domainRepo.save({
-      name: dto.name,
-      user: { id: userId },
-      registrationPeriod: parseInt(dto.regPeriod),
-      registrationPrice: result.order?.totalamount ?? 0,
-      expiryDate: result.order?.expirydate ?? null,
-      checkOutUrl: '',
-      status: dto.status || 'active',
-    });
-    return { message: 'Domain registered successfully', result };
+    // await this.domainRepo.save({
+    //   name: dto.name,
+    //   user: { id: userId },
+    //   registrationPeriod: parseInt(dto.regPeriod),
+    //   registrationPrice: result.order?.totalamount ?? 0,
+    //   expiryDate: result.order?.expirydate ?? null,
+    //   checkOutUrl: '',
+    //   status: dto.status || 'active',
+    // });
+    return {
+      message: 'Domain registered successfully',
+      result: { id: '<DOMAIN_ID>' },
+    };
   }
 
   async findUserDomains(userId: string) {
@@ -480,5 +430,167 @@ export class DomainService {
       .update(secret)
       .digest('hex');
     return Buffer.from(hmacToken).toString('base64');
+  }
+
+  private tldIdentifier(domain: string) {
+    let tld = domain.split('.').pop();
+    if (domain.split('.').length > 2) {
+      tld = domain.split('.').slice(-2).join('.');
+    }
+    return tld;
+  }
+
+  private async getPricing(tld: string, domainName: string) {
+    const pricingUrl = `${process.env.GO54_ENDPOINT}/tlds/pricing?lockstatus=true`;
+
+    const pricingResponse = await fetch(pricingUrl, {
+      method: 'GET',
+      headers: this.constructHeader(),
+      redirect: 'follow',
+    });
+    const data = await pricingResponse.json();
+    if (data.error) throw new BadRequestException(data.error);
+
+    const price = data.find(
+      (item: any) => item.tld === `.${tld}` && item.currencyCode === 'NGN',
+    );
+    if (!price)
+      throw new BadRequestException(
+        `TLD '.${tld}' is not supported or has no NGN pricing`,
+      );
+    const vat = (parseFloat(price.registrationPrice) * 7.5) / 100;
+    return {
+      status: true,
+      message: 'Domain is available',
+      result: {
+        domainName,
+        price: parseFloat(price.registrationPrice),
+        total: parseFloat(price.registrationPrice) + vat,
+      },
+    };
+  }
+
+  // This function is for registering domains via ResellerClub API
+  private async registerViaRC(
+    domain: string,
+    year: number,
+    userId: string,
+    discount?: number,
+  ) {
+    const url = `https://test.httpapi.com/api/domains/register.xml?auth-userid=${process.env.WHOIS_ID}&api-key=${process.env.WHOIS_KEY}&domain-name=${domain}&years=${year}&ns=ns1.kodashub.com&ns=ns2.kodashub.com&customer-id=${userId}&reg-contact-id=${userId}&admin-contact-id=${userId}&tech-contact-id=${userId}&billing-contact-id=${userId}&invoice-option=KeepInvoice&discount-amount=${discount || 0.0}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      signal: AbortSignal.timeout(30000),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      redirect: 'follow',
+    });
+    if (!response.ok) {
+      console.error('RC API request failed with status:', response);
+      throw new InternalServerErrorException(
+        response.statusText || 'RC API request failed',
+      );
+    }
+    const result = await response.text();
+    return result;
+  }
+
+  // This function is for registering domains via GO54 API
+  private async registerViaGO54(
+    domain: string,
+    year: number,
+    user: User,
+    discount?: number,
+  ) {
+    const url = `${process.env.GO54_ENDPOINT}/order/domains/register`;
+    console.log(discount);
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append('domain', domain);
+    urlencoded.append('regperiod', year.toString());
+    urlencoded.append('nameservers[ns1]', 'ns1.google.com');
+    urlencoded.append('nameservers[ns2]', 'ns2.google.com');
+    urlencoded.append('contacts[registrant][firstname]', user.firstName);
+    urlencoded.append('contacts[registrant][lastname]', user.lastName);
+    urlencoded.append(
+      'contacts[registrant][fullname]',
+      `${user.firstName} ${user.lastName}`,
+    );
+    urlencoded.append(
+      'contacts[registrant][companyname]',
+      user?.companyName || '',
+    );
+    urlencoded.append('contacts[registrant][email]', user.email || '');
+    urlencoded.append('contacts[registrant][address1]', user?.address || '');
+    urlencoded.append('contacts[registrant][city]', user?.city || '');
+    urlencoded.append('contacts[registrant][state]', user?.state || '');
+    urlencoded.append('contacts[registrant][zipcode]', user?.zipCode || '');
+    urlencoded.append('contacts[registrant][country]', user?.country || '');
+    urlencoded.append(
+      'contacts[registrant][phonenumber]',
+      user?.phoneNumber || '',
+    );
+    urlencoded.append('contacts[admin][firstname]', user.firstName);
+    urlencoded.append('contacts[admin][lastname]', user.lastName);
+    urlencoded.append(
+      'contacts[admin][fullname]',
+      `${user.firstName} ${user.lastName}`,
+    );
+    urlencoded.append('contacts[admin][companyname]', user.companyName || '');
+    urlencoded.append('contacts[admin][email]', user.email || '');
+    urlencoded.append('contacts[admin][address1]', user?.address || '');
+    urlencoded.append('contacts[admin][city]', user?.city || '');
+    urlencoded.append('contacts[admin][state]', user?.state || '');
+    urlencoded.append('contacts[admin][zipcode]', user?.zipCode || '');
+    urlencoded.append('contacts[admin][country]', user?.country || '');
+    urlencoded.append('contacts[admin][phonenumber]', user?.phoneNumber || '');
+    urlencoded.append('contacts[billing][firstname]', user.firstName);
+    urlencoded.append('contacts[billing][lastname]', user.lastName);
+    urlencoded.append(
+      'contacts[billing][fullname]',
+      `${user.firstName} ${user.lastName}`,
+    );
+    urlencoded.append(
+      'contacts[billing][companyname]',
+      user?.companyName || '',
+    );
+    urlencoded.append('contacts[billing][email]', user.email);
+    urlencoded.append('contacts[billing][address1]', user?.address || '');
+    urlencoded.append('contacts[billing][city]', user?.city || '');
+    urlencoded.append('contacts[billing][state]', user?.state || '');
+    urlencoded.append('contacts[billing][zipcode]', user?.zipCode || '');
+    urlencoded.append('contacts[billing][country]', user?.country || '');
+    urlencoded.append(
+      'contacts[billing][phonenumber]',
+      user?.phoneNumber || '',
+    );
+    urlencoded.append('contacts[tech][firstname]', user.firstName);
+    urlencoded.append('contacts[tech][lastname]', user.lastName);
+    urlencoded.append(
+      'contacts[tech][fullname]',
+      `${user.firstName} ${user.lastName}`,
+    );
+    urlencoded.append('contacts[tech][companyname]', user?.companyName || '');
+    urlencoded.append('contacts[tech][email]', user.email);
+    urlencoded.append('contacts[tech][address1]', user?.address || '');
+    urlencoded.append('contacts[tech][city]', user?.city || '');
+    urlencoded.append('contacts[tech][state]', user?.state || '');
+    urlencoded.append('contacts[tech][zipcode]', user?.zipCode || '');
+    urlencoded.append('contacts[tech][country]', user?.country || '');
+    urlencoded.append('contacts[tech][phonenumber]', user?.phoneNumber || '');
+
+    const response = await fetch(url, {
+      method: 'POST',
+      signal: AbortSignal.timeout(30000),
+      headers: this.constructHeader(),
+      body: urlencoded,
+      redirect: 'follow',
+    });
+    if (!response.ok) {
+      console.error('GO54 API request failed with status:', response);
+      throw new InternalServerErrorException('GO54 API request failed');
+    }
+    const result = await response.text();
+    console.log(result);
+    return result;
   }
 }

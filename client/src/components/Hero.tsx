@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -22,24 +23,24 @@ export const Hero = () => {
 
             <p className="text-lg text-slate-600 max-w-2xl">
               From broken SSL certificates and DNS propagation delays to
-              WordPress database restoration and cPanel troubleshooting—we
+              WordPress database restoration and cPanel troubleshooting. We
               resolve complex hosting issues fast.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <a
-                href="#services"
+              <Link
+                href="/services"
                 className="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-white bg-linear-to-r from-blue to-cyan rounded-xl shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/20 hover:scale-[1.01] transition-all"
               >
                 Resolve An Issue
                 <ArrowRight className="ml-2 h-5 w-5" />
-              </a>
-              <a
-                href="#hosting"
+              </Link>
+              {/* <Link
+                href="/hosting"
                 className="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-navy bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
               >
                 Explore Hosting Plans
-              </a>
+              </Link> */}
             </div>
 
             {/* Quick Metrics */}

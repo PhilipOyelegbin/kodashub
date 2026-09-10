@@ -40,9 +40,9 @@ export class CartService {
       ...dto,
       price: Math.round(
         dto?.metadata?.regPeriod
-          ? dto?.metadata.regPeriod * dto.price + (dto.price * 7.5) / 100
-          : dto.price + (dto.price * 7.5) / 100,
-      ), // Add 7.5% tax
+          ? dto?.metadata.regPeriod * dto.price
+          : dto.price,
+      ),
       user: { id: userId },
     });
     const result = await this.cartRepo.save(newCart);
@@ -95,7 +95,6 @@ export class CartService {
       dto.price !== undefined ||
       (dto.metadata && dto.metadata.regPeriod !== undefined)
     ) {
-      const taxRate = 0.075; // 7.5%
       const oldRegPeriod = existingCart.metadata?.regPeriod ?? 1;
       const newRegPeriod = dto.metadata?.regPeriod ?? oldRegPeriod;
 
@@ -103,9 +102,9 @@ export class CartService {
       if (dto.price !== undefined) {
         unitPrice = dto.price;
       } else {
-        unitPrice = existingCart.price / (oldRegPeriod + taxRate);
+        unitPrice = existingCart.price / oldRegPeriod;
       }
-      existingCart.price = Math.round(unitPrice * (newRegPeriod + taxRate));
+      existingCart.price = Math.round(unitPrice * newRegPeriod);
     }
 
     // Handle metadata update (merge with existing)
