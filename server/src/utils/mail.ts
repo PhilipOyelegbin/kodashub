@@ -1,5 +1,9 @@
 import { Client } from 'postmark';
-import { BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { createTransport } from 'nodemailer';
 
 export class Mail {
   private client: Client;
@@ -25,5 +29,36 @@ export class Mail {
       recipient: response.To,
       submittedAt: response.SubmittedAt,
     };
+  }
+
+  async smtpMail(recipient: string, subject: string, message: string) {
+    const transporter = createTransport({
+      host: process.env.SMTP_HOST,
+      port: 587,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: true,
+        minVersion: 'TLSv1.2',
+      },
+    });
+
+    const mailResponse = await transporter.sendMail({
+      from: `KodasHub <${process.env.SMTP_USER}>`,
+      to: `KodasHub <${process.env.SMTP_USER}>`,
+      subject: subject,
+      html: message,
+      replyTo: recipient,
+    });
+
+    if (mailResponse.rejectedErrors) {
+      throw new InternalServerErrorException(
+        `Error sending email: ${mailResponse?.rejectedErrors}`,
+      );
+    }
+
+    return { message: mailResponse?.response };
   }
 }

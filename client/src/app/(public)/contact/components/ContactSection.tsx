@@ -118,7 +118,7 @@ export const ContactSection = () => {
                     className="text-xs font-semibold text-blue hover:underline mt-1 inline-block"
                     target="_blank"
                   >
-                    support@kodashub.com
+                    support@oylengroup.com.ng
                   </Link>
                 </div>
               </div>
@@ -133,7 +133,7 @@ export const ContactSection = () => {
                     Instant triage for active customers
                   </p>
                   <Link
-                    href="https://wa.me/2348054945601?text=Hi%20KH%20Team,%20I%20need%20assistance%20with%20my%20website..."
+                    href="https://wa.me/2348188066398?text=Hi%20KH%20Team,%20I%20need%20assistance%20with%20my%20website..."
                     className="text-xs font-semibold text-blue hover:underline mt-1 inline-block"
                     target="_blank"
                   >

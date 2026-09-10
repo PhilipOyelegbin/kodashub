@@ -40,6 +40,7 @@
     "cloudinary": "^2.9.0",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^10.0.3",
     "passport-jwt": "^4.0.1",
     "pg": "^8.20.0",
     "postmark": "^4.0.7",

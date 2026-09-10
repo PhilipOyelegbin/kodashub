@@ -1,6 +1,9 @@
 import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { RequestNotificationDto } from './dto/notification.dto';
+import {
+  ContactNotificationDto,
+  RequestNotificationDto,
+} from './dto/notification.dto';
 import {
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
@@ -23,8 +26,7 @@ export class NotificationController {
     description: 'Notification request sent successfully',
     type: Object,
     example: {
-      message: 'Notification request sent successfully',
-      status: 200,
+      message: '250 Message received',
     },
   })
   @ApiBadRequestResponse({
@@ -34,5 +36,25 @@ export class NotificationController {
   @HttpCode(HttpStatus.OK)
   requestService(@Body() requestNotificationDto: RequestNotificationDto) {
     return this.notificationService.requestService(requestNotificationDto);
+  }
+
+  @ApiOperation({
+    summary: 'Contact form submission',
+    description: 'Submit a contact form message to the notification service',
+  })
+  @ApiOkResponse({
+    description: 'Contact form sent successfully',
+    type: Object,
+    example: {
+      message: '250 Message received',
+    },
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid request data',
+  })
+  @Post('contact')
+  @HttpCode(HttpStatus.OK)
+  contact(@Body() contactNotificationDto: ContactNotificationDto) {
+    return this.notificationService.contact(contactNotificationDto);
   }
 }
