@@ -29,13 +29,13 @@ export const metadata = {
     url: process.env.NEXT_PUBLIC_HOST_URI,
     type: "website",
     locale: "en_US",
-    images: "../../public/android-chrome-512x512.png",
+    images: "../../public/opengraph-image.png",
     siteName: "KodasHub",
   },
   twitter: {
-    handle: "@kodashub",
-    site: "@kodashub",
-    images: "../../public/android-chrome-512x512.png",
+    handle: "@KodasHub",
+    site: "@KodasHub",
+    images: "../../public/opengraph-image.png",
     cardType: "summary_large_image",
   },
   robots: {
