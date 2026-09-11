@@ -20,7 +20,6 @@ export const metadata = {
   title: "KodasHub - Instant Help for Server, Hosting & DNS Errors",
   description:
     "KodasHub offers web and infrastructure support, domain registration, cloud services, and DevOps solutions",
-  favicon: "../../public/favicon.ico",
   type: "website",
   author: "KodasHub",
   openGraph: {

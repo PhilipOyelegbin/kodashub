@@ -94,5 +94,10 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "allowScripts": {
+    "@scarf/scarf@1.4.0": true,
+    "@swc/core@1.16.2": true,
+    "argon2@0.44.0": true
   }
 }

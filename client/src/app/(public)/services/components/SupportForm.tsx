@@ -28,7 +28,7 @@ const schema = yup.object().shape({
   description: yup
     .string()
     .required("Please provide details for your request")
-    .min(100, "Description must be at least 50 characters"),
+    .min(100, "Description must be at least 100 characters"),
   priority: yup
     .string()
     .required("Priority is required")
@@ -256,8 +256,8 @@ export const SupportForm = () => {
           <ShieldCheck size={20} className="text-blue shrink-0" />
           <span>
             Your data is strictly confidential. Confidential details like server
-            credentials should only be provided after ticket creation via our
-            encrypted client portal.
+            credentials should only be provided after ticket creation via the
+            channel provided by our engineers.
           </span>
         </div>
 
