@@ -142,11 +142,18 @@ export class AuthService {
       user.id,
       req,
     );
-    const token = jwt.sign(
-      { sub: user.id, email: user.email },
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: process.env.JWT_EXPIRATION_TIME || '1h' },
-    );
+
+    const jwtSecret = process.env.JWT_SECRET_KEY;
+    if (jwtSecret === undefined || jwtSecret === null) {
+      throw new BadRequestException(
+        'JWT_SECRET_KEY·environment·variable·is·not·configured',
+      );
+    }
+
+    const payload = { sub: user.id, email: user.email };
+    const token = jwt.sign(payload, jwtSecret, {
+      expiresIn: '1h',
+    });
     return {
       message: 'User logged in successfully',
       result: { id: user.id, email: user.email, token },

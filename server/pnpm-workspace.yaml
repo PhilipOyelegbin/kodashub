@@ -1,6 +1,0 @@
-allowBuilds:
-  '@scarf/scarf': false
-  '@swc/core': false
-  argon2: false
-minimumReleaseAgeExclude:
-  - nodemailer@10.0.3
