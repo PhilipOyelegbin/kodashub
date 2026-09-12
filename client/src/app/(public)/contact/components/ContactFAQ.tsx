@@ -12,6 +12,11 @@ const faqs = [
     answer:
       "Yes. We provide tailored Service Level Agreements for VPS, dedicated servers, and domain registration requiring guaranteed uptime, 15-minute response windows, and dedicated account management.",
   },
+  {
+    question: "Do you offer custom web application development?",
+    answer:
+      "Yes. We build custom web applications tailored to your business needs, including dashboards, portals, booking systems, e-commerce platforms, APIs, and other business-specific solutions. Our development process covers planning, development, testing, and deployment.",
+  },
   // {
   //   question: "Can KodasHub help with website migrations from other hosts?",
   //   answer:

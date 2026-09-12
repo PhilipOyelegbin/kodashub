@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-import { LinkBtn } from "@/components/ui/LinkBtn";
+import { LinkBtn } from "@/components/ui/Button";
 import { Logo_Light } from "@/components/ui/Logo";
 
 const navLinks = [

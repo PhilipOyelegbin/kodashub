@@ -7,6 +7,7 @@ import {
   Cpu,
   Check,
   ArrowRight,
+  Code2,
 } from "lucide-react";
 
 const detailedServices = [
@@ -73,6 +74,19 @@ const detailedServices = [
       "DKIM key generation and DNS publishing",
       "DMARC policy enforcement (p=reject / p=quarantine)",
       "IP/Domain blacklist monitoring & removal",
+    ],
+  },
+  {
+    id: "web-development",
+    icon: Code2,
+    title: "Web Application Development",
+    description:
+      "Build fast, responsive, and scalable web applications tailored to your business needs.",
+    deliverables: [
+      "Responsive frontend and modern UI development",
+      "Custom backend APIs and server-side functionality",
+      "Database design, integration, and optimization",
+      "Third-party API and payment gateway integrations",
     ],
   },
   {

@@ -5,6 +5,7 @@ import {
   Server,
   Wrench,
   RefreshCw,
+  Code2,
 } from "lucide-react";
 
 const services = [
@@ -37,6 +38,12 @@ const services = [
     title: "Email Delivery & SPF/DKIM",
     description:
       "Solve email bouncebacks, blacklist issues, and set up DKIM, SPF, and DMARC security records.",
+  },
+  {
+    icon: Code2,
+    title: "Web App Development",
+    description:
+      "Build fast, responsive, and scalable web applications with modern frameworks, APIs, databases, and custom integrations.",
   },
   {
     icon: Wrench,

@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
-import { Send, ShieldCheck, CheckCircle2, Loader2 } from "lucide-react";
+import { ShieldCheck, CheckCircle2 } from "lucide-react";
 import { requestService } from "@/api/notification";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { FormBtn } from "@/components/ui/Button";
 
 const schema = yup.object().shape({
   name: yup
@@ -217,6 +218,7 @@ export const SupportForm = () => {
               <option value="cpanel_directadmin">cPanel / DirectAdmin</option>
               <option value="wordpress_repair">Wordpress Repair</option>
               <option value="email_issues">Email / SPF / DKIM</option>
+              <option value="web_development">Web App Development</option>
               <option value="vps_server">VPS & Linux Server</option>
             </select>
             {errors.service && (
@@ -262,18 +264,11 @@ export const SupportForm = () => {
         </div>
 
         {/* Submit Button */}
-        <button
-          type="submit"
+        <FormBtn
+          label="Submit Request"
           disabled={isSubmitting}
-          className="cursor-pointer w-full py-3.5 px-6 rounded-xl text-white font-semibold text-sm bg-linear-to-r from-blue to-cyan hover:opacity-95 shadow-md shadow-cyan-500/10 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isSubmitting ? (
-            <Loader2 size={16} className="animate-spin" />
-          ) : (
-            <Send size={16} />
-          )}
-          Submit Request
-        </button>
+          styling="cursor-pointer w-full py-3.5 px-6 rounded-xl text-white font-semibold text-sm bg-linear-to-r from-blue to-cyan hover:opacity-95 shadow-md shadow-cyan-500/10 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        />
       </form>
     </div>
   );

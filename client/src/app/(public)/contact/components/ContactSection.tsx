@@ -4,10 +4,8 @@ import {
   Mail,
   MessageSquare,
   Clock,
-  Send,
   CheckCircle2,
   ShieldAlert,
-  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
@@ -16,6 +14,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { contact } from "@/api/notification";
+import { FormBtn } from "@/components/ui/Button";
 
 const socialLinks = [
   {
@@ -364,23 +363,11 @@ export const ContactSection = () => {
                   </div>
 
                   {/* Submit Button */}
-                  <button
-                    type="submit"
+                  <FormBtn
+                    label="Send Message"
                     disabled={isSubmitting}
-                    className="cursor-pointer w-full py-3.5 px-6 rounded-xl text-white font-semibold text-sm bg-linear-to-r from-blue to-cyan hover:opacity-95 shadow-md shadow-cyan-500/10 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center gap-2">
-                        <Loader2 size={16} className="animate-spin" />
-                        Sending...
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-2">
-                        <Send size={16} />
-                        Send Message
-                      </span>
-                    )}
-                  </button>
+                    styling="cursor-pointer w-full py-3.5 px-6 rounded-xl text-white font-semibold text-sm bg-linear-to-r from-blue to-cyan hover:opacity-95 shadow-md shadow-cyan-500/10 flex items-center justify-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  />
                 </form>
               )}
             </div>

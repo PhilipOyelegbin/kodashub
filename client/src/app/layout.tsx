@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
@@ -17,9 +16,10 @@ export const metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_HOST_URI || "http://localhost:3000",
   ),
-  title: "KodasHub - Instant Help for Server, Hosting & DNS Errors",
+  title:
+    "KodasHub - Support and Infrastructure Solutions for Web and Cloud Services",
   description:
-    "KodasHub offers web and infrastructure support, domain registration, cloud services, and DevOps solutions",
+    "KodasHub is a web and infrastructure support service that provides solutions for server, hosting, and DNS errors, as well as domain registration, cloud services, development, and DevOps solutions.",
   type: "website",
   author: "KodasHub",
   openGraph: {
@@ -29,13 +29,13 @@ export const metadata = {
     url: process.env.NEXT_PUBLIC_HOST_URI,
     type: "website",
     locale: "en_US",
-    images: "../../public/opengraph-image.png",
+    images: "./opengraph-image.png",
     siteName: "KodasHub",
   },
   twitter: {
     handle: "@KodasHub",
     site: "@KodasHub",
-    images: "../../public/opengraph-image.png",
+    images: "./opengraph-image.png",
     cardType: "summary_large_image",
   },
   robots: {
@@ -52,12 +52,12 @@ export const metadata = {
     },
   },
   icons: {
-    icon: "../../public/apple-touch-icon.png",
+    icon: "./apple-touch-icon.png",
     shortcut: "/shortcut-icon.png",
-    apple: "../../public/apple-touch-icon.png",
+    apple: "./apple-touch-icon.png",
     other: {
       rel: "apple-touch-icon-precomposed",
-      url: "../../public/apple-touch-icon.png",
+      url: "./apple-touch-icon.png",
     },
   },
 };
